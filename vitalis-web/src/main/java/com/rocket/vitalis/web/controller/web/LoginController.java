@@ -1,19 +1,23 @@
-package com.rocket.vitalis.web.controller;
+package com.rocket.vitalis.web.controller.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+/**
+ * Created by sscotti on 8/9/16.
+ */
 @Controller
-public class HomeController {
+public class LoginController {
 
-    @RequestMapping({"/"})
+    @RequestMapping({"/login"})
     public ModelAndView index(Model model) {
 
         model.addAttribute("title", "Un subtitulo");
-        return new ModelAndView("index", model.asMap());
+        return new ModelAndView("login", model.asMap());
 
 //        return "index";
     }
+
 }

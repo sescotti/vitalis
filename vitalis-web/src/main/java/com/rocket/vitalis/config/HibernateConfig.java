@@ -1,17 +1,20 @@
 package com.rocket.vitalis.config;
 
-import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+import lombok.extern.log4j.Log4j;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.ImprovedNamingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.event.ContextClosedEvent;
+import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -20,18 +23,22 @@ import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.util.Properties;
 
+import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.H2;
+
 /**
  * Created by sscotti on 8/9/16.
  */
 @Configuration
 @EnableTransactionManagement
 @PropertySource({"classpath:config/hibernate.properties"})
-//@ComponentScan({"com.rocket.vitalis.model"})
+@Log4j
 public class HibernateConfig {
 
     @Autowired
     private Environment env;
 
+    @Autowired
+    private AbstractApplicationContext context;
 
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
@@ -46,24 +53,23 @@ public class HibernateConfig {
 
 
     public DataSource restDataSource() {
-        BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setDriverClassName(env.getProperty("jdbc.driverClassName"));
-        dataSource.setUrl(env.getProperty("jdbc.url"));
-        dataSource.setUsername(env.getProperty("jdbc.user"));
-        dataSource.setPassword(env.getProperty("jdbc.pass"));
+        HikariConfig config = new HikariConfig();
+        config.setDriverClassName(env.getProperty("jdbc.driverClassName"));
+        config.setJdbcUrl(env.getProperty("jdbc.url"));
+        config.setUsername(env.getProperty("jdbc.user"));
+        config.setPassword(env.getProperty("jdbc.pass"));
 
-        return dataSource;
+        return new HikariDataSource(config);
     }
 
     @Bean
     public DataSource h2DataSource(){
         // no need shutdown, EmbeddedDatabaseFactoryBean will take care of this
         return   new EmbeddedDatabaseBuilder()
-                .setType(EmbeddedDatabaseType.H2)
+                        .setType(H2)
                         .setName("vitalis")
-//                .addScript("db/sql/create-db.sql")
-//                .addScript("db/sql/insert-data.sql")
-                .build();
+                        .ignoreFailedDrops(true)
+                        .build();
     }
     @Bean
     @Autowired
@@ -91,6 +97,16 @@ public class HibernateConfig {
 
     @PostConstruct
     public void startDBManager() {
-        new EmbeddedH2Console().start();
+
+        EmbeddedH2Console.start();
+
+        context.addApplicationListener(new ApplicationListener<ContextClosedEvent>() {
+            @Override
+            public void onApplicationEvent(ContextClosedEvent event) {
+                EmbeddedH2Console.stop();
+            }
+        });
+
     }
+
 }
