@@ -1,13 +1,9 @@
 package com.rocket.vitalis.web.controller.api.module;
 
-import com.rocket.vitalis.config.EmbeddedH2Console;
 import com.rocket.vitalis.dto.MeasureRequest;
 import com.rocket.vitalis.model.User;
 import lombok.extern.log4j.Log4j;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-
-import javax.annotation.PreDestroy;
 
 /**
  * Created by sscotti on 8/11/16.
@@ -23,10 +19,8 @@ public class MeasureController {
 
         log.info("Received + " + request);
 
-        User user = new User();
+        User user = new User("Sarasa", "sebastian@vitalis.com", "sarasapass");
         user.setId(1000L);
-        user.setName("Sarasa");
-        user.setNickName("Sarasa_001");
 
         return user;
     }
