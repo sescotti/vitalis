@@ -19,7 +19,7 @@ public class MeasureController {
 
         log.info("Received + " + request);
 
-        User user = new User("Sarasa", "sebastian@vitalis.com", "sarasapass");
+        User user = new User("sebastian@vitalis.com", "sarasapass");
         user.setId(1000L);
 
         return user;

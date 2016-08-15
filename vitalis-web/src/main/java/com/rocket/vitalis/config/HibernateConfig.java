@@ -29,7 +29,6 @@ import static org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType.
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "com.rocket.vitalis.repositories")
-@EnableAutoConfiguration
 @EntityScan(basePackages = "com.rocket.vitalis.model")
 public class HibernateConfig {
 

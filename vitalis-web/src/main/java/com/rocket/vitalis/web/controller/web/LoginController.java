@@ -3,6 +3,7 @@ package com.rocket.vitalis.web.controller.web;
 import com.rocket.vitalis.dto.LoginRequest;
 import com.rocket.vitalis.model.User;
 import com.rocket.vitalis.repositories.UserRepository;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,9 +13,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.time.Instant.now;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -23,18 +27,18 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
  */
 @Controller
 @RequestMapping({"/login"})
+@Log4j
 public class LoginController {
 
     @Autowired
     private UserRepository userRepository;
 
     @RequestMapping({"/"})
-    public ModelAndView index(Model model) {
+    public String index(Model model) {
 
         model.addAttribute("title", "Un subtitulo");
-        return new ModelAndView("login", model.asMap());
+        return "login";
 
-//        return "index";
     }
 
     @RequestMapping(method = GET, value = "/login", consumes = "application/json", produces = "application/json")
@@ -44,7 +48,7 @@ public class LoginController {
         if(user != null){
             Map<String, Object> model = new HashMap<>();
             model.put("user", user);
-            return new ModelAndView("login", model);
+            return user;
         } else {
             return "redirect:/home";
         }
@@ -52,15 +56,9 @@ public class LoginController {
     @RequestMapping(method = POST, value = "/signup", consumes = "application/json", produces = "application/json")
     @ResponseBody
     public Object signup(@RequestBody LoginRequest request) {
-        User user = new User(request.getUsername(), request.getEmail(), request.getPassword());
-        user = userRepository.save(user);
-        if (user != null) {
-            Map<String, Object> model = new HashMap<>();
-            model.put("user", user);
-            return new ModelAndView("login", model);
-        } else {
-            return "redirect:/home";
-        }
+        User user = new User(request.getEmail(), request.getPassword());
+        user.setBirthDate(Date.from(now()));
+        return userRepository.save(user);
     }
 
 }

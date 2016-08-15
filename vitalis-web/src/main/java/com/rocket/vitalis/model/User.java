@@ -4,11 +4,9 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Delegate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -23,10 +21,6 @@ public class User {
     @Getter @Setter
     private Long id;
 
-    @Column(nullable = false)
-    @Getter @Setter @NonNull
-    private String name;
-
     @Column(nullable = false, unique = true)
     @Getter @Setter @NonNull
     private String email;
@@ -35,9 +29,9 @@ public class User {
     @Getter @Setter @NonNull
     private String password;
 
-    @Column
-    @Getter @Setter
-    private Date birthDate;
+    @Embedded
+    @Delegate
+    private Profile profile = new Profile();
 
     // Required by Hibernate
     protected User(){}
