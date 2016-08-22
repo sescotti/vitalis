@@ -6,14 +6,12 @@ import lombok.Setter;
 import lombok.experimental.Delegate;
 
 import javax.persistence.*;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
  * Created by Ailin on 21/08/2016.
  */
 @Entity
-@RequiredArgsConstructor
 public class Module {
 
     @Id
@@ -23,10 +21,10 @@ public class Module {
 
     @Column
     @Getter @Setter
-    private DateTimeFormatter registrationDate;
+    private Date registrationDate;
 
     @Column
     @Getter @Setter
-    private DateTimeFormatter updateDate;
+    private Date updateDate;
 
 }

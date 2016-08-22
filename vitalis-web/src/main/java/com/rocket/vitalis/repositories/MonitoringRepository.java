@@ -10,5 +10,5 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface MonitoringRepository extends CrudRepository<Monitoring, Long> {
 
-    Page<Monitoring> findById(Long id, Pageable page);
+
 }

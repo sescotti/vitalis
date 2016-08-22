@@ -9,12 +9,11 @@ import lombok.experimental.Delegate;
 import javax.persistence.*;
 import java.util.Date;
 
-
 /**
  * Created by Ailin on 21/08/2016.
  */
 @Entity
-public class Monitoring {
+public class Measurement {
 
     @Id
     @GeneratedValue
@@ -23,19 +22,18 @@ public class Monitoring {
 
     @Column
     @Getter @Setter
-    private Date startDate;
+    private Date measurementDate;
 
     @Column
     @Getter @Setter
-    private Date finishDate;
+    private Double value;
 
-    /*Relacion con Module*/
+    @Column
+    @Getter @Setter
+    private MeasurementType measurementType;
+
+    /*DEBE ESTAR RELACIONADO CON Monitoring*/
     @OneToOne
     @Getter @Setter
-    private Module idModule;
-
-    /*Relacion con User*/
-    @OneToOne
-    @Getter @Setter
-    private User idPatient;
+    private Monitoring idMonitoring;
 }

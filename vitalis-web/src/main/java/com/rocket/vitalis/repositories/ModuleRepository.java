@@ -10,5 +10,5 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface ModuleRepository extends CrudRepository<Module, Long> {
 
-    Page<Module> findById (Long id, Pageable page);
+
 }

@@ -31,7 +31,7 @@ public class Profile {
 
     @Column
     @Getter @Setter
-    private DecimalFormat altura;
+    private Double altura;
 
     @Column
     @Getter @Setter
@@ -39,7 +39,7 @@ public class Profile {
 
     @Column
     @Getter @Setter
-    private DecimalFormat peso;
+    private Double peso;
 
     @Column
     @Getter @Setter
