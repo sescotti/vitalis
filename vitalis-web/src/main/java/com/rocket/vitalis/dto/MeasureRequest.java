@@ -8,5 +8,6 @@ import lombok.Data;
  */
 @Data
 public class MeasureRequest {
+    private String ppp;
     private Double value;
 }
