@@ -38,17 +38,17 @@ public class Measurement {
     private Monitoring idMonitoring;
 
     public Measurement(String measureTypeString, Double value ){
-        /*switch (measureTypeString){
+        switch (measureTypeString){
             case "temperatura":
                 this.measurementType = MeasurementType.TEMPERATURE;
+                break;
             case "oxigeno":
                 this.measurementType = MeasurementType.BLOOD_OXYGEN;
+                break;
             default:
                 this.measurementType = MeasurementType.BLOOD_OXYGEN;
-        }*/
-
-        System.out.println("El valor es: " + measureTypeString);
-        this.measurementType = MeasurementType.TEMPERATURE;
+                break;
+        }
         this.value=value;
     }
 }

@@ -9,10 +9,10 @@ import org.springframework.web.servlet.ModelAndView;
 public class HomeController {
 
     @RequestMapping({"/"})
-    public ModelAndView login(Model model) {
+    public ModelAndView index(Model model) {
 
-        model.addAttribute("title", "Un subtitulo");
-        return new ModelAndView("login", model.asMap());
+        model.addAttribute("title", "Un subtitulo home");
+        return new ModelAndView("sensor", model.asMap());
 
 //        return "index";
     }
