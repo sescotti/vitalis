@@ -24,8 +24,8 @@ public class Measurement {
     @Getter @Setter
     private Date measurementDate;
 
-    @Column
-    @Getter @Setter
+    @Column(nullable = false)
+    @Getter @Setter @NonNull
     private Double value;
 
     @Column
@@ -36,4 +36,19 @@ public class Measurement {
     @OneToOne
     @Getter @Setter
     private Monitoring idMonitoring;
+
+    public Measurement(String measureTypeString, Double value ){
+        /*switch (measureTypeString){
+            case "temperatura":
+                this.measurementType = MeasurementType.TEMPERATURE;
+            case "oxigeno":
+                this.measurementType = MeasurementType.BLOOD_OXYGEN;
+            default:
+                this.measurementType = MeasurementType.BLOOD_OXYGEN;
+        }*/
+
+        System.out.println("El valor es: " + measureTypeString);
+        this.measurementType = MeasurementType.TEMPERATURE;
+        this.value=value;
+    }
 }
