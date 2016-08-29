@@ -13,6 +13,7 @@ import java.util.Date;
  * Created by Ailin on 21/08/2016.
  */
 @Entity
+@RequiredArgsConstructor
 public class Measurement {
 
     @Id
@@ -24,8 +25,8 @@ public class Measurement {
     @Getter @Setter
     private Date measurementDate;
 
-    @Column
-    @Getter @Setter
+    @Column(nullable = false)
+    @Getter @Setter @NonNull
     private Double value;
 
     @Column
@@ -36,4 +37,12 @@ public class Measurement {
     @OneToOne
     @Getter @Setter
     private Monitoring idMonitoring;
+
+    public Measurement(String measureTypeString, Double value ){
+        this.measurementType = MeasurementType.fromString(measureTypeString);
+        this.value=value;
+    }
+
+    protected Measurement(){}
+
 }

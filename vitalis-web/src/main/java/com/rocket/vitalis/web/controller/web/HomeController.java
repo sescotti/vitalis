@@ -11,9 +11,10 @@ public class HomeController {
     @RequestMapping({"/"})
     public ModelAndView index(Model model) {
 
-        model.addAttribute("title", "Un subtitulo");
+        model.addAttribute("title", "Un subtitulo home");
         return new ModelAndView("index", model.asMap());
 
 //        return "index";
     }
+
 }

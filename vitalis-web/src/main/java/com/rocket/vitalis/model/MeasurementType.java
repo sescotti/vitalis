@@ -2,6 +2,8 @@ package com.rocket.vitalis.model;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Arrays;
+
 
 /**
  * Created by Ailin on 21/08/2016.
@@ -14,8 +16,17 @@ public enum MeasurementType {
     SKIN_CONDUCTANCE("skin_conductance"), ECG("ecg");
 
 
-
+    public static MeasurementType fromString(String code){
+        for (MeasurementType type: values()){
+            if(type.name().equals(code)){
+                return type;
+            }            
+        }
+        return null;
+    }
+    
     @NonNull
-    String measurementType;
+    String code;
+
 
 }

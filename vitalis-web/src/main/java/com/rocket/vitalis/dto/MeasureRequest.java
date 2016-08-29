@@ -1,5 +1,6 @@
 package com.rocket.vitalis.dto;
 
+import com.rocket.vitalis.model.MeasurementType;
 import lombok.Data;
 
 /**
@@ -7,8 +8,6 @@ import lombok.Data;
  */
 @Data
 public class MeasureRequest {
-
-    private String  measureType;
-    private Integer value;
-
+    private String measureName;
+    private Double value;
 }
