@@ -39,7 +39,8 @@ public class MeasureController {
     @RequestMapping(method = POST, value = "/measureup", consumes = "application/json", produces = "application/json")
     @ResponseBody
     public Object measureUp(@RequestBody MeasureRequest request) {
-        Measurement measure = new Measurement(request.getMeasureName(), request.getValue());
+        MeasurementType measurementType = MeasurementType.fromString(request.getMeasureName());
+        Measurement measure = new Measurement(measurementType, request.getValue());
         return measurementRepository.save(measure);
     }
 

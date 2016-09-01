@@ -38,8 +38,8 @@ public class Measurement {
     @Getter @Setter
     private Monitoring idMonitoring;
 
-    public Measurement(String measureTypeString, Double value ){
-        this.measurementType = MeasurementType.fromString(measureTypeString);
+    public Measurement(MeasurementType measureTypeString, Double value ){
+        this.measurementType = measureTypeString;
         this.value=value;
     }
 
