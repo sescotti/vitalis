@@ -41,6 +41,7 @@ public class Measurement {
     public Measurement(MeasurementType measureTypeString, Double value ){
         this.measurementType = measureTypeString;
         this.value=value;
+        this.measurementDate = new Date();
     }
 
     protected Measurement(){}
