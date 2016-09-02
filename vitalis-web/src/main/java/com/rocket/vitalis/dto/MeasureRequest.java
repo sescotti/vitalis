@@ -8,7 +8,7 @@ import lombok.Data;
  */
 @Data
 public class MeasureRequest {
-    private Long idMonitoring;
+    private Long idModule;
     private String measureName;
     private Double value;
 }
