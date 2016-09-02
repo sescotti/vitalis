@@ -1,8 +1,6 @@
 package com.rocket.vitalis.repositories;
 
 import com.rocket.vitalis.model.Monitoring;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -10,5 +8,5 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface MonitoringRepository extends CrudRepository<Monitoring, Long> {
 
-
+    Monitoring findById(Long id);
 }

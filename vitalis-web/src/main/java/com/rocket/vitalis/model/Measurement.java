@@ -36,9 +36,10 @@ public class Measurement {
     /*DEBE ESTAR RELACIONADO CON Monitoring*/
     @OneToOne
     @Getter @Setter
-    private Monitoring idMonitoring;
+    private Monitoring monitoring;
 
-    public Measurement(MeasurementType measureTypeString, Double value ){
+    public Measurement(Monitoring monitoring, MeasurementType measureTypeString, Double value ){
+        this.monitoring = monitoring;
         this.measurementType = measureTypeString;
         this.value=value;
         this.measurementDate = new Date();
