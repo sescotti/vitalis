@@ -31,15 +31,15 @@ public class Profile {
 
     @Column
     @Getter @Setter
-    private Double altura;
+    private Double height;
 
     @Column
     @Getter @Setter
-    private String dni;
+    private String docNumber;
 
     @Column
     @Getter @Setter
-    private Double peso;
+    private Double weight;
 
     @Column
     @Getter @Setter

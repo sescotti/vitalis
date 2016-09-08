@@ -32,10 +32,10 @@ public class Monitoring {
     /*Relacion con Module*/
     @OneToOne
     @Getter @Setter
-    private Module idModule;
+    private Module module;
 
     /*Relacion con User*/
     @OneToOne
     @Getter @Setter
-    private User idPatient;
+    private User patient;
 }
