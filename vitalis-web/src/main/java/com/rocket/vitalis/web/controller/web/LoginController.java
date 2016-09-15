@@ -33,10 +33,10 @@ public class LoginController {
     @Autowired
     private UserRepository userRepository;
 
-    @RequestMapping({"/"})
+    @RequestMapping(value={"", "/"})
     public String index(Model model) {
 
-        model.addAttribute("title", "Un subtitulo");
+        model.addAttribute("title", "Un subtitulo login");
         return "login";
 
     }
@@ -53,6 +53,7 @@ public class LoginController {
             return "redirect:/home";
         }
     }
+
     @RequestMapping(method = POST, value = "/signup", consumes = "application/json", produces = "application/json")
     @ResponseBody
     public Object signup(@RequestBody LoginRequest request) {
