@@ -28,6 +28,7 @@
     "gulp-cordova-preference": "^1.1.0",
     "gulp-cordova-version": "^0.3.0",
     "gulp-debug": "^2.1.2",
+    "gulp-handlebars": "4.0.0",
     "gulp-htmlmin": "^1.3.0",
     "gulp-if": "2.0.0",
     "gulp-load-plugins": "^0.10.0",
