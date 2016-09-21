@@ -13,7 +13,9 @@ import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.Date;
+import java.text.SimpleDateFormat;
 
 import static java.time.Instant.now;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -50,7 +52,16 @@ public class MeasureController {
         Module module = moduleRepository.findOne(request.getIdModule());
         Monitoring monitoring = monitoringRepository.findByModule(module);
         MeasurementType measurementType = MeasurementType.fromString(request.getMeasureName());
-        Measurement measure = new Measurement(monitoring,measurementType, request.getValue());
+
+        Date measureDate = null;
+        try {
+            String dateS = request.getMeasureDate();
+            measureDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").parse(dateS);
+        } catch (ParseException e) {
+            measureDate = new Date();
+        }
+
+        Measurement measure = new Measurement(monitoring,measureDate,measurementType, request.getValue());
         return measurementRepository.save(measure);
     }
 

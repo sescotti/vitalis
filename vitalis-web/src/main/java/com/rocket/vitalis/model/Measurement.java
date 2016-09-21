@@ -38,11 +38,11 @@ public class Measurement {
     @Getter @Setter
     private Monitoring monitoring;
 
-    public Measurement(Monitoring monitoring, MeasurementType measureTypeString, Double value ){
+    public Measurement(Monitoring monitoring, Date measureDate, MeasurementType measureTypeString, Double value ){
         this.monitoring = monitoring;
         this.measurementType = measureTypeString;
         this.value=value;
-        this.measurementDate = new Date();
+        this.measurementDate = measureDate;
     }
 
     protected Measurement(){}

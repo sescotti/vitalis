@@ -9,6 +9,7 @@ import lombok.Data;
 @Data
 public class MeasureRequest {
     private Long idModule;
+    private String measureDate;
     private String measureName;
     private Double value;
 }
