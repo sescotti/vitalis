@@ -25,15 +25,15 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 /**
  * Created by sscotti on 8/9/16.
  */
-@Controller
-@RequestMapping({"/login"})
+//@Controller
+//@RequestMapping({"/login"})
 @Log4j
 public class LoginController {
 
     @Autowired
     private UserRepository userRepository;
 
-    @RequestMapping(value={"", "/"})
+//    @RequestMapping(value={"", "/"})
     public String index(Model model) {
 
         model.addAttribute("title", "Un subtitulo login");
@@ -41,8 +41,8 @@ public class LoginController {
 
     }
 
-    @RequestMapping(method = GET, value = "/login", consumes = "application/json", produces = "application/json")
-    @ResponseBody
+//    @RequestMapping(method = GET, value = "/login", consumes = "application/json", produces = "application/json")
+//    @ResponseBody
     public Object login(@RequestBody LoginRequest request){
         User user = userRepository.findByEmail(request.getEmail());
         if(user != null){
@@ -54,8 +54,8 @@ public class LoginController {
         }
     }
 
-    @RequestMapping(method = POST, value = "/signup", consumes = "application/json", produces = "application/json")
-    @ResponseBody
+//    @RequestMapping(method = POST, value = "/signup", consumes = "application/json", produces = "application/json")
+//    @ResponseBody
     public Object signup(@RequestBody LoginRequest request) {
         User user = new User(request.getEmail(), request.getPassword());
         user.setBirthDate(Date.from(now()));

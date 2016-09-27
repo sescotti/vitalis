@@ -16,7 +16,7 @@ var build = require('./tasks/build.spa');
 /**
  * Tasks execution
  */
-build(gulp, paths, bundles, {'name': 'Vitalis', 'namespace': 'Vitalis'});
+build(gulp, paths, bundles, {'name': 'Vitalis', 'namespace': 'App.Vitalis.templates'});
 //dist(gulp, paths, bundles);
 
 gulp.task('icons-replacement', function () {

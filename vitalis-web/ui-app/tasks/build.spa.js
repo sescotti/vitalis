@@ -104,7 +104,8 @@ module.exports = function (gulp, paths, bundles, userConfig) {
             './mocks/**/*.js',
             './src/**/*.js',
             './src/**/*.json',
-            './src/templates/**/*.hbs'
+            './src/templates/**/*.hbs',
+            './src/styles/**/*.css'
         ], $.sync(gulp).sync([
             [
                 'build:handlebars',
@@ -113,4 +114,33 @@ module.exports = function (gulp, paths, bundles, userConfig) {
             'build:scripts-concat'
         ]));
     });
+
+    /**
+     * Task
+     */
+    gulp.task('watch2', function () {
+        gulp.start('build');
+        gulp.watch(['./src/styles/**/*.scss'], ['build:styles']);
+        gulp.watch(['./src/images/**/*'], ['build:images']);
+        gulp.watch("./src/styles/**/*.scss").on('change', browserSync.reload);
+        gulp.watch([
+            'gulpfile.js',
+            './config/**/*.js',
+            './config/**/*.json',
+            './mocks/**/*.js',
+            './src/**/*.js',
+            './src/**/*.json',
+            './src/templates/**/*.hbs',
+            './src/styles/**/*.css',
+            './src/styles/*.css'
+        ], $.sync(gulp).sync([
+            [
+                'build:handlebars',
+                'build:handlebars-partials',
+                'build'
+            ],
+            'build:scripts-concat'
+        ]));
+    });
+
 };

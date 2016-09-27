@@ -1,0 +1,51 @@
+.full-width {
+    width: 100%;
+}
+
+.center-image {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.login-container {
+    background-color: #455a64;
+    margin: 0;
+    width: 100%;
+    min-height: 667px;
+    position: relative;
+}
+
+.login-logo {
+    padding-top: 100px;
+    width: 128px;
+}
+
+.login-input{
+    color: #e0e0e0;
+}
+
+.display-block {
+    display: block;
+}
+
+a.login-link {
+    color: #9e9e9e;
+}
+
+input#login,
+input#signup {
+    margin-bottom: 20px;
+}
+
+div#bottom-content {
+    margin-top: 20px;
+    text-align: center;
+    display: block;
+}
+
+span#create-account{
+    text-align: center;
+    display: block;
+    padding-top: 20px;
+}
