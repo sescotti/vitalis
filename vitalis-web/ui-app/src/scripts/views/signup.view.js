@@ -13,7 +13,7 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         template: App.Vitalis.templates.signup,
 
         ui: {
-            'inputs': 'input[type=text], input[type=password]',
+            'inputs': 'input[type=email], input[type=password]',
             'signup_button': 'input#signup',
             'return': "a#return-to-login-btn"
         },

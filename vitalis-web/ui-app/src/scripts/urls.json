@@ -2,6 +2,7 @@
   "es": {
     "vitalis:index": "",
     "vitalis:login": "login",
-    "vitalis:signup": "signup"
+    "vitalis:signup": "signup",
+    "vitalis:home": "app"
   }
 }

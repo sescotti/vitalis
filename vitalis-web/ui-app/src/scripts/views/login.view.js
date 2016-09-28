@@ -13,7 +13,7 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         template: App.Vitalis.templates.login,
 
         ui: {
-            'inputs': 'input[type=text], input[type=password]',
+            'inputs': 'input[type=email], input[type=password]',
             'login_button': 'input#login',
             'signup': 'a#signup-now-btn'
 
@@ -27,19 +27,63 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
 
         onShow: function(){
             console.log('show login');
+            $(document).ready(function() {
+                Materialize.updateTextFields();
+            });
         },
 
         onLogin: function(){
-            console.log('username: '+ this.model.get("email") + "pass" + this.model.get("password"));
+            $('#preloader-header').removeClass('visibiliy-hidden');
+            $('div.container').validate({
+                    rules: {
+                        email: {
+                            required: true,
+                            email:true
+                        },
+                        password: {
+                            required: true,
+                            minlength: 5
+                        }
+                    },
+                    messages: {
+                        email: {
+                            required: "Verifica este campo",
+                            email: "Verifica este campo"
+                        },
+                        password: {
+                            required: "Verifica este campo",
+                            minlength: "La contraseña debe tener como m&iacute;nimo 5 caracteres"
+                        }
+                    },
+                    errorElement: 'div',
+                    errorPlacement: function(error, element){
+                        var placement = $(element).data('error');
+                        if (placement) {
+                            $(placement).append(error)
+                        } else {
+                            error.insertAfter(element);
+                        }
+                    }
+            });
+            console.log('username: '+ this.model.get("email") + " | pass: " + this.model.get("password"));
             this.model.save({},
                 {
                     success: function(data){
-                        console.log("Usuario logueado");
+                        $('#preloader-header').addClass('visibiliy-hidden');
+                        Urls.go("vitalis:home");
                     },
-                    error: function(error){
-                        console.log("Usuario o contraseña incorrecto");
+                    error: function(model, error){
+                        var message;
+                        switch(error.responseJSON.error){
+                            case 'internal_server_error': message = '¡Ups! Tenemos un problema. Intenta más tarde'; break;
+                            case 'invalid_credentials': message = 'Usuario o contraseña incorrecto'; break;
+                            case 'incomplete_credentials': message = 'Completa usuario y contraseña'; break;
+                            default: message = '¡Ups! Tenemos un problema. Intenta más tarde'; break;
+                        }
+                        $('#preloader-header').addClass('visibiliy-hidden');
+                        Materialize.toast(message, 3500, '', function(){})
                     }
-            });
+                });
         },
 
         signup: function(){

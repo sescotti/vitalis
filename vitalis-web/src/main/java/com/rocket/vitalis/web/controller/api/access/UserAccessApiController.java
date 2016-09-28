@@ -16,11 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import static com.rocket.vitalis.utils.PasswordStorage.*;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
-
+import static org.apache.commons.lang3.StringUtils.isBlank;
 /**
  * Created by sscotti on 8/15/16.
  */
@@ -35,6 +33,7 @@ public class UserAccessApiController {
     @RequestMapping(method = POST, value = "/login", consumes = "application/json", produces = "application/json")
     public Object login(@RequestBody LoginRequest request){
         try {
+            assertRequestIsValid(request);
             User user = userRepository.findByEmail(request.getEmail());
             String pass = user == null ? "" : user.getPassword();
             verifyPassword(request.getPassword(), pass);
@@ -43,7 +42,11 @@ public class UserAccessApiController {
         } catch (PasswordStorage.CannotPerformOperationException e) {
             return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
         } catch (InvalidHashException e) {
-            return new ResponseEntity<>("{\"error\": \"invalid_credentials\"}",BAD_REQUEST);
+            return new ResponseEntity<>("{\"error\": \"invalid_credentials\"}", UNAUTHORIZED);
+        } catch (IllegalArgumentException e){
+            return new ResponseEntity<>("{\"error\": \""+ e.getMessage() +"\"}", BAD_REQUEST);
+        } catch (Exception e){
+            return new ResponseEntity<>("{\"error\": \"internal_server_error\"}", INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -61,4 +64,11 @@ public class UserAccessApiController {
             return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
         }
     }
+
+    private void assertRequestIsValid(LoginRequest request) {
+        if(isBlank(request.getEmail()) || isBlank(request.getPassword())){
+            throw new IllegalArgumentException("incomplete_credentials");
+        }
+    }
+
 }

@@ -16,8 +16,6 @@ App.module('Vitalis', function (Vitalis, App, Backbone, Marionette, $, _) {
     };
 
     function startModels(){
-        Vitalis.Login = new Vitalis.Models.Login();
-        Vitalis.Signup = new Vitalis.Models.Signup();
     }
 
 });

@@ -15,13 +15,23 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
     };
 
     controller.login = function(){
-        var loginView = new App.Vitalis.Views.Login({model: App.Vitalis.Login});
+        var model = new Vitalis.Models.Login();
+        var loginView = new App.Vitalis.Views.Login({model: model});
+        var headerView = new App.Vitalis.Views.Header();
         App.main.show(loginView);
+        App.header.show(headerView);
     }
 
     controller.signup = function(){
-        var signupView = new App.Vitalis.Views.Signup({model: App.Vitalis.Signup});
+        var model = new Vitalis.Models.Signup();
+        var signupView = new App.Vitalis.Views.Signup({model: model});
         App.main.show(signupView);
+    }
+
+    controller.home = function(){
+        var model = new Vitalis.Models.Signup();
+        var homeView = new App.Vitalis.Views.Home();
+        App.main.show(homeView);
     }
 
     /**
@@ -40,6 +50,7 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
     addRoute('index');
     addRoute('login');
     addRoute('signup');
+    addRoute('home');
 
     App.Vitalis.Router = Marionette.AppRouter.extend({
         'appRoutes': routes,
