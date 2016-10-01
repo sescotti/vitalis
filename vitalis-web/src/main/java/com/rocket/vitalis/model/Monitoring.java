@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.experimental.Delegate;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Date;
 
 
@@ -29,13 +30,25 @@ public class Monitoring {
     @Getter @Setter
     private Date finishDate;
 
-    /*Relacion con Module*/
-    @OneToOne
+    /*
+    DEBE ESTAR RELACIONADO CON Module, relación *-1
+    */
+    @ManyToOne
     @Getter @Setter
     private Module module;
 
-    /*Relacion con User*/
-    @OneToOne
+    /*
+    DEBE ESTAR RELACIONADO CON User, relación *-1
+    */
+    @ManyToOne
     @Getter @Setter
     private User patient;
+
+    /*
+    DEBE ESTAR RELACIONADO CON Sensor, relación *-*
+    */
+    @ManyToMany
+    @Getter @Setter
+    private Collection<Sensor> sensors;
+
 }

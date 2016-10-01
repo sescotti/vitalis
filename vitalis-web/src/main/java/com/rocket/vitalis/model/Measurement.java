@@ -33,8 +33,10 @@ public class Measurement {
     @Getter @Setter
     private MeasurementType measurementType;
 
-    /*DEBE ESTAR RELACIONADO CON Monitoring*/
-    @OneToOne
+    /*
+    DEBE ESTAR RELACIONADO CON Monitoring, relación *-1
+    */
+    @ManyToOne
     @Getter @Setter
     private Monitoring monitoring;
 

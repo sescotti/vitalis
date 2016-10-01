@@ -29,6 +29,21 @@ public class User {
     @Getter @Setter @NonNull
     private String password;
 
+    @Column
+    @Getter @Setter
+    private UserType userType;
+
+    @Column
+    @Getter @Setter
+    private Boolean isDoctor;
+
+    /*
+    DEBE ESTAR RELACIONADO CON Clinic, relación *-1
+    */
+    @ManyToOne
+    @Getter @Setter
+    private Clinic clinic;
+
     @Embedded
     @Delegate
     private Profile profile = new Profile();

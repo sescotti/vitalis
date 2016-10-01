@@ -19,6 +19,18 @@ public class Module {
     @Getter @Setter
     private Long id;
 
+    @Column(nullable = false, unique = true)
+    @Getter @Setter @NonNull
+    private String serial;
+
+    /*
+    DEBE ESTAR RELACIONADO CON User, relación *-1
+    */
+    @ManyToOne
+    @Getter @Setter
+    private User registeredBy;
+
+
     @Column
     @Getter @Setter
     private Date registrationDate;
