@@ -43,7 +43,8 @@ public class HibernateConfig {
     public DataSource restDataSource() {
         HikariConfig config = new HikariConfig();
 
-        config.setDriverClassName(env.getProperty("jdbc.driverClassName"));
+        config.setDriverClassName("org.postgresql.Driver");
+        /*config.setDriverClassName(env.getProperty("jdbc.driverClassName"));*/
         config.setJdbcUrl(env.getProperty("spring.datasource.url"));
         config.setUsername(env.getProperty("spring.datasource.username"));
         config.setPassword(env.getProperty("spring.datasource.password"));
@@ -63,8 +64,8 @@ public class HibernateConfig {
     }
 
     @PostConstruct
+    @Profile("dev")
     public void startDBManager() {
-
         EmbeddedH2Console.start();
         context.addApplicationListener(new ApplicationListener<ContextClosedEvent>() {
             @Override
@@ -74,4 +75,5 @@ public class HibernateConfig {
         });
 
     }
+
 }

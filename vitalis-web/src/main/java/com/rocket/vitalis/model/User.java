@@ -31,6 +31,21 @@ public class User {
 
     @Column
     @Getter @Setter
+    private UserType userType;
+
+    @Column
+    @Getter @Setter
+    private Boolean isDoctor;
+
+    /*
+    DEBE ESTAR RELACIONADO CON Clinic, relación *-1
+    */
+    @ManyToOne
+    @Getter @Setter
+    private Clinic clinic;
+
+    @Column
+    @Getter @Setter
     private String name;
 
     @Column
@@ -62,6 +77,6 @@ public class User {
     private BloodType bloodType;
 
     // Required by Hibernate
-    protected User(){ }
+    protected User(){}
 
 }
