@@ -1,1 +1,5 @@
-App.module('Vitalis', function () {});
+App.module('Vitalis', function () {
+    $.ajaxSetup({
+        timeout: 30000
+    });
+});

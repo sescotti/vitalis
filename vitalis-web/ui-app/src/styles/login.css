@@ -76,3 +76,23 @@ span#create-account{
     display: block;
     padding-top: 20px;
 }
+
+div#preloader-header {
+    position: absolute;
+    top: 0;
+    z-index: 9999;
+}
+
+div#preloader-header.hidden {
+    display: none;
+    position: absolute;
+    top: 0;
+}
+
+h5 {
+    color: #9e9e9e;
+}
+
+#hero-logo {
+    padding-bottom: 20px;
+}
