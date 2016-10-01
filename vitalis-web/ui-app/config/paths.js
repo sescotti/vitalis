@@ -1,11 +1,12 @@
 /* global exports */
 
-var build = '../src/main/resources/static/ui-build/';
+//var build = '../src/main/resources/static/ui-build/';
+var build = './ui-build/';
 var dist = '../src/main/resources/static/ui-dist/';
 
 exports.build = {
-    'coreScripts': './node_modules/mshops-core_ui/dist/scripts/',
-    'coreStyles': './node_modules/mshops-core_ui/dist/styles/',
+    'coreScripts': './src/scripts/core/',
+    'coreStyles': './src/styles/core/',
     'fonts': build + 'fonts/',
     'images': build + 'images/',
     'mocks': build + 'mocks/',

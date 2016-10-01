@@ -44,9 +44,37 @@ public class User {
     @Getter @Setter
     private Clinic clinic;
 
-    @Embedded
-    @Delegate
-    private Profile profile = new Profile();
+    @Column
+    @Getter @Setter
+    private String name;
+
+    @Column
+    @Getter @Setter
+    private Gender gender;
+
+    @Column
+    @Getter @Setter
+    private Date birthDate;
+
+    @Column
+    @Getter @Setter
+    private Double height;
+
+    @Column
+    @Getter @Setter
+    private String docNumber;
+
+    @Column
+    @Getter @Setter
+    private Double weight;
+
+    @Column
+    @Getter @Setter
+    private BloodFactor bloodFactor;
+
+    @Column
+    @Getter @Setter
+    private BloodType bloodType;
 
     // Required by Hibernate
     protected User(){}
