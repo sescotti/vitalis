@@ -34,11 +34,11 @@ public class Alert {
 
     @Column
     @Getter @Setter
-    private int from;
+    private double from;
 
     @Column
     @Getter @Setter
-    private int to;
+    private double to;
 
     /*
     DEBE ESTAR RELACIONADO CON Monitoring, relación *-1
