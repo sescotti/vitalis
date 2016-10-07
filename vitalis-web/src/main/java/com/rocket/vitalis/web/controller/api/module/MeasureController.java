@@ -50,7 +50,16 @@ public class MeasureController {
     @ResponseBody
     public Object measureUp(@RequestBody MeasureRequest request) {
         Module module = moduleRepository.findOne(request.getIdModule());
-        Monitoring monitoring = monitoringRepository.findByModule(module);
+        Monitoring monitoring = new Monitoring();
+        System.out.println("Modulo encontrado");
+        Iterable<Monitoring> monitorings = monitoringRepository.findByModule(module);
+        for (Monitoring item : monitorings) {
+            if (item.getFinishDate() == null ) {
+                monitoring = item;
+                System.out.println("Monitoreo encontrado: " + monitoring.getId().toString());
+            }
+        }
+
         MeasurementType measurementType = MeasurementType.fromString(request.getMeasureName());
 
         Date measureDate = null;

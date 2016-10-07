@@ -12,7 +12,7 @@ import org.springframework.data.repository.CrudRepository;
 public interface MonitoringRepository extends CrudRepository<Monitoring, Long> {
 
     Monitoring findById(Long id);
-    Monitoring findByModule(Module module);
+    Iterable<Monitoring> findByModule(Module module);
 }
 
 
