@@ -8,6 +8,8 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         Header      = App.module('Header'),
         Vitalis     = App.module('Vitalis');
 
+    var ENTER_KEY = 13;
+
     Views.Login = Marionette.LayoutView.extend({
 
         template: App.Vitalis.templates.login,
@@ -22,7 +24,15 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         events: {
             'click @ui.login_button': 'onLogin',
             'blur @ui.inputs': 'setModelData',
-            'click @ui.signup': 'signup'
+            'click @ui.signup': 'signup',
+            'keydown': 'keyaction'
+        },
+
+        keyaction: function(e){
+            if(e.which === ENTER_KEY){
+                this.setModelData(e);
+                this.onLogin();
+            }
         },
 
         onShow: function(){
@@ -74,24 +84,34 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         onLogin: function(){
             $('#preloader-header').removeClass('hidden');
             // FIXME: Validaciones y timeout
-            this.model.save({timeout: 2000},
-                {
-                    success: function(data){
-                        $('#preloader-header').addClass('hidden');
-                        Urls.go("vitalis:home");
-                    },
-                    error: function(model, error){
-                        var message;
-                        switch(error.responseJSON.error){
-                            case 'internal_server_error': message = '¡Ups! Tenemos un problema. Intenta más tarde'; break;
-                            case 'invalid_credentials': message = 'Usuario o contraseña incorrecto'; break;
-                            case 'incomplete_credentials': message = 'Completa usuario y contraseña'; break;
-                            default: message = '¡Ups! Tenemos un problema. Intenta más tarde'; break;
-                        }
-                        $('#preloader-header').addClass('hidden');
-                        Materialize.toast(message, 3500, '', function(){})
+            $.ajax({
+                url: '/api/access/login',
+                method: 'POST',
+                data: JSON.stringify({
+                    email: this.model.get('email'),
+                    password: this.model.get('password'),
+                }),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accepts': 'application/json'
+                },
+                success: function(data){
+                    localStorage.setItem('accesstoken', data.token);
+                    $('#preloader-header').addClass('hidden');
+                    Urls.go("vitalis:home");
+                },
+                error: function(error){
+                    var message = null;
+                    switch(error.responseJSON.error){
+                        case 'internal_server_error': message = '¡Ups! Tenemos un problema. Intenta más tarde'; break;
+                        case 'invalid_credentials': message = 'Usuario o contraseña incorrecto'; break;
+                        case 'incomplete_credentials': message = 'Completa usuario y contraseña'; break;
+                        default: message = '¡Ups! Tenemos un problema. Intenta más tarde'; break;
                     }
-                });
+                    $('#preloader-header').addClass('hidden');
+                    Materialize.toast(message, 3500, '', function(){})
+                }
+            });
         },
 
         signup: function(){

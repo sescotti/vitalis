@@ -7,7 +7,11 @@ import lombok.Setter;
 import lombok.experimental.Delegate;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Date;
+import java.util.LinkedList;
+
+import static javax.persistence.FetchType.EAGER;
 
 /**
  * Created by sscotti on 8/10/16.
@@ -75,6 +79,14 @@ public class User {
     @Column
     @Getter @Setter
     private BloodType bloodType;
+
+    @Column
+    @Getter @Setter
+    private String pictureUrl;
+
+    @OneToMany(fetch = EAGER)
+    @Getter @Setter
+    private Collection<User> following = new LinkedList<>();
 
     // Required by Hibernate
     protected User(){}

@@ -10,8 +10,7 @@ import javax.xml.bind.DatatypeConverter;
 /**
  * @see 'https://github.com/defuse/password-hashing/blob/master/PasswordStorage.java'
  */
-public class PasswordStorage
-{
+public class PBKDF2Service {
 
     @SuppressWarnings("serial")
     static public class InvalidHashException extends Exception {

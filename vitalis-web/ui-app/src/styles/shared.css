@@ -1,0 +1,60 @@
+/* Generic styles */
+div#app{
+    min-height: 667px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.display-none{
+    display: none;
+}
+
+.visibiliy-hidden {
+    visibility: hidden;
+}
+.no-margin {
+    margin: 0;
+}
+
+.position-fixed{
+    position: fixed;
+}
+.no-padding {
+    padding: 0;
+}
+.pad-left {
+    padding-left: 20px;
+}
+
+.pad-right {
+    padding-right: 20px;
+}
+
+.pad-bottom {
+    padding-bottom: 20px;
+}
+
+.pad-top{
+    padding-top: 20px;
+}
+
+/* Common styles */
+.app-container{
+    background-color: #455a64;
+    min-height: 667px;
+    padding-top: 65px;
+}
+
+.top-of-the-rock{
+    z-index: 999999;
+}
+.nav-wrapper {
+    background-color: #37474f;
+}
+
+@font-face {
+    font-family: SignoriaBold;
+    src: url("http://localhost:8080/fonts/signoria/signoria_bold.ttf") /* EOT file for IE */
+}

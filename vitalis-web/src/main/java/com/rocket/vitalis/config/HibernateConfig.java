@@ -1,5 +1,6 @@
 package com.rocket.vitalis.config;
 
+import com.rocket.vitalis.services.WarmupService;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.log4j.Log4j;
@@ -73,7 +74,6 @@ public class HibernateConfig {
                 EmbeddedH2Console.stop();
             }
         });
-
     }
 
 }

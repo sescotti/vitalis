@@ -1,0 +1,12 @@
+div#header-container {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 99;
+}
+
+.brand-logo {
+    font-family: SignoriaBold;
+    color: #9e9e9e !important;
+    text-transform: uppercase;
+}
