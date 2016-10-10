@@ -11,11 +11,13 @@ import lombok.Data;
 @AllArgsConstructor
 public class Profile {
 
-    private String name;
-    private String pictureUrl;
-    private String email;
+    private Long    id;
+    private String  name;
+    private String  pictureUrl;
+    private String  email;
 
     public Profile(User user) {
+        this.id = user.getId();
         this.name = user.getName();
         this.pictureUrl = user.getPictureUrl();
         this.email = user.getEmail();

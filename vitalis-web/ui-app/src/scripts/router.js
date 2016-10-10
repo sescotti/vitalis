@@ -41,6 +41,30 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
         });
     }
 
+    controller.patientstatus = function(options){
+        var monitoringId = options.monitoringId;
+        var patientStatusView = new App.Vitalis.Views.PatientStatus(new Vitalis.Models.PatientStatus({id: monitoringId}));
+
+        patientStatusView.model.fetch({beforeSend: function(xhr){
+            xhr.setRequestHeader('X-Auth-Token', localStorage.getItem('accesstoken'));
+        }}).then(function(a, b, c, d){
+            App.main.show(homeView);
+        });
+
+    }
+
+    controller.patients = function(){
+        var patientsView = new App.Vitalis.Views.Patients();
+        //var headerView = new App.Vitalis.Views.Header({model: new Vitalis.Models.User()});
+
+        //headerView.model.fetch({beforeSend: function(xhr){
+        //    xhr.setRequestHeader('X-Auth-Token', localStorage.getItem('accesstoken'));
+        //}}).then(function(a, b, c, d){
+            //App.header.show(headerView);
+            App.main.show(patientsView);
+        //});
+    }
+
     /**
      * Vitalis.Controller
      */
@@ -58,6 +82,8 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
     addRoute('login');
     addRoute('signup');
     addRoute('home');
+    addRoute('patients');
+    addRoute('patientstatus');
 
     App.Vitalis.Router = Marionette.AppRouter.extend({
         'appRoutes': routes,

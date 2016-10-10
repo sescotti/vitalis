@@ -53,7 +53,7 @@ public class UserService {
     public AccessToken login(String email, String password) throws InvalidLoginException {
 
         assertValueIsValid(email);
-        assertValueIsValid(email);
+        assertValueIsValid(password);
 
         User user = userRepository.findByEmail(email);
         String pass = user == null ? "" : user.getPassword();
@@ -153,5 +153,9 @@ public class UserService {
         }
     }
 
+
+    public User getUser(Long userId){
+        return userRepository.findOne(userId);
+    }
 
 }
