@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -58,7 +57,6 @@ public class HomeController extends AbstractApiController {
 
         try {
 
-//            Collection<User> following = userService.getFollowing(user);
             Collection<Profile> profiles = user.getFollowing()  .stream()
                                                                 .map(Profile::new)
                                                                 .collect(Collectors.toList());

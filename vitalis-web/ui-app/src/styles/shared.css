@@ -58,3 +58,9 @@ div#app{
     font-family: SignoriaBold;
     src: url("http://localhost:8080/fonts/signoria/signoria_bold.ttf") /* EOT file for IE */
 }
+
+.subheader {
+    font-weight: normal;
+    font-size: 16px;
+    padding-left: 16px;
+}

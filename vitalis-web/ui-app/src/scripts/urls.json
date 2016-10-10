@@ -3,6 +3,8 @@
     "vitalis:index": "",
     "vitalis:login": "login",
     "vitalis:signup": "signup",
-    "vitalis:home": "app"
+    "vitalis:home": "app",
+    "vitalis:patients": "app/patients",
+    "vitalis:patientstatus": "app/patientstatus"
   }
 }
