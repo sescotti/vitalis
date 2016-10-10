@@ -49,10 +49,18 @@ public class MeasureController {
     @RequestMapping(method = POST, value = "/measureup", consumes = "application/json", produces = "application/json")
     @ResponseBody
     public Object measureUp(@RequestBody MeasureRequest request) {
+        /* Get MODULE */
         Module module = moduleRepository.findOne(request.getIdModule());
-        Monitoring monitoring = monitoringRepository.findByModule(module);
+        System.out.println("Modulo encontrado");
+
+        /* Get Last MONITORING  from MODULE */
+        Monitoring monitoring = monitoringRepository.findByModuleAndFinishDate(module,  null);
+
+
+        /*Get measureType from string */
         MeasurementType measurementType = MeasurementType.fromString(request.getMeasureName());
 
+        /* Get Date from string */
         Date measureDate = null;
         try {
             String dateS = request.getMeasureDate();
@@ -61,6 +69,7 @@ public class MeasureController {
             measureDate = new Date();
         }
 
+        /* Create new MEASURE */
         Measurement measure = new Measurement(monitoring,measureDate,measurementType, request.getValue());
         return measurementRepository.save(measure);
     }
