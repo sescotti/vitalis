@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class HomeController {
+@RequestMapping
+public class SinglePageApplicationController {
 
     @RequestMapping(value={"/", "", "/login", "/signup", "/app", "/app/*"})
     public ModelAndView index(Model model) {

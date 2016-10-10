@@ -15,24 +15,30 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
 
     controller.login = function(){
         var loginView = new App.Vitalis.Views.Login({model: new Vitalis.Models.Login()});
-        App.main.show(loginView);
+        var headerView = new App.Vitalis.Views.LoginHeader();
 
-        resetHeader(App.Vitalis.templates.loginheader);
+        App.header.show(headerView);
+        App.main.show(loginView);
     }
 
     controller.signup = function(){
         var signupView = new App.Vitalis.Views.Signup({model: new Vitalis.Models.Signup()});
+        var headerView = new App.Vitalis.Views.LoginHeader();
+
+        App.header.show(headerView);
         App.main.show(signupView);
-
-
-        resetHeader(App.Vitalis.templates.loginheader);
     }
 
     controller.home = function(){
         var homeView = new App.Vitalis.Views.Home({model: new Vitalis.Models.Home()});
-        App.main.show(homeView);
+        var headerView = new App.Vitalis.Views.Header({model: new Vitalis.Models.User()});
 
-        resetHeader();
+        headerView.model.fetch({beforeSend: function(xhr){
+            xhr.setRequestHeader('X-Auth-Token', localStorage.getItem('accesstoken'));
+        }}).then(function(a, b, c, d){
+            App.header.show(headerView);
+            App.main.show(homeView);
+        });
     }
 
     /**
@@ -53,11 +59,6 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
     addRoute('signup');
     addRoute('home');
 
-    function resetHeader(template){
-
-        var headerView = template ? new App.Vitalis.Views.Header({template: template}) : new App.Vitalis.Views.Header();
-        App.header.show(headerView);
-    }
     App.Vitalis.Router = Marionette.AppRouter.extend({
         'appRoutes': routes,
         'controller': controller
