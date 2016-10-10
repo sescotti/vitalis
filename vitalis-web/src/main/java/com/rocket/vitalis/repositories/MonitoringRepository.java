@@ -5,6 +5,8 @@ import com.rocket.vitalis.model.Monitoring;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
+import java.util.Date;
+
 
 /**
  * Created by Ailin on 8/13/16.
@@ -13,6 +15,7 @@ public interface MonitoringRepository extends CrudRepository<Monitoring, Long> {
 
     Monitoring findById(Long id);
     Iterable<Monitoring> findByModule(Module module);
+    Monitoring findByModuleAndFinishDate(Module module, Date finishDate);
 }
 
 
