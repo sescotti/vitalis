@@ -5,6 +5,6 @@
     "vitalis:signup": "signup",
     "vitalis:home": "app",
     "vitalis:patients": "app/patients",
-    "vitalis:patientstatus": "app/patientstatus"
+    "vitalis:patientstatus": "app/patientstatus/:id"
   }
 }

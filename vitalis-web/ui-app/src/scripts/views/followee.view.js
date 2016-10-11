@@ -21,7 +21,7 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
 
         goToMonitoring: function(){
             var monitoringId = this.model.get("id");
-            Urls.go('vitalis:patientstatus', monitoringId);
+            Urls.go('vitalis:patientstatus', [monitoringId]);
         },
 
         onShow: function(){

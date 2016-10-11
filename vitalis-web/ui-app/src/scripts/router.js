@@ -41,14 +41,13 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
         });
     }
 
-    controller.patientstatus = function(options){
-        var monitoringId = options.monitoringId;
-        var patientStatusView = new App.Vitalis.Views.PatientStatus(new Vitalis.Models.PatientStatus({id: monitoringId}));
+    controller.patientstatus = function(monitoringId){
+        var patientStatusView = new App.Vitalis.Views.PatientStatus({model: new Vitalis.Models.PatientStatus({id: monitoringId})});
 
         patientStatusView.model.fetch({beforeSend: function(xhr){
             xhr.setRequestHeader('X-Auth-Token', localStorage.getItem('accesstoken'));
         }}).then(function(a, b, c, d){
-            App.main.show(homeView);
+            App.main.show(patientStatusView);
         });
 
     }
