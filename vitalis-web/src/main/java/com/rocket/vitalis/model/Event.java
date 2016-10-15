@@ -11,12 +11,7 @@ import java.util.Date;
  */
 
 @Entity
-public class Event {
-
-    @Id
-    @GeneratedValue
-    @Getter @Setter
-    private Long id;
+public class Event extends AbstractModel {
 
     @Column
     @Getter @Setter

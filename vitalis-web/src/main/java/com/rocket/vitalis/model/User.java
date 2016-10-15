@@ -18,12 +18,12 @@ import static javax.persistence.FetchType.EAGER;
  */
 @Entity
 @RequiredArgsConstructor
-public class User {
-
-    @Id
-    @GeneratedValue
-    @Getter @Setter
-    private Long id;
+public class User extends AbstractModel{
+//public class User {
+//    @Id
+//    @Getter @Setter
+//    @GeneratedValue
+//    private Long id;
 
     @Column(nullable = false, unique = true)
     @Getter @Setter @NonNull

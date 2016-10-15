@@ -12,12 +12,7 @@ import java.util.Date;
  * Created by Ailin on 21/08/2016.
  */
 @Entity
-public class Module {
-
-    @Id
-    @GeneratedValue
-    @Getter @Setter
-    private Long id;
+public class Module extends AbstractModel {
 
     @Column(nullable = false, unique = true)
     @Getter @Setter @NonNull

@@ -15,12 +15,7 @@ import java.util.Date;
  * Created by Ailin on 21/08/2016.
  */
 @Entity
-public class Monitoring {
-
-    @Id
-    @GeneratedValue
-    @Getter @Setter
-    private Long id;
+public class Monitoring extends AbstractModel {
 
     @Column
     @Getter @Setter

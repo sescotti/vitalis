@@ -13,12 +13,7 @@ import javax.persistence.Id;
  */
 
 @Entity
-public class Clinic {
-
-    @Id
-    @GeneratedValue
-    @Getter @Setter
-    private Long id;
+public class Clinic extends AbstractModel {
 
     @Column
     @Getter @Setter

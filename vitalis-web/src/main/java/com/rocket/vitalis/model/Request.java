@@ -12,12 +12,7 @@ import java.util.Date;
  */
 
 @Entity
-public class Request {
-
-    @Id
-    @GeneratedValue
-    @Getter @Setter
-    private Long id;
+public class Request extends AbstractModel {
 
     @Column
     @Getter @Setter

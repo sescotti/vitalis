@@ -12,12 +12,7 @@ import javax.persistence.*;
  */
 
 @Entity
-public class Follower {
-
-    @Id
-    @GeneratedValue
-    @Getter @Setter
-    private Long id;
+public class Follower extends AbstractModel {
 
     @Column(nullable = false)
     @Getter @Setter @NonNull

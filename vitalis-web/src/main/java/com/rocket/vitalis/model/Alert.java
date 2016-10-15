@@ -13,12 +13,7 @@ import java.util.Date;
 
 
 @Entity
-public class Alert {
-
-    @Id
-    @GeneratedValue
-    @Getter @Setter
-    private Long id;
+public class Alert extends AbstractModel {
 
     @Column
     @Getter @Setter

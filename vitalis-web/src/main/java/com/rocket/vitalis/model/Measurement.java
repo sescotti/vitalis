@@ -14,12 +14,7 @@ import java.util.Date;
  */
 @Entity
 @RequiredArgsConstructor
-public class Measurement {
-
-    @Id
-    @GeneratedValue
-    @Getter @Setter
-    private Long id;
+public class Measurement extends AbstractModel {
 
     @Column
     @Getter @Setter

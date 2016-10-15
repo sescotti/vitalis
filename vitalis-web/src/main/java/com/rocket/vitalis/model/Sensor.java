@@ -11,12 +11,7 @@ import javax.persistence.*;
  */
 
 @Entity
-public class Sensor {
-
-    @Id
-    @GeneratedValue
-    @Getter @Setter
-    private Long id;
+public class Sensor extends AbstractModel {
 
     @Column(nullable = false)
     @Getter @Setter @NonNull
