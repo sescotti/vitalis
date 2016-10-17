@@ -1,6 +1,6 @@
 App.module('Vitalis.Models', function (Models, App, Backbone, Marionette, $, _) {
 
-    Models.PatientStatus = Backbone.Model.extend({
+    Models.PatientStatus = Models.AbstractModel.extend({
         defaults: {
             'email': null,
             'name': 'Local',

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -41,7 +42,8 @@ public class HomeController extends AbstractApiController {
         try {
             Profile profile = new Profile(user);
 
-            return new ResponseEntity<>(profile, OK);
+            // Devuelvo como una lista para poder reutilizar vistas
+            return new ResponseEntity<>(Arrays.asList(profile), OK);
 
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>("{\"error\": \"" + e.getMessage() + "\"}", BAD_REQUEST);
