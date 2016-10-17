@@ -9,6 +9,11 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         Vitalis     = App.module('Vitalis');
 
     Views.PatientStatus = Marionette.ItemView.extend({
-        template: App.Vitalis.templates.patientstatus
+        template: App.Vitalis.templates.patientstatus,
+
+        initialize: function(){
+            var self = this;
+            this.model.fetch().then(self.render);
+        }
     });
 });
