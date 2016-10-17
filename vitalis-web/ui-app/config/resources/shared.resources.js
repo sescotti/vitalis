@@ -24,7 +24,8 @@ exports.scripts = [
 ];
 
 exports.styles = [
-    './src/styles/*.css'
+    './src/styles/*.css',
+    './src/styles/third-party/*.css'
 ];
 
 exports.fonts = [

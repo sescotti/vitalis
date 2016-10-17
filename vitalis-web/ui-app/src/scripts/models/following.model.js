@@ -8,7 +8,7 @@ App.module('Vitalis.Models', function (Models, App, Backbone, Marionette, $, _) 
         }
     })
 
-    Models.Following = Backbone.Collection.extend({
+    Models.Following = Models.AbstractCollection.extend({
         model: Models.Followee,
         url: '/api/app/home/following'
     });

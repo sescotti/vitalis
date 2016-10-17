@@ -8,6 +8,8 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
         Vitalis = App.module('Vitalis'),
         controller = {};
 
+    var header;
+
     controller.index = function () {
         var mainLayoutView = new App.Vitalis.Views.Main();
         App.main.show(mainLayoutView);
@@ -33,9 +35,11 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
         var homeView = new App.Vitalis.Views.Home({model: new Vitalis.Models.Home()});
         var headerView = new App.Vitalis.Views.Header({model: new Vitalis.Models.User()});
 
-        headerView.model.fetch({beforeSend: function(xhr){
-            xhr.setRequestHeader('X-Auth-Token', localStorage.getItem('accesstoken'));
-        }}).then(function(a, b, c, d){
+        headerView.model.fetch({error: function(a, b, c){
+            console.log("ERROR");
+        }, success: function(a,b,c){
+            header = headerView;
+        }}).then(function(a, b, c){
             App.header.show(headerView);
             App.main.show(homeView);
         });
@@ -44,9 +48,7 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
     controller.patientstatus = function(monitoringId){
         var patientStatusView = new App.Vitalis.Views.PatientStatus({model: new Vitalis.Models.PatientStatus({id: monitoringId})});
 
-        patientStatusView.model.fetch({beforeSend: function(xhr){
-            xhr.setRequestHeader('X-Auth-Token', localStorage.getItem('accesstoken'));
-        }}).then(function(a, b, c, d){
+        patientStatusView.model.fetch().then(function(a, b, c){
             App.main.show(patientStatusView);
         });
 

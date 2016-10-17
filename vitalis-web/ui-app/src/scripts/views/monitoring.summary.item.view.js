@@ -8,9 +8,11 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         Header      = App.module('Header'),
         Vitalis     = App.module('Vitalis');
 
-    Views.Followee = Marionette.LayoutView.extend({
-        template: App.Vitalis.templates.followee,
-
+    Views.MonitoringSummaryItem = Marionette.LayoutView.extend({
+        template: App.Vitalis.templates.monitoring_summary,
+        //el: 'li.collection-item',
+            //tagName: 'li',
+            //className: 'collection-item avatar',
         ui: {
             'monitoringCard': 'li.collection-item'
         },
