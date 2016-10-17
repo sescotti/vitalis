@@ -35,11 +35,7 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
         var homeView = new App.Vitalis.Views.Home({model: new Vitalis.Models.Home()});
         var headerView = new App.Vitalis.Views.Header({model: new Vitalis.Models.User()});
 
-        headerView.model.fetch({error: function(a, b, c){
-            console.log("ERROR");
-        }, success: function(a,b,c){
-            header = headerView;
-        }}).then(function(a, b, c){
+        headerView.model.fetch().then(function(model, response, options){
             App.header.show(headerView);
             App.main.show(homeView);
         });
@@ -47,10 +43,10 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
 
     controller.patientstatus = function(monitoringId){
         var patientStatusView = new App.Vitalis.Views.PatientStatus({model: new Vitalis.Models.PatientStatus({id: monitoringId})});
+        var innerHeaderView = new App.Vitalis.Views.InnerHeader();
 
-        patientStatusView.model.fetch().then(function(a, b, c){
-            App.main.show(patientStatusView);
-        });
+        App.header.show(innerHeaderView);
+        App.main.show(patientStatusView);
 
     }
 

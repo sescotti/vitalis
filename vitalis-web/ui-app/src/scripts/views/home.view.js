@@ -18,18 +18,11 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         },
 
         onShow: function(){
-            var self = this;
             var myStatusView = new App.Vitalis.Views.MonitoringSummaryList({collection: new Vitalis.Models.MyStatus()});
             var followingView = new App.Vitalis.Views.MonitoringSummaryList({collection: new Vitalis.Models.Following()});
 
-
-            myStatusView.collection.fetch().then(function(){
-                self.getRegion('myStatus').show(myStatusView);
-            });
-
-            followingView.collection.fetch().then(function(){
-                self.getRegion('following').show(followingView);
-            });
+            this.getRegion('myStatus').show(myStatusView);
+            this.getRegion('following').show(followingView);
 
         }
 

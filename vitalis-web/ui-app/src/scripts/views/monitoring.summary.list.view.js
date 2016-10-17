@@ -14,8 +14,12 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         childViewContainer: "ul.collection",
         childView: App.Vitalis.Views.MonitoringSummaryItem,
 
+        initialize: function(){
+            this.collection.fetch();
+        },
+
         onShow: function(){
-            console.log("asrasa");
+            console.log("MonitoringSummaryList shown");
         }
     });
 });
