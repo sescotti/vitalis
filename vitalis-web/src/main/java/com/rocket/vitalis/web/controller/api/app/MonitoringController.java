@@ -1,7 +1,10 @@
 package com.rocket.vitalis.web.controller.api.app;
 
+import com.google.common.collect.Iterables;
 import com.rocket.vitalis.dto.Profile;
+import com.rocket.vitalis.model.Follower;
 import com.rocket.vitalis.model.User;
+import com.rocket.vitalis.repositories.FollowerRepository;
 import com.rocket.vitalis.services.UserService;
 import com.rocket.vitalis.web.controller.api.AbstractApiController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,8 @@ public class MonitoringController extends AbstractApiController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private FollowerRepository followerRepository;
 
     @RequestMapping("/patientstatus/{monitoringId}")
     @ResponseBody
@@ -35,5 +40,12 @@ public class MonitoringController extends AbstractApiController {
         return new ResponseEntity<>(monitoredUser, OK);
     }
 
+    @RequestMapping("/patientstatus")
+    @ResponseBody
+    public ResponseEntity<?> getPatientsStatus(@ModelAttribute("user") User user){
 
+        Iterable<Follower> monitoredUser = followerRepository.findByUser(user);
+
+        return new ResponseEntity<>(monitoredUser, OK);
+    }
 }
