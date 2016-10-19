@@ -1,4 +1,5 @@
 package com.rocket.vitalis.model;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 

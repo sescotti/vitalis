@@ -1,7 +1,46 @@
 
 'use strict';
 
-App.module('Utils.Vitalis', function (UtilsShipping, App, Backbone, Marionette, $, _){
+App.module('Utils.Vitalis', function (Utils, App, Backbone, Marionette, $, _){
+
+    var translations = {
+        enabled: "Activo",
+        disabled: "Inactivo",
+        paused: "Pausado",
+        temperature: "Temperatura",
+        blood_pressure: "Presión arterial",
+        heart_rate: "Pulso",
+        respiratory_rate: "Frecuencia respiratoria",
+        blood_oxygen: "Oxígeno en sangre",
+        ecg: "ECG",
+        diastolic_pressure: "Presión diastólica",
+        systolic_pressure: "Presión sistólica"
+    };
+
+    var measures = {
+        temperature: "º",
+        blood_pressure: "'",
+        heart_rate: "bpm",
+        respiratory_rate: "rpm",
+        blood_oxygen: "%",
+        ecg: "?",
+        diastolic_pressure: "",
+        systolic_pressure: ""
+    };
+
+
+    Handlebars.registerHelper('tr', function(arg){
+        return translations[arg] ? translations[arg] : arg;
+    });
+
+    Handlebars.registerHelper('eq', function(arg1, arg2){
+        return arg1 === arg2;
+    });
+
+    Handlebars.registerHelper('measure', function(value, measurementType){
+        var unit = measures[measurementType];
+        return value + " " + unit;
+    });
 
     //var Config = App.module('Config');
 

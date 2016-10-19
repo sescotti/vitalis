@@ -8,12 +8,14 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         Header      = App.module('Header'),
         Vitalis     = App.module('Vitalis');
 
-    Views.PatientStatus = Marionette.ItemView.extend({
-        template: App.Vitalis.templates.patientstatus,
+    Views.MonitoringSensorMeasurementList = Marionette.CompositeView.extend({
+
+        template: App.Vitalis.templates.collection_wrapper,
+        childViewContainer: "ul.collection",
+        childView: App.Vitalis.Views.MonitoringSensorMeasurementItem,
 
         initialize: function(){
-            var self = this;
-            this.model.fetch().then(self.render);
+            this.collection.fetch();
         }
     });
 });

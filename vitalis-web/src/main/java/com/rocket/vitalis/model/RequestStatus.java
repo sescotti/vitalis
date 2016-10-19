@@ -1,5 +1,6 @@
 package com.rocket.vitalis.model;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
@@ -14,4 +15,11 @@ public enum RequestStatus {
 
     @NonNull
     String requestStatus;
+
+    @Override
+    @JsonValue
+    public String toString() {
+        return requestStatus;
+    }
+
 }

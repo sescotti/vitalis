@@ -9,7 +9,7 @@ import lombok.experimental.Delegate;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Date;
-
+import static javax.persistence.CascadeType.*;
 
 /**
  * Created by Ailin on 21/08/2016.
@@ -42,7 +42,7 @@ public class Monitoring extends AbstractModel {
     /*
     DEBE ESTAR RELACIONADO CON Sensor, relación *-*
     */
-    @ManyToMany
+    @OneToMany(cascade = {MERGE, REMOVE, REFRESH, DETACH})
     @Getter @Setter
     private Collection<Sensor> sensors;
 

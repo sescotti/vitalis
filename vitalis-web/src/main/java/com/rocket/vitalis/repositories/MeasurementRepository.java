@@ -1,6 +1,8 @@
 package com.rocket.vitalis.repositories;
 
-import com.rocket.vitalis.model.Measurement;
+import com.rocket.vitalis.model.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -9,5 +11,6 @@ import org.springframework.data.repository.CrudRepository;
 public interface MeasurementRepository extends CrudRepository<Measurement, Long> {
 
     Measurement findById(Long id);
+    Page<SimpleMeasurement> findByMonitoringIdAndType(Long monitoringId, MeasurementType type, Pageable pageConfig);
 
 }

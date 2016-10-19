@@ -5,6 +5,7 @@
     "vitalis:signup": "signup",
     "vitalis:home": "app",
     "vitalis:patients": "app/patients",
-    "vitalis:patientstatus": "app/patientstatus/:id"
+    "vitalis:monitoring": "app/monitoring/:id",
+    "vitalis:sensordetails": "app/monitoring/:id/sensors/:sensorId"
   }
 }

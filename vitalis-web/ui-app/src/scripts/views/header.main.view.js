@@ -11,6 +11,14 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
     Views.Header = Marionette.LayoutView.extend({
         template: App.Vitalis.templates.header,
 
+        initialize: function(){
+            var self = this;
+            this.model.fetch().then(function(){
+                self.render();
+                self.onShow();
+            });
+        },
+
         ui: {
              'navbarLinks': 'a[data-role="navbar-link"]'
             //'navbarLinks': 'a'

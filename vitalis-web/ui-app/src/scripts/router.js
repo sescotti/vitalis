@@ -8,8 +8,6 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
         Vitalis = App.module('Vitalis'),
         controller = {};
 
-    var header;
-
     controller.index = function () {
         var mainLayoutView = new App.Vitalis.Views.Main();
         App.main.show(mainLayoutView);
@@ -35,18 +33,17 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
         var homeView = new App.Vitalis.Views.Home({model: new Vitalis.Models.Home()});
         var headerView = new App.Vitalis.Views.Header({model: new Vitalis.Models.User()});
 
-        headerView.model.fetch().then(function(model, response, options){
-            App.header.show(headerView);
-            App.main.show(homeView);
-        });
+        App.header.show(headerView);
+        App.main.show(homeView);
+
     }
 
-    controller.patientstatus = function(monitoringId){
-        var patientStatusView = new App.Vitalis.Views.PatientStatus({model: new Vitalis.Models.PatientStatus({id: monitoringId})});
+    controller.monitoring = function(monitoringId){
+        var monitoringPageView = new App.Vitalis.Views.MonitoringPage({model: new Vitalis.Models.PatientStatus({id: monitoringId})});
         var innerHeaderView = new App.Vitalis.Views.InnerHeader();
 
         App.header.show(innerHeaderView);
-        App.main.show(patientStatusView);
+        App.main.show(monitoringPageView);
 
     }
 
@@ -80,7 +77,7 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
     addRoute('signup');
     addRoute('home');
     addRoute('patients');
-    addRoute('patientstatus');
+    addRoute('monitoring');
 
     App.Vitalis.Router = Marionette.AppRouter.extend({
         'appRoutes': routes,

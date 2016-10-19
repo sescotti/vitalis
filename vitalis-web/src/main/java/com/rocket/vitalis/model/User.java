@@ -1,5 +1,6 @@
 package com.rocket.vitalis.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -19,18 +20,14 @@ import static javax.persistence.FetchType.EAGER;
 @Entity
 @RequiredArgsConstructor
 public class User extends AbstractModel{
-//public class User {
-//    @Id
-//    @Getter @Setter
-//    @GeneratedValue
-//    private Long id;
 
     @Column(nullable = false, unique = true)
     @Getter @Setter @NonNull
     private String email;
 
     @Column(nullable = false)
-    @Getter @Setter @NonNull
+    @Setter @NonNull
+    @JsonIgnore
     private String password;
 
     @Column
@@ -91,4 +88,8 @@ public class User extends AbstractModel{
     // Required by Hibernate
     protected User(){}
 
+    @JsonIgnore
+    public String getPassword(){
+        return this.password;
+    }
 }

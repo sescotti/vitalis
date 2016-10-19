@@ -1,27 +1,39 @@
 package com.rocket.vitalis.services;
 
-import com.rocket.vitalis.dto.SignupRequest;
-import com.rocket.vitalis.exceptions.EmailAlreadyRegisteredException;
-import com.rocket.vitalis.model.User;
+import com.rocket.vitalis.model.*;
+import com.rocket.vitalis.repositories.MeasurementRepository;
+import com.rocket.vitalis.repositories.MonitoringRepository;
+import com.rocket.vitalis.repositories.SensorRepository;
 import com.rocket.vitalis.repositories.UserRepository;
 import com.rocket.vitalis.utils.PBKDF2Service;
 import lombok.extern.log4j.Log4j;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+
+import static com.rocket.vitalis.model.MeasurementType.BLOOD_OXYGEN;
+import static com.rocket.vitalis.model.MeasurementType.RESPIRATORY_RATE;
+import static com.rocket.vitalis.model.MeasurementType.TEMPERATURE;
 import static com.rocket.vitalis.utils.PBKDF2Service.createHash;
+import static org.joda.time.DateTime.now;
 
 /**
  * Created by sscotti on 10/9/16.
  */
 @Service
-//@Profile("dev")
+@Profile("dev")
 @Log4j
 public class WarmupService {
 
-    @Autowired
-    private UserRepository userRepository;
+    @Autowired  private UserRepository          userRepository;
+    @Autowired  private MonitoringRepository    monitoringRepository;
+    @Autowired  private SensorRepository        sensorRepository;
+    @Autowired  private MeasurementRepository   measurementRepository;
 
     public void initApplicationData(){
 
@@ -40,6 +52,51 @@ public class WarmupService {
 
         userRepository.save(sancho);
 
+        Monitoring monitoring = createMonitoring(sebas);
+
+        createMeasurements(monitoring);
+
+    }
+
+    private Monitoring createMonitoring(User sebas) {
+        Monitoring monitoring = new Monitoring();
+
+        Sensor temperatureSensor = createSensor(TEMPERATURE);
+        Sensor bloodOxygenSensor = createSensor(BLOOD_OXYGEN);
+        Sensor respiratorySensor = createSensor(RESPIRATORY_RATE);
+
+        Collection<Sensor> sensors = Arrays.asList(temperatureSensor, bloodOxygenSensor, respiratorySensor);
+        Iterable<Sensor> save = sensorRepository.save(sensors);
+
+        monitoring.setSensors(sensors);
+        monitoring.setPatient(sebas);
+
+        monitoring = monitoringRepository.save(monitoring);
+        return monitoring;
+    }
+
+    private void createMeasurements(Monitoring monitoring) {
+        DateTime time = now().minusMinutes(16);
+        DateTime now = now();
+
+        Collection<Measurement> measurements = new ArrayList<>(45);
+        while(time.plusMinutes(1).isBefore(now)) {
+            measurements.add(new Measurement(monitoring, time.toDate(), TEMPERATURE, 37d));
+            measurements.add(new Measurement(monitoring, time.toDate(), BLOOD_OXYGEN, 99d));
+            measurements.add(new Measurement(monitoring, time.toDate(), RESPIRATORY_RATE, 15d));
+
+            time = time.plusMinutes(1);
+        }
+
+        measurementRepository.save(measurements);
+    }
+
+    private Sensor createSensor(MeasurementType type) {
+        Sensor temperatureSensor = new Sensor();
+        temperatureSensor.setMeasurementType(type);
+        temperatureSensor.setStatus(SensorStatus.ENABLED);
+
+        return temperatureSensor;
     }
 
     public User registerUser(String email, String password, String name, String pictureUrl){

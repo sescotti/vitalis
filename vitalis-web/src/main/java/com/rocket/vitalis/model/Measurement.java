@@ -17,7 +17,7 @@ import java.util.Date;
 public class Measurement extends AbstractModel {
 
     @Column
-    @Getter @Setter
+    @Getter @Setter @NonNull
     private Date measurementDate;
 
     @Column(nullable = false)
@@ -26,22 +26,21 @@ public class Measurement extends AbstractModel {
 
     @Column
     @Getter @Setter
-    private MeasurementType measurementType;
+    private MeasurementType type;
 
     /*
     DEBE ESTAR RELACIONADO CON Monitoring, relación *-1
     */
     @ManyToOne
-    @Getter @Setter
+    @Getter @Setter @NonNull
     private Monitoring monitoring;
-
-    public Measurement(Monitoring monitoring, Date measureDate, MeasurementType measureTypeString, Double value ){
-        this.monitoring = monitoring;
-        this.measurementType = measureTypeString;
-        this.value=value;
-        this.measurementDate = measureDate;
-    }
 
     protected Measurement(){}
 
+    public Measurement(Monitoring monitoring, Date measureDate, MeasurementType type, Double value ){
+        this.monitoring = monitoring;
+        this.type = type;
+        this.value=value;
+        this.measurementDate = measureDate;
+    }
 }

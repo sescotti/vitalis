@@ -64,3 +64,11 @@ div#app{
     font-size: 16px;
     padding-left: 16px;
 }
+
+p.active {
+    color: #039be5;
+}
+
+.collection li.collection-item:not(.active):hover {
+    background-color: #ddd;
+}
