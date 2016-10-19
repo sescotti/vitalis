@@ -20,8 +20,14 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
             this.model.fetch().then(function(){
                 self.render();
 
-                var sensorsCollection = new Vitalis.Models.Sensors(self.model.get('sensors'));
-                var sensorsView = new App.Vitalis.Views.MonitoringSensorMeasurementList({collection: sensorsCollection});
+                var sensors = self.model.get('sensors');
+
+                sensors.forEach(function(sensor){
+                    sensor.monitoring_id = self.model.get('id');
+                });
+
+                var sensorsCollection = new Vitalis.Models.Sensors(sensors);
+                var sensorsView = new App.Vitalis.Views.MonitoringSensorList({collection: sensorsCollection});
 
                 self.getRegion('sensors').show(sensorsView);
             });

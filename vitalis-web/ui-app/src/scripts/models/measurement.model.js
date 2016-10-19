@@ -5,8 +5,12 @@ App.module('Vitalis.Models', function (Models, App, Backbone, Marionette, $, _) 
 
     Models.MeasurementList = Models.AbstractCollection.extend({
         model: Models.Measurement,
+
         url: function(){
-            return '/api/app/home/monitoring/';
+            var monitoringId = this.models[0].get('monitoringId');
+            var measurementType = this.models[0].get('measurementType');
+
+            return '/api/app/monitoring/patientstatus/'+ monitoringId + '/sensors/' + measurementType;
         }
     });
 });

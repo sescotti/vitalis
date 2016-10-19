@@ -15,7 +15,7 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         childView: App.Vitalis.Views.MonitoringSensorMeasurementItem,
 
         initialize: function(){
-            this.collection.fetch();
+            //this.collection.fetch();
         }
     });
 });

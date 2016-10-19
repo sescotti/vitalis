@@ -21,7 +21,12 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
 
 
         goBack: function(a){
-            Urls.go('vitalis:home');
+            if(window.history.state == null){
+                Urls.go('vitalis:home');
+            } else {
+                window.history.back();
+            }
+            //Urls.go('vitalis:home');
         }
     });
 });

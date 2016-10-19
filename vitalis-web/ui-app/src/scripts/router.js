@@ -19,7 +19,7 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
 
         App.header.show(headerView);
         App.main.show(loginView);
-    }
+    };
 
     controller.signup = function(){
         var signupView = new App.Vitalis.Views.Signup({model: new Vitalis.Models.Signup()});
@@ -27,7 +27,7 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
 
         App.header.show(headerView);
         App.main.show(signupView);
-    }
+    };
 
     controller.home = function(){
         var homeView = new App.Vitalis.Views.Home({model: new Vitalis.Models.Home()});
@@ -36,7 +36,7 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
         App.header.show(headerView);
         App.main.show(homeView);
 
-    }
+    };
 
     controller.monitoring = function(monitoringId){
         var monitoringPageView = new App.Vitalis.Views.MonitoringPage({model: new Vitalis.Models.PatientStatus({id: monitoringId})});
@@ -45,7 +45,7 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
         App.header.show(innerHeaderView);
         App.main.show(monitoringPageView);
 
-    }
+    };
 
     controller.patients = function(){
         var patientsView = new App.Vitalis.Views.Patients();
@@ -57,7 +57,18 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
             //App.header.show(headerView);
             App.main.show(patientsView);
         //});
+    };
+
+
+    controller.measurements = function(monitoringId, measurementType){
+        var monitoringPageView = new App.Vitalis.Views.MonitoringSensorPage({model: new Vitalis.Models.MeasurementList({monitoringId: monitoringId, measurementType: measurementType})});
+        var innerHeaderView = new App.Vitalis.Views.InnerHeader();
+
+        App.header.show(innerHeaderView);
+        App.main.show(monitoringPageView);
+
     }
+
 
     /**
      * Vitalis.Controller
@@ -77,6 +88,7 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
     addRoute('signup');
     addRoute('home');
     addRoute('patients');
+    addRoute('measurements');
     addRoute('monitoring');
 
     App.Vitalis.Router = Marionette.AppRouter.extend({

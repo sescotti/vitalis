@@ -6,6 +6,6 @@
     "vitalis:home": "app",
     "vitalis:patients": "app/patients",
     "vitalis:monitoring": "app/monitoring/:id",
-    "vitalis:sensordetails": "app/monitoring/:id/sensors/:sensorId"
+    "vitalis:measurements": "app/monitoring/:monitoringId/sensors/:measurementType"
   }
 }

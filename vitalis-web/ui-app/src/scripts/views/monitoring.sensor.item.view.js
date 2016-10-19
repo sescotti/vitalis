@@ -10,9 +10,6 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
 
     Views.MonitoringSensorItem = Marionette.ItemView.extend({
         template: App.Vitalis.templates.monitoring_sensor_item,
-        //el: 'li.collection-item',
-        //tagName: 'li',
-        //className: 'collection-item avatar',
         ui: {
             'monitoringCard': 'li.collection-item'
         },
@@ -22,13 +19,12 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         },
 
         goToMonitoring: function(){
-            var monitoringId = this.model.get("id");
-            Urls.go('vitalis:sensordetails', [monitoringId]);
+            var monitoringId = this.model.get("monitoring_id");
+            var measurementType = this.model.get("measurement_type");
+
+            Urls.go('vitalis:measurements', [monitoringId, measurementType]);
         },
 
-        onShow: function(){
-            console.log("asrasa");
-        }
 
     });
 });
