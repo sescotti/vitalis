@@ -37,6 +37,15 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
         App.main.show(homeView);
 
     }
+    
+    controller.mydata = function() {
+    	var mydataView = new App.Vitalis.Views.MyData({model: new Vitalis.Models.User()});
+        var innerHeaderView = new App.Vitalis.Views.InnerHeader();
+
+        App.header.show(innerHeaderView);
+        App.main.show(mydataView);
+
+    }
 
     controller.monitoring = function(monitoringId){
         var monitoringPageView = new App.Vitalis.Views.MonitoringPage({model: new Vitalis.Models.PatientStatus({id: monitoringId})});
@@ -76,6 +85,7 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
     addRoute('login');
     addRoute('signup');
     addRoute('home');
+    addRoute('mydata');
     addRoute('patients');
     addRoute('monitoring');
 

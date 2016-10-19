@@ -1,0 +1,47 @@
+<div class="app-container">
+	<form id="mydataForm" class="container">
+        <div class="input-field">
+            <i class="material-icons prefix form-input">account_circle</i>
+            <input id="name" class="input" name="name" type="text" data-error="#error-name">
+            <label for="name" class="active" data-error="Verifica este campo">Nombre y apellido</label>
+            <div id="error-name"></div>
+        </div>
+        <div class="row">
+			<div class="input-field col s4">
+				<select id="document_type" name="document_type" class="form-input">
+					<option value="" disabled selected>Tipo de documento</option>
+					<option value="DNI">DNI</option>
+					<option value="CI">CI</option>
+					<option value="LE">LE</option>
+					<option value="LC">LC</option>
+				</select>
+			</div>
+			<div class="input-field col s8">
+				<input id="doc_number" class="form-input" name="doc_number" type="text" data-error="#error-doc_number">
+	            <label for="doc_number" class="active" data-error="Verifica este campo">Numero de documento</label>
+	            <div id="error-doc_number"></div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="input-field col s6">
+				<select id="blood_factor" name="blood_factor" class="form-input">
+					<option value="" disabled selected>Factor</option>
+					<option value="RH_POSITIVE">RH+</option>
+					<option value="RH_NEGATIVE">RH-</option>
+				</select>
+			</div>
+			<div class="input-field col s6">
+				<select id="blood_type" name="blood_type" class="form-input">
+					<option value="" disabled selected>Tipo de sangre</option>
+					<option value="A">A</option>
+					<option value="B">B</option>
+					<option value="AB">AB</option>
+					<option value="Zero">Zero</option>
+				</select>
+			</div>
+		</div>
+        <div class="center-align col s6 login-btn-wrapper">
+            <input class="waves-effect waves-light btn center-align full-width form-btn" id="save" type="submit" value="Guardar">
+        </div>
+	</form>
+</div>

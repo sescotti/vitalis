@@ -72,3 +72,8 @@ p.active {
 .collection li.collection-item:not(.active):hover {
     background-color: #ddd;
 }
+
+/* Form styles */
+.form-input {
+	color: #e0e0e0;
+}

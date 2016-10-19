@@ -4,6 +4,7 @@
     "vitalis:login": "login",
     "vitalis:signup": "signup",
     "vitalis:home": "app",
+    "vitalis:mydata": "app/mydata",
     "vitalis:patients": "app/patients",
     "vitalis:monitoring": "app/monitoring/:id",
     "vitalis:sensordetails": "app/monitoring/:id/sensors/:sensorId"

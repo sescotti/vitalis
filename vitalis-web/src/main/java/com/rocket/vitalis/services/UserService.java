@@ -126,6 +126,10 @@ public class UserService {
 
         return accessToken.getUser();
     }
+    
+    public User save(User user) {
+    	return userRepository.save(user);
+    }
 
     private AccessToken generateToken(User user) {
         LocalDateTime localDateTime = LocalDateTime.now().plusHours(TOKEN_TTL_IN_HS);

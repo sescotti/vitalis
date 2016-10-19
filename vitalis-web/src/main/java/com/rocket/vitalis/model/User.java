@@ -60,6 +60,10 @@ public class User extends AbstractModel{
     @Column
     @Getter @Setter
     private Double height;
+    
+    @Column
+    @Getter @Setter
+    private DocumentType documentType;
 
     @Column
     @Getter @Setter
