@@ -8,18 +8,9 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         Header      = App.module('Header'),
         Vitalis     = App.module('Vitalis');
 
-    Views.MonitoringSummaryList = Marionette.CompositeView.extend({
-
+    Views.MonitoringSensorList = Marionette.CompositeView.extend({
         template: App.Vitalis.templates.collection_wrapper,
         childViewContainer: "ul.collection",
-        childView: App.Vitalis.Views.MonitoringSummaryItem,
-
-        initialize: function(){
-            this.collection.fetch();
-        },
-
-        onShow: function(){
-            console.log("MonitoringSummaryList shown");
-        }
+        childView: App.Vitalis.Views.MonitoringSensorItem
     });
 });

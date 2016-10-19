@@ -1,7 +1,8 @@
 package com.rocket.vitalis.web.controller.api.app;
 
 import com.rocket.vitalis.dto.Profile;
-import com.rocket.vitalis.model.User;
+import com.rocket.vitalis.model.*;
+import com.rocket.vitalis.services.MonitoringService;
 import com.rocket.vitalis.services.UserService;
 import com.rocket.vitalis.web.controller.api.AbstractApiController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.Collection;
 
 import static org.springframework.http.HttpStatus.OK;
 
@@ -25,14 +28,27 @@ public class MonitoringController extends AbstractApiController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private MonitoringService monitoringService;
+
     @RequestMapping("/patientstatus/{monitoringId}")
     @ResponseBody
     public ResponseEntity<?> getPatientStatus(@ModelAttribute("user") User user,
                                               @PathVariable("monitoringId") Long monitoringId){
+        Monitoring monitoring = monitoringService.findById(monitoringId);
 
-        Profile monitoredUser = new Profile(userService.getUser(monitoringId));
+        return new ResponseEntity<>(monitoring, OK);
+    }
 
-        return new ResponseEntity<>(monitoredUser, OK);
+    @RequestMapping("/patientstatus/{monitoringId}/sensors/{measurementType}")
+    @ResponseBody
+    public ResponseEntity<?> getMeasurements(@ModelAttribute("user") User user,
+                                              @PathVariable("monitoringId") Long monitoringId,
+                                              @PathVariable("measurementType") MeasurementType type){
+
+        Collection<SimpleMeasurement> measurements = monitoringService.findMeasurements(monitoringId, type);
+
+        return new ResponseEntity<>(measurements, OK);
     }
 
 

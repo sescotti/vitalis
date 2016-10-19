@@ -10,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping
 public class SinglePageApplicationController {
 
-    @RequestMapping(value={"/", "", "/login", "/signup", "/app", "/app/*"})
+    @RequestMapping(value={"/", "", "/login", "/signup", "/app", "/app/","/app/**"})
     public ModelAndView index(Model model) {
 
         model.addAttribute("title", "Un subtitulo home");

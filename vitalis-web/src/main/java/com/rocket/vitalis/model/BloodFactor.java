@@ -1,4 +1,5 @@
 package com.rocket.vitalis.model;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -9,10 +10,16 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 public enum BloodFactor {
-    RHPositivo("RHP"), RHNegativo("RHN");
+    RH_POSITIVE("RH+"), RH_NEGATIVE("RH-");
 
     @NonNull
     String bloodFactor;
+
+    @Override
+    @JsonValue
+    public String toString() {
+        return this.bloodFactor;
+    }
 
 }
 

@@ -1,4 +1,5 @@
 package com.rocket.vitalis.model;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
@@ -18,13 +19,19 @@ public enum MeasurementType {
 
     public static MeasurementType fromString(String code){
         for (MeasurementType type: values()){
-            if(type.name().equals(code)){
+            if(type.code.equals(code)){
                 return type;
-            }            
+            }
         }
         return null;
     }
-    
+
+    @Override
+    @JsonValue
+    public String toString() {
+        return this.code;
+    }
+
     @NonNull
     String code;
 

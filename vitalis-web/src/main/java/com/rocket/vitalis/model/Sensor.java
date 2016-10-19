@@ -19,8 +19,6 @@ public class Sensor extends AbstractModel {
 
     @Column
     @Getter @Setter
-    private SensorStatus sensorStatus;
-
-
+    private SensorStatus status;
 
 }

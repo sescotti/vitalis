@@ -8,8 +8,11 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         Header      = App.module('Header'),
         Vitalis     = App.module('Vitalis');
 
-    Views.MonitoringSummaryItem = Marionette.ItemView.extend({
-        template: App.Vitalis.templates.monitoring_summary,
+    Views.MonitoringSensorItem = Marionette.ItemView.extend({
+        template: App.Vitalis.templates.monitoring_sensor_item,
+        //el: 'li.collection-item',
+        //tagName: 'li',
+        //className: 'collection-item avatar',
         ui: {
             'monitoringCard': 'li.collection-item'
         },
@@ -20,7 +23,12 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
 
         goToMonitoring: function(){
             var monitoringId = this.model.get("id");
-            Urls.go('vitalis:monitoring', [monitoringId]);
+            Urls.go('vitalis:sensordetails', [monitoringId]);
+        },
+
+        onShow: function(){
+            console.log("asrasa");
         }
+
     });
 });

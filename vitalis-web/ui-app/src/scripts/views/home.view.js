@@ -13,7 +13,6 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
 
         regions: {
             myStatus: "#mystatus",
-            //following: "#following > ul.collection"
             following: "#following"
         },
 
