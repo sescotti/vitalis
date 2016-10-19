@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 
 import static com.rocket.vitalis.model.MeasurementType.BLOOD_OXYGEN;
 import static com.rocket.vitalis.model.MeasurementType.RESPIRATORY_RATE;
@@ -88,6 +89,10 @@ public class WarmupService {
             time = time.plusMinutes(1);
         }
 
+        final Date lastMonitoringDate = time.toDate();
+        monitoring.getSensors().forEach(sensor -> sensor.setLastMonitoringDate(lastMonitoringDate));
+
+        monitoringRepository.save(monitoring);
         measurementRepository.save(measurements);
     }
 

@@ -5,6 +5,7 @@ import lombok.NonNull;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by Sebastian on 25/9/2016.
@@ -20,5 +21,9 @@ public class Sensor extends AbstractModel {
     @Column
     @Getter @Setter
     private SensorStatus status;
+
+    @Column
+    @Getter @Setter
+    private Date lastMonitoringDate;
 
 }

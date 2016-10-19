@@ -29,25 +29,16 @@ public class MonitoringService {
 
     @Transactional
     public Monitoring findById(Long id){
-        Monitoring monitoring = monitoringRepository.findById(id);
-//        Collection<Sensor> sensors = monitoring.getSensors();
-//        log.debug(sensors);
-        return monitoring;
+        return monitoringRepository.findById(id);
+    }
+
+    public Collection<SimpleMeasurement> findMeasurements(Long monitoringId, MeasurementType type){
+        return findMeasurements(monitoringId, type, 0);
     }
 
     @Transactional
-    public Collection<SimpleMeasurement> findMeasurements(Long monitoringId, MeasurementType type){
-
-        Page<SimpleMeasurement> measurements;
-        measurements = measurementRepository.findByMonitoringIdAndType(monitoringId, type, new PageRequest(0, PAGE_SIZE, DESC, "measurementDate"));
-
-        return measurements.getContent();
-    }
-
     public Collection<SimpleMeasurement> findMeasurements(Long monitoringId, MeasurementType type, int pageNumber){
-
-        Page<SimpleMeasurement> measurements = measurementRepository.findByMonitoringIdAndType(monitoringId, type, new PageRequest(0, PAGE_SIZE, DESC, "measurementDate"));
-
+        Page<SimpleMeasurement> measurements = measurementRepository.findByMonitoringIdAndType(monitoringId, type, new PageRequest(pageNumber, PAGE_SIZE, DESC, "measurementDate"));
         return measurements.getContent();
     }
 
