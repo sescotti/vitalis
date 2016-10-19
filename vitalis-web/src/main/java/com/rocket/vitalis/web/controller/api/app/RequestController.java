@@ -30,6 +30,7 @@ public class RequestController extends AbstractApiController {
     private MonitoringRepository monitoringRepository;
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private RequestRepository requestRepository;
 
@@ -39,12 +40,19 @@ public class RequestController extends AbstractApiController {
     public ResponseEntity<?> getUsersLike(@ModelAttribute("user") User user,
                                           @PathVariable("userName") String userName){
 
-        Iterable<Monitoring> monitorig = monitoringRepository.findByPatientNameStartingWithIgnoreCaseAndFinishDate(userName,null);
+        Iterable<Monitoring> monitorig = monitoringRepository.findByPatientNameStartingWithIgnoreCaseAndFinishDateIsNull(userName);
 
         return new ResponseEntity<>(monitorig, OK);
     }
 
-    
+    @RequestMapping("/pendingRequest")
+    @ResponseBody
+    public ResponseEntity<?> getPendingRequest(@ModelAttribute("user") User user){
+
+        Iterable<Request> request = requestRepository.findByRequestedBy(user);
+        return new ResponseEntity<>(request, OK);
+    }
+
     @RequestMapping(method = POST, value = "/sendRequest", consumes = "application/json", produces = "application/json")
     public Object sendRequest(@ModelAttribute("user") User user,
                               @RequestBody FollowingRequest request){

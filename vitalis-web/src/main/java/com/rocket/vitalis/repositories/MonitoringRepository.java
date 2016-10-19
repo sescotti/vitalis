@@ -16,9 +16,9 @@ public interface MonitoringRepository extends CrudRepository<Monitoring, Long> {
 
     Monitoring findById(Long id);
     Iterable<Monitoring> findByModule(Module module);
-    Monitoring findByModuleAndFinishDate(Module module, Date finishDate);
+    Monitoring findByModuleAndFinishDateIsNull(Module module);
     Monitoring findByPatientName(String name);
-    Iterable<Monitoring> findByPatientNameStartingWithIgnoreCaseAndFinishDate(String name, Date finishDate);
+    Iterable<Monitoring> findByPatientNameStartingWithIgnoreCaseAndFinishDateIsNull(String name);
 }
 
 
