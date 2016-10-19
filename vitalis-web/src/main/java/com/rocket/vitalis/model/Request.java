@@ -15,29 +15,35 @@ import java.util.Date;
 public class Request extends AbstractModel {
 
     @Column
-    @Getter @Setter
+    @Getter
+    @Setter
     private RequestStatus requestStatus;
 
     @Column
-    @Getter @Setter
+    @Getter
+    @Setter
     private Date requestDay;
 
     @Column
-    @Getter @Setter
+    @Getter
+    @Setter
     private Date completionDay;
 
-    /*
-    DEBE ESTAR RELACIONADO CON User, relación *-1
-    */
     @ManyToOne
-    @Getter @Setter
+    @Getter
+    @Setter
     private User requestedBy;
 
-    /*
-    DEBE ESTAR RELACIONADO CON Monitoring, relación *-1
-    */
     @ManyToOne
-    @Getter @Setter
+    @Getter
+    @Setter
     private Monitoring monitoring;
+
+    public Request(User user, Monitoring monitoring) {
+        this.requestStatus = RequestStatus.PENDING;
+        this.requestDay = new Date();
+        this.requestedBy=user;
+        this.monitoring=monitoring;
+    }
 
 }
