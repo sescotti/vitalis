@@ -4,8 +4,7 @@ var dist = '../src/main/resources/static/ui-dist/';
 
 
 exports.scripts = [
-    './src/scripts/utils/utils-vitalis.js',
-    './src/scripts/utils/urls-utils.js',
+    './src/scripts/utils/*.js',
     // Global definitions
     './src/scripts/module.js',
     build + 'templates/bundle.js',

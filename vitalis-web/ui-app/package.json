@@ -57,6 +57,7 @@
     "backbone.radio": "^1.0.4",
     "handlebars": "4.0.5",
     "jquery-mask-plugin": "^1.14.0",
-    "jquery-touch-events": "^1.0.3"
+    "jquery-touch-events": "^1.0.3",
+    "handlebars-intl": "1.1.2"
   }
 }

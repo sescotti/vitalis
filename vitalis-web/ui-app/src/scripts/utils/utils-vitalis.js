@@ -42,44 +42,23 @@ App.module('Utils.Vitalis', function (Utils, App, Backbone, Marionette, $, _){
         return value + " " + unit;
     });
 
-    //var Config = App.module('Config');
+    Handlebars.registerHelper('concat', function(args){
+        //Last argument is the options object.
+        //var options = arguments[arguments.length - 1];
 
-     //Flag with allows to show a confirmation message while leaving the page
-    //Urls._preventLeavingPage = false;
-    //
-    ///**
-    // * Our navigation method for checkout, which always include the shopId+cartId
-    // * @param {String} key The key for the url (from the `urls.json`)
-    // * @param {Array} replacements The values to replace params in the url.
-    // * @param {Array} options Options for the `Backbone.history.navigate` function.
-    // */
-    //Urls.go = function (key, replacements, options) {
-    //
-    //    var _options = _.extend(
-    //        {'trigger': true},
-    //        options
-    //    );
-    //
-    //    Backbone.history.navigate(Urls.get(key, replacements), _options);
-    //
-    //};
-    //
-    ///**
-    // * "Reloads" the current page, but using a Backbone reload, not a full-page
-    // * reload, i.e. reloads the views.
-    // */
-    //Urls.reload = function () {
-    //    Backbone.history.loadUrl(Backbone.history.fragment);
-    //};
-    //
-    ///**
-    // * Sets the variable `_preventLeavingPage` with a certain value, which
-    // * is used in the `window.onbeforeunload` event to show a confirmation modal
-    // * to avoid leaving the current page.
-    // * @param {Boolean} isPreventing True if it should show a prompt.
-    // */
-    //Urls.setPreventLeavingPage = function (isPreventing) {
-    //    this._preventLeavingPage = isPreventing;
-    //};
+        var joint = '';
+        //Skip the last argument.
+        for(var i = 0; i < arguments.length - 1; ++i) {
+            joint += arguments[i];
+        }
+
+        return joint;
+    });
+
+    Handlebars.registerHelper('img_url', function(path){
+        return '//localhost:3000/ui-build/images/'+path;
+    });
+
+    HandlebarsIntl.registerWith(Handlebars);
 
 });

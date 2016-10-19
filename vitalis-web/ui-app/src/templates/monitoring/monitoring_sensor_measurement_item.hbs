@@ -1,7 +1,9 @@
+{{#intl locales="es-AR"}}
 <li class="collection-item">
     <div>
-        {{ measurement_date }}
+        El {{ formatDate measurement_date }} a las {{ formatTime measurement_date hour="numeric" minute="numeric"}}
         <a class="secondary-content">{{ measure value type }}</a>
     </div>
 
 </li>
+{{/intl}}

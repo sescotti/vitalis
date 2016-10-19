@@ -1,8 +1,10 @@
+{{#intl locales="es-AR"}}
 <li class="collection-item avatar">
-    <i class="material-icons circle">folder</i>
+    <!--<i class="material-icons circle">folder</i>-->
+    <img src="{{ img_url ( concat 'icon_' measurement_type '.png') }}" alt="" class="circle">
     <span class="title">{{ tr measurement_type }}</span>
     <p>
-        Última medici&oacute;n el {{ last_monitoring_date }}
+        Última medici&oacute;n {{ formatRelative last_monitoring_date }}
     </p>
     <p {{#if (eq status "enabled")}} class="blue-text text-darken-4"{{/if}}>
         {{ tr status }}
@@ -11,3 +13,4 @@
     <a href="#!" class="secondary-content">{{ measure value measurement_type }}</a>
     <a href="#!" class="secondary-content"><i class="material-icons">keyboard_arrow_right</i></a>
 </li>
+{{/intl}}
