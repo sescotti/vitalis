@@ -1,7 +1,9 @@
 package com.rocket.vitalis.web.controller.api.app;
 
 import com.rocket.vitalis.dto.Profile;
-import com.rocket.vitalis.model.User;
+import com.rocket.vitalis.model.*;
+import com.rocket.vitalis.repositories.FollowerRepository;
+import com.rocket.vitalis.services.MonitoringService;
 import com.rocket.vitalis.services.UserService;
 import com.rocket.vitalis.web.controller.api.AbstractApiController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +31,7 @@ public class MonitoringController extends AbstractApiController {
 
     @Autowired
     private MonitoringService monitoringService;
-    
+
     @Autowired
 	private FollowerRepository followerRepository;
 
