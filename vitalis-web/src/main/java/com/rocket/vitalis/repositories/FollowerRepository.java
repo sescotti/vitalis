@@ -15,4 +15,6 @@ import java.util.Collection;
 public interface FollowerRepository extends CrudRepository<Follower, Long> {
 
         Collection<SimpleFollower> findByUser(User user);
+
+        Collection<Follower> findByUserAndIsAdminTrue(User user);
 }
