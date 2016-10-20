@@ -57,8 +57,22 @@ public class RequestService {
         return collectionMonitorings;
     }
 
-    public Iterable<SimpleRequest> findPendingRequest(User user){
+    public Iterable<SimpleRequest> findSentRequest(User user){
         Iterable<SimpleRequest> request = requestRepository.findByRequestedBy(user);
+        return request;
+    }
+
+    public Iterable<SimpleRequest> findMyPendingRequest(User user){
+        Iterable<SimpleRequest> request = requestRepository.findByMonitoringPatientAndRequestStatus(user, RequestStatus.PENDING);
+        return request;
+    }
+
+    public Iterable<SimpleRequest> findPendingRequest(User user){
+        Collection<Follower> following = followerRepository.findByUserAndIsAdminTrue(user);
+        Collection<Monitoring> monitorings =  new ArrayList<Monitoring>();
+        following.forEach(item -> monitorings.add(item.getMonitoring()));
+
+        Iterable<SimpleRequest> request = requestRepository.findByMonitoringInAndRequestStatus(monitorings, RequestStatus.PENDING);
         return request;
     }
 
