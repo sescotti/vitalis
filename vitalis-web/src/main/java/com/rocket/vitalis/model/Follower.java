@@ -30,4 +30,11 @@ public class Follower extends AbstractModel {
     @Getter @Setter
     private Monitoring monitoring;
 
+    public Follower(User user, Monitoring monitoring){
+        this.followerType = FollowerType.RELATIVE;
+        this.isAdmin=false;
+        this.user=user;
+        this.monitoring= monitoring;
+    }
+
 }

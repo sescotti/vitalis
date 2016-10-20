@@ -1,10 +1,13 @@
 package com.rocket.vitalis.web.controller.api.app;
 
+import com.rocket.vitalis.dto.FollowerRequest;
 import com.rocket.vitalis.dto.FollowingRequest;
 import com.rocket.vitalis.model.*;
+import com.rocket.vitalis.repositories.FollowerRepository;
 import com.rocket.vitalis.repositories.RequestRepository;
 import com.rocket.vitalis.services.RequestService;
 import com.rocket.vitalis.web.controller.api.AbstractApiController;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -25,6 +28,9 @@ public class RequestController extends AbstractApiController {
 
     @Autowired
     private RequestRepository requestRepository;
+
+    @Autowired
+    private FollowerRepository followerRepository;
 
 
     @RequestMapping("/findUsers/{userName}")
@@ -73,5 +79,36 @@ public class RequestController extends AbstractApiController {
         Iterable<SimpleRequest> request = requestService.findPendingRequest(user);
         return new ResponseEntity<>(request, OK);
     }
+
+
+    @RequestMapping(method = POST, value = "/reponseRequest", consumes = "application/json", produces = "application/json")
+    public Object AcceptRequest(@ModelAttribute("user") User user, @RequestBody FollowerRequest followerRequest){
+        try {
+            Boolean isAccepted = followerRequest.getAccepted();
+            Request modifyRequest = requestService.findRequest(followerRequest.getRequestId());
+
+            if (isAccepted){
+                /* Seteo el Estado del Request en ACEPTADO */
+                modifyRequest.setRequestStatus(RequestStatus.ACCEPTED);
+
+                /*Guardo en Follower*/
+                Follower newFollower =  new Follower(modifyRequest.getRequestedBy(), modifyRequest.getMonitoring());
+                followerRepository.save(newFollower);
+            }
+            else
+            {
+                /* Seteo el Estado del Request en ACEPTADO */
+                modifyRequest.setRequestStatus(RequestStatus.REJECTED);
+            }
+            return requestRepository.save(modifyRequest);
+
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>("{\"error\": \"" + e.getMessage() + "\"}", BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("{\"error\": \"internal_server_error\"}", INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 }
 
