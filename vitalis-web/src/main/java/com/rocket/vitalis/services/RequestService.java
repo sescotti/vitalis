@@ -45,7 +45,7 @@ public class RequestService {
         Iterable<SimpleRequest> requests = requestRepository.findByRequestedBy(user);
 
         /*Todos los Following del usuario - para no mostrar Monitoreos que ya se estan siguiendo*/
-        Collection<SimpleFollower> followers = followerRepository.findByUser(user);
+        Iterable<SimpleFollower> followers = followerRepository.findByUser(user);
 
         for (SimpleMonitoring item : monitorings) {
             if (StreamSupport.stream(requests.spliterator(), false).anyMatch(miItem -> item.getId().equals(miItem.getMonitoring().getId())))
@@ -79,6 +79,11 @@ public class RequestService {
     public Monitoring findMonitoring(Long id){
         Monitoring monitoring = monitoringRepository.findById(id);
         return monitoring;
+    }
+
+    public Request findRequest(Long id){
+        Request request = requestRepository.findById(id);
+        return request;
     }
 
 }
