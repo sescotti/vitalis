@@ -14,6 +14,12 @@ public enum BloodType {
     @NonNull
     String bloodType;
 
+    @JsonValue
+    public String toString() {
+        return bloodType;
+    }
+
+
 }
 
 

@@ -59,7 +59,7 @@ public class User extends AbstractModel{
 
     @Column
     @Getter @Setter
-    private Double height;
+    private Integer height;
 
     @Column
     @Getter @Setter
@@ -67,7 +67,7 @@ public class User extends AbstractModel{
 
     @Column
     @Getter @Setter
-    private Double weight;
+    private Integer weight;
 
     @Column
     @Getter @Setter
@@ -80,10 +80,6 @@ public class User extends AbstractModel{
     @Column
     @Getter @Setter
     private String pictureUrl;
-
-    @OneToMany(fetch = EAGER)
-    @Getter @Setter
-    private Collection<User> following = new LinkedList<>();
 
     // Required by Hibernate
     protected User(){}

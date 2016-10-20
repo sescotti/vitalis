@@ -1,8 +1,12 @@
 package com.rocket.vitalis.web.controller.api.app;
 
 import com.rocket.vitalis.dto.Profile;
+import com.rocket.vitalis.model.Monitoring;
+import com.rocket.vitalis.model.SimpleFollower;
+import com.rocket.vitalis.model.SimpleMonitoring;
 import com.rocket.vitalis.model.User;
-import com.rocket.vitalis.services.UserService;
+import com.rocket.vitalis.repositories.FollowerRepository;
+import com.rocket.vitalis.repositories.MonitoringRepository;
 import com.rocket.vitalis.web.controller.api.AbstractApiController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,9 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.stream.Collectors;
+import java.util.List;
 
+import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toList;
 import static org.springframework.http.HttpStatus.*;
 
 /**
@@ -24,8 +29,8 @@ import static org.springframework.http.HttpStatus.*;
 @RequestMapping("/api/app/home")
 public class HomeController extends AbstractApiController {
 
-    @Autowired
-    private UserService userService;
+    @Autowired  private FollowerRepository      followerRepository;
+    @Autowired  private MonitoringRepository    monitoringRepository;
 
     @RequestMapping("/index")
     @ResponseBody
@@ -40,10 +45,11 @@ public class HomeController extends AbstractApiController {
     public ResponseEntity<?> getProfile(@ModelAttribute("user") User user){
 
         try {
-            Profile profile = new Profile(user);
+
+            Monitoring monitoring = monitoringRepository.findByPatientId(user.getId());
 
             // Devuelvo como una lista para poder reutilizar vistas
-            return new ResponseEntity<>(Arrays.asList(profile), OK);
+            return new ResponseEntity<>(asList(monitoring), OK);
 
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>("{\"error\": \"" + e.getMessage() + "\"}", BAD_REQUEST);
@@ -59,11 +65,13 @@ public class HomeController extends AbstractApiController {
 
         try {
 
-            Collection<Profile> profiles = user.getFollowing()  .stream()
-                                                                .map(Profile::new)
-                                                                .collect(Collectors.toList());
+            List<SimpleMonitoring> monitorings = followerRepository   .findByUser(user)
+                                                                .stream()
+                                                                .map(SimpleFollower::getMonitoring)
+                                                                .collect(toList());
 
-            return new ResponseEntity<>(profiles, OK);
+
+            return new ResponseEntity<>(monitorings, OK);
 
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>("{\"error\": \"" + e.getMessage() + "\"}", BAD_REQUEST);

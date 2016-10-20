@@ -57,12 +57,12 @@ public class MonitoringController extends AbstractApiController {
         return new ResponseEntity<>(measurements, OK);
     }
 
-    @RequestMapping("/patientstatus")
-    @ResponseBody
-    public ResponseEntity<?> getPatientsStatus(@ModelAttribute("user") User user){
-
-        Iterable<SimpleFollower> monitoredUser = followerRepository.findByUser(user);
-
-        return new ResponseEntity<>(monitoredUser, OK);
-    }
+//    @RequestMapping("/patientstatus")
+//    @ResponseBody
+//    public ResponseEntity<?> getPatientsStatus(@ModelAttribute("user") User user){
+//
+//        Iterable<SimpleFollower> monitoredUser = followerRepository.findByUser(user);
+//
+//        return new ResponseEntity<>(monitoredUser, OK);
+//    }
 }

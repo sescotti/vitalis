@@ -4,10 +4,14 @@
     <li class="collection-item avatar">
         <img src="{{ patient.picture_url }}" alt="" class="circle">
         <span class="title">{{ patient.name }}</span>
-        <p>First Line <br>
-            Second Line
-        </p>
-        <a href="#!" class="secondary-content"><i class="material-icons">keyboard_arrow_right</i></a>
+        {{#if patient.height}}
+        	<p>{{measure patient.height 'height'}}</p>
+        {{/if}}
+        {{#if patient.weight}}
+        	<p>{{measure patient.weight 'weight'}}</p>
+        {{/if}}
+        
+        <p>{{patient.blood_type}} {{patient.blood_factor}}</p>
     </li>
 </ul>
 

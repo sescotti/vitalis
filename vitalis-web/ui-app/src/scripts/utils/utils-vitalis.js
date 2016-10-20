@@ -25,7 +25,9 @@ App.module('Utils.Vitalis', function (Utils, App, Backbone, Marionette, $, _){
         blood_oxygen: "%",
         ecg: "?",
         diastolic_pressure: "",
-        systolic_pressure: ""
+        systolic_pressure: "",
+        height: "cm",
+        weight: "kg"
     };
 
 
