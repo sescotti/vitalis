@@ -1,9 +1,8 @@
 package com.rocket.vitalis.repositories;
 
 import com.rocket.vitalis.model.Request;
+import com.rocket.vitalis.model.SimpleRequest;
 import com.rocket.vitalis.model.User;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -11,5 +10,5 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface RequestRepository extends CrudRepository<Request, Long> {
     Request findById(Long id);
-    Iterable<Request> findByRequestedBy(User user);
+    Iterable<SimpleRequest> findByRequestedBy(User user);
 }
