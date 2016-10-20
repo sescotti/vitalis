@@ -2,7 +2,14 @@
 <li class="collection-item">
     <div>
         El {{ formatDate measurement_date }} a las {{ formatTime measurement_date hour="numeric" minute="numeric"}}
-        <a class="secondary-content">{{ measure value type }}</a>
+
+        {{#if ( eq type 'blood_pressure' ) }}
+        	<a class="last-measure secondary-content">{{ value }}/{{ value_secondary }}</a>
+    	{{else}}
+        	<a class="secondary-content">{{ measure value type }}</a>
+    	{{/if}}
+
+        
     </div>
 
 </li>

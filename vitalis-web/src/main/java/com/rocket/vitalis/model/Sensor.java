@@ -26,4 +26,12 @@ public class Sensor extends AbstractModel {
     @Getter @Setter
     private Date lastMonitoringDate;
 
+    @Column
+    @Getter @Setter
+    private Double lastValue;
+
+    @Column
+    @Getter @Setter
+    private Double lastValueSecondary;
+
 }

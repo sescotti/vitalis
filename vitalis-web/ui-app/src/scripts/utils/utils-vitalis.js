@@ -39,7 +39,7 @@ App.module('Utils.Vitalis', function (Utils, App, Backbone, Marionette, $, _){
 
     Handlebars.registerHelper('measure', function(value, measurementType){
         var unit = measures[measurementType];
-        return value + " " + unit;
+        return value + unit;
     });
 
     Handlebars.registerHelper('concat', function(args){

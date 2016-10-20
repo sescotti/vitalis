@@ -6,21 +6,19 @@ import com.rocket.vitalis.repositories.MonitoringRepository;
 import com.rocket.vitalis.repositories.SensorRepository;
 import com.rocket.vitalis.repositories.UserRepository;
 import com.rocket.vitalis.utils.PBKDF2Service;
+import com.rocket.vitalis.utils.VitalisUtils;
 import lombok.extern.log4j.Log4j;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 
-import static com.rocket.vitalis.model.MeasurementType.BLOOD_OXYGEN;
-import static com.rocket.vitalis.model.MeasurementType.RESPIRATORY_RATE;
-import static com.rocket.vitalis.model.MeasurementType.TEMPERATURE;
+import static com.rocket.vitalis.model.MeasurementType.*;
 import static com.rocket.vitalis.utils.PBKDF2Service.createHash;
+import static com.rocket.vitalis.utils.VitalisUtils.randomDouble;
+import static com.rocket.vitalis.utils.VitalisUtils.randomInteger;
 import static org.joda.time.DateTime.now;
 
 /**
@@ -62,12 +60,13 @@ public class WarmupService {
     private Monitoring createMonitoring(User sebas) {
         Monitoring monitoring = new Monitoring();
 
-        Sensor temperatureSensor = createSensor(TEMPERATURE);
-        Sensor bloodOxygenSensor = createSensor(BLOOD_OXYGEN);
-        Sensor respiratorySensor = createSensor(RESPIRATORY_RATE);
+        Collection<Sensor> sensors = new ArrayList<>(values().length);
 
-        Collection<Sensor> sensors = Arrays.asList(temperatureSensor, bloodOxygenSensor, respiratorySensor);
-        Iterable<Sensor> save = sensorRepository.save(sensors);
+        for(MeasurementType measurementType : values()){
+            sensors.add(createSensor(measurementType));
+        }
+
+        sensorRepository.save(sensors);
 
         monitoring.setSensors(sensors);
         monitoring.setPatient(sebas);
@@ -81,16 +80,49 @@ public class WarmupService {
         DateTime now = now();
 
         Collection<Measurement> measurements = new ArrayList<>(45);
+
+        Map<MeasurementType, Double> lastValues             = new HashMap<>(3);
+        Map<MeasurementType, Double> lastValuesSecondary    = new HashMap<>(3);
+
         while(time.plusMinutes(1).isBefore(now)) {
-            measurements.add(new Measurement(monitoring, time.toDate(), TEMPERATURE, 37d));
-            measurements.add(new Measurement(monitoring, time.toDate(), BLOOD_OXYGEN, 99d));
-            measurements.add(new Measurement(monitoring, time.toDate(), RESPIRATORY_RATE, 15d));
+
+            double nextTemperature          = randomDouble(37d, 38d);
+            double nextBloodOxygen          = randomDouble(98.5d, 99d);
+            double nextRespiratoryRate      = (double) randomInteger(15, 18);
+            double nextHeartRate            = (double) randomInteger(60, 100);
+
+            double nextSystolicPressure     = (double) randomInteger(90, 119);
+            double nextDiastolicPressure    = (double) randomInteger(60, 79);
+
+            lastValues.put(TEMPERATURE, nextTemperature);
+            lastValues.put(BLOOD_OXYGEN, nextBloodOxygen);
+            lastValues.put(RESPIRATORY_RATE, nextRespiratoryRate);
+            lastValues.put(HEART_RATE, nextHeartRate);
+            lastValues.put(HEART_RATE, nextHeartRate);
+            lastValues.put(BLOOD_PRESSURE, nextSystolicPressure);
+
+            lastValuesSecondary.put(BLOOD_PRESSURE, nextDiastolicPressure);
+
+//            lastValues.put(SYSTOLIC_PRESSURE, nextSystolicPressure);
+//            lastValues.put(DIASTOLIC_PRESSURE, nextDiastolicPressure);
+
+            measurements.add(new Measurement(monitoring, time.toDate(), TEMPERATURE, nextTemperature));
+            measurements.add(new Measurement(monitoring, time.toDate(), BLOOD_OXYGEN, nextBloodOxygen));
+            measurements.add(new Measurement(monitoring, time.toDate(), RESPIRATORY_RATE, nextRespiratoryRate));
+            measurements.add(new Measurement(monitoring, time.toDate(), HEART_RATE, nextHeartRate));
+            measurements.add(new Measurement(monitoring, time.toDate(), BLOOD_PRESSURE, nextSystolicPressure, nextDiastolicPressure));
+//            measurements.add(new Measurement(monitoring, time.toDate(), SYSTOLIC_PRESSURE, nextSystolicPressure));
+//            measurements.add(new Measurement(monitoring, time.toDate(), DIASTOLIC_PRESSURE, nextDiastolicPressure));
 
             time = time.plusMinutes(1);
         }
 
         final Date lastMonitoringDate = time.toDate();
-        monitoring.getSensors().forEach(sensor -> sensor.setLastMonitoringDate(lastMonitoringDate));
+        monitoring.getSensors().forEach(sensor -> {
+            sensor.setLastMonitoringDate(lastMonitoringDate);
+            sensor.setLastValue(lastValues.get(sensor.getMeasurementType()));
+            sensor.setLastValueSecondary(lastValuesSecondary.get(sensor.getMeasurementType()));
+        });
 
         monitoringRepository.save(monitoring);
         measurementRepository.save(measurements);

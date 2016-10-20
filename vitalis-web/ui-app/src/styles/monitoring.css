@@ -1,0 +1,14 @@
+.measurement-icon {
+    position: absolute;
+    width: 42px;
+    height: 42px;
+    overflow: hidden;
+    left: 15px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.last-measure {
+	font-size: 16px;
+	right: 40px !important;
+}

@@ -1,7 +1,7 @@
 {{#intl locales="es-AR"}}
 <li class="collection-item avatar">
     <!--<i class="material-icons circle">folder</i>-->
-    <img src="{{ img_url ( concat 'icon_' measurement_type '.png') }}" alt="" class="circle">
+    <img src="{{ img_url ( concat 'icon_' measurement_type '.png') }}" alt="{{ tr measurement_type }}" class="measurement-icon">
     <span class="title">{{ tr measurement_type }}</span>
     <p>
         Última medici&oacute;n {{ formatRelative last_monitoring_date }}
@@ -10,7 +10,12 @@
         {{ tr status }}
     </p>
 
-    <a href="#!" class="secondary-content">{{ measure value measurement_type }}</a>
+    {{#if ( eq measurement_type 'blood_pressure' ) }}
+        <a href="#!" class="last-measure secondary-content">{{ last_value }}/{{ last_value_secondary }}</a>
+    {{else}}
+        <a href="#!" class="last-measure secondary-content">{{ measure last_value measurement_type }}</a>
+    {{/if}}
+    
     <a href="#!" class="secondary-content"><i class="material-icons">keyboard_arrow_right</i></a>
 </li>
 {{/intl}}

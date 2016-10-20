@@ -19,14 +19,16 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
 
         initialize: function(){
             var self = this;
+            var measurementType = self.model.models[0].get('measurementType');
             this.model.fetch().then(function(){
                 self.render();
-
+                self.model.measurementType = measurementType;
+                var chartView = new App.Vitalis.Views.MonitoringSensorMeasurementChart({collection: self.model, measurementType: measurementType});
                 var sensorsView = new App.Vitalis.Views.MonitoringSensorMeasurementList({collection: self.model});
 
+                self.getRegion('chart').show(chartView);
                 self.getRegion('values').show(sensorsView);
             });
         }
-
     });
 });

@@ -49,14 +49,7 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
 
     controller.patients = function(){
         var patientsView = new App.Vitalis.Views.Patients();
-        //var headerView = new App.Vitalis.Views.Header({model: new Vitalis.Models.User()});
-
-        //headerView.model.fetch({beforeSend: function(xhr){
-        //    xhr.setRequestHeader('X-Auth-Token', localStorage.getItem('accesstoken'));
-        //}}).then(function(a, b, c, d){
-            //App.header.show(headerView);
-            App.main.show(patientsView);
-        //});
+        App.main.show(patientsView);
     };
 
 
@@ -66,9 +59,7 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
 
         App.header.show(innerHeaderView);
         App.main.show(monitoringPageView);
-
-    }
-
+    };
 
     /**
      * Vitalis.Controller

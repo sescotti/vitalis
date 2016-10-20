@@ -16,5 +16,7 @@ public interface SimpleMeasurement {
 
     Double getValue();
 
+    Double getValueSecondary();
+
     MeasurementType getType();
 }

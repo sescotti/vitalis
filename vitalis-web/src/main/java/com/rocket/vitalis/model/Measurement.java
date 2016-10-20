@@ -20,9 +20,16 @@ public class Measurement extends AbstractModel {
     @Getter @Setter @NonNull
     private Date measurementDate;
 
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 3, scale = 1)
     @Getter @Setter @NonNull
     private Double value;
+
+    /**
+     * Para el caso de presión que es un valor compuesto
+     */
+    @Column(precision = 3, scale = 1)
+    @Getter @Setter
+    private Double valueSecondary;
 
     @Column
     @Getter @Setter
@@ -37,10 +44,16 @@ public class Measurement extends AbstractModel {
 
     protected Measurement(){}
 
-    public Measurement(Monitoring monitoring, Date measureDate, MeasurementType type, Double value ){
+    public Measurement(Monitoring monitoring, Date measureDate, MeasurementType type, Double value){
+        this(monitoring, measureDate, type, value, null);
+    }
+
+    public Measurement(Monitoring monitoring, Date measureDate, MeasurementType type, Double value, Double valueSecondary){
         this.monitoring = monitoring;
         this.type = type;
         this.value=value;
+        this.valueSecondary = valueSecondary;
         this.measurementDate = measureDate;
     }
+
 }

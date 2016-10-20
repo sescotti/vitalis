@@ -58,6 +58,7 @@
     "handlebars": "4.0.5",
     "jquery-mask-plugin": "^1.14.0",
     "jquery-touch-events": "^1.0.3",
-    "handlebars-intl": "1.1.2"
+    "handlebars-intl": "1.1.2",
+    "chart.js": "2.3.0"
   }
 }
