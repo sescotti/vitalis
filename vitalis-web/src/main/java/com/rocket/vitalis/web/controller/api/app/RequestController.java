@@ -26,6 +26,7 @@ public class RequestController extends AbstractApiController {
     @Autowired
     private RequestRepository requestRepository;
 
+
     @RequestMapping("/findUsers/{userName}")
     @ResponseBody
     public ResponseEntity<?> getUsersLike(@ModelAttribute("user") User user,
@@ -34,10 +35,10 @@ public class RequestController extends AbstractApiController {
         return new ResponseEntity<>(monitorings, OK);
     }
 
-    @RequestMapping("/pendingRequest")
+    @RequestMapping("/sentRequest")
     @ResponseBody
-    public ResponseEntity<?> getPendingRequest(@ModelAttribute("user") User user){
-        Iterable<SimpleRequest> request = requestService.findPendingRequest(user);
+    public ResponseEntity<?> getSentRequest(@ModelAttribute("user") User user){
+        Iterable<SimpleRequest> request = requestService.findSentRequest(user);
         return new ResponseEntity<>(request, OK);
     }
 
@@ -56,6 +57,21 @@ public class RequestController extends AbstractApiController {
         } catch (Exception e) {
             return new ResponseEntity<>("{\"error\": \"internal_server_error\"}", INTERNAL_SERVER_ERROR);
         }
+    }
+
+
+    @RequestMapping("/myPendingRequest")
+    @ResponseBody
+    public ResponseEntity<?> getMyPendingRequest(@ModelAttribute("user") User user){
+        Iterable<SimpleRequest> request = requestService.findMyPendingRequest(user);
+        return new ResponseEntity<>(request, OK);
+    }
+
+    @RequestMapping("/pendingRequest")
+    @ResponseBody
+    public ResponseEntity<?> getPendingRequest(@ModelAttribute("user") User user){
+        Iterable<SimpleRequest> request = requestService.findPendingRequest(user);
+        return new ResponseEntity<>(request, OK);
     }
 }
 
