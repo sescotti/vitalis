@@ -54,7 +54,7 @@ public class MeasureController {
         System.out.println("Modulo encontrado");
 
         /* Get Last MONITORING  from MODULE */
-        Monitoring monitoring = monitoringRepository.findByModuleAndFinishDate(module,  null);
+        Monitoring monitoring = monitoringRepository.findByModuleAndFinishDateIsNull(module);
 
 
         /*Get measureType from string */

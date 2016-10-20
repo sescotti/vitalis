@@ -2,6 +2,7 @@ package com.rocket.vitalis.model;
 
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.util.Date;
  */
 
 @Entity
+@RequiredArgsConstructor
 public class Request extends AbstractModel {
 
     @Column

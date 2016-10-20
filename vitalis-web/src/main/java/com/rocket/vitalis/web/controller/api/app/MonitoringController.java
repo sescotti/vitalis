@@ -61,7 +61,7 @@ public class MonitoringController extends AbstractApiController {
     @ResponseBody
     public ResponseEntity<?> getPatientsStatus(@ModelAttribute("user") User user){
 
-        Iterable<Follower> monitoredUser = followerRepository.findByUser(user);
+        Iterable<SimpleFollower> monitoredUser = followerRepository.findByUser(user);
 
         return new ResponseEntity<>(monitoredUser, OK);
     }

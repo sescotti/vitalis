@@ -1,10 +1,8 @@
 package com.rocket.vitalis.repositories;
 
-import com.rocket.vitalis.model.User;
 import com.rocket.vitalis.model.Module;
 import com.rocket.vitalis.model.Monitoring;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import com.rocket.vitalis.model.SimpleMonitoring;
 import org.springframework.data.repository.CrudRepository;
 import java.util.Date;
 
@@ -16,9 +14,9 @@ public interface MonitoringRepository extends CrudRepository<Monitoring, Long> {
 
     Monitoring findById(Long id);
     Iterable<Monitoring> findByModule(Module module);
-    Monitoring findByModuleAndFinishDate(Module module, Date finishDate);
+    Monitoring findByModuleAndFinishDateIsNull(Module module);
     Monitoring findByPatientName(String name);
-    Iterable<Monitoring> findByPatientNameStartingWithIgnoreCaseAndFinishDate(String name, Date finishDate);
+    Iterable<SimpleMonitoring> findByPatientNameStartingWithIgnoreCaseAndFinishDateIsNull(String name);
 }
 
 
