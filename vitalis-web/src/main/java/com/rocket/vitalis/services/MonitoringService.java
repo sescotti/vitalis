@@ -36,47 +36,11 @@ public class MonitoringService {
 
     private static final int PAGE_SIZE = 15;
 
-//    private static final List<MeasurementType> MERGEABLE_TYPES = asList(DIASTOLIC_PRESSURE, SYSTOLIC_PRESSURE);
-
     @Autowired private MonitoringRepository monitoringRepository;
     @Autowired private MeasurementRepository measurementRepository;
 
     @Autowired private RequestRepository requestRepository;
     @Autowired private FollowerRepository followerRepository;
-
-
-//    @Transactional
-//    public MonitoringDto findById(Long id){
-//        Monitoring monitoring = monitoringRepository.findById(id);
-//        Collection<Sensor> sensors = monitoring.getSensors();
-//
-//        List<SensorDto> monitoringSensors = sensors .stream()
-//                                                    .filter(sensor -> !MERGEABLE_TYPES.contains(sensor.getMeasurementType()))
-//                                                    .map(SensorDto::new)
-//                                                    .collect(Collectors.toList());
-//
-//        Optional<SensorDto> reduce = sensors.stream()
-//                .filter(sensor -> MERGEABLE_TYPES.contains(sensor.getMeasurementType()))
-//                .map(SensorDto::fromPressureSensor)
-//                .reduce((sensor1, sensor2) -> {
-//
-//                    String lastValue = sensor1.getLastValue() + "/" + sensor2.getLastValue();
-//                    return new SensorDto(sensor1.getMeasurementType(), sensor1.getStatus(), sensor1.getLastMonitoringDate(), lastValue);
-//                });
-//
-//        if(reduce.isPresent()){
-//            monitoringSensors.add(reduce.get());
-//        }
-//
-//        MonitoringDto monitoringDto = new MonitoringDto();
-//        monitoringDto.setFinishDate(monitoring.getFinishDate());
-//        monitoringDto.setModule(monitoring.getModule());
-//        monitoringDto.setPatient(monitoring.getPatient());
-//        monitoringDto.setStartDate(monitoring.getStartDate());
-//        monitoringDto.setSensors(monitoringSensors);
-//
-//        return monitoringDto;
-//    }
 
     @Transactional
     public Monitoring findById(Long id){

@@ -1,14 +1,14 @@
 <li class="collection-item avatar row">
 	<div class="col s12 m6 l8">
-	    <img src="{{ monitoring.patient.picture_url }}" alt="" class="circle">
-	    <span class="title">{{ monitoring.patient.name }}</span>
-	    <p>Solicitado por {{ requested_by.name }}</p>
+		<img src="{{ requested_by.picture_url }}" alt="" class="circle">
+		<span class="title">{{ requested_by.name }}</span>
+		<p>({{ monitoring.patient.name }})</p>
 	</div>
 
     <div class="col s0 m6 l4 text-align-right" >
         {{!-- <div class= style="float: right; top: 18px; right: 10px; position: absolute;"> --}}
         <a href="#!" data-role='accept-request' class="btn">Aceptar</a>
-	    <a href="#!" data-role='reject-request' class="btn btn-flat">Rechazar</a>
+	    <a href="#!" data-role='reject-request' class="btn btn-flat btn-secondary">Rechazar</a>
     </div>
 </li>
 

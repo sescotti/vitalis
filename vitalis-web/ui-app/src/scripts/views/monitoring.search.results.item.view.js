@@ -11,7 +11,7 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
     Views.SearchMonitoringsResultsItemView = Marionette.ItemView.extend({
         template: App.Vitalis.templates.monitoring_search_result_item,
         ui: {
-            followButton: 'a[data-role="follow"]'
+            followButton: 'button[data-role="follow"]'
         },
 
         events:{
@@ -25,8 +25,10 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
 
             request.save().then(function(){
                 Materialize.toast("Solicitud enviada", 3500, '', function(){})
-                $(followButton).text('Solicitud enviada');
-                $(followButton).addClass('disabled');
+
+                var i = $(followButton).text('check');
+                // $(followButton).text('Solicitud enviada');
+                $(followButton).parent().prop('disabled', true);
             });
             
         }

@@ -102,3 +102,7 @@ p.active {
 .inherit-font-size {
     font-size: inherit;
 }
+
+.btn-secondary {
+    background-color: #dfdfdf;
+}

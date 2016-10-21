@@ -63,7 +63,13 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
 
     controller.requests = function(){
         var followRequestPage = new App.Vitalis.Views.FollowRequestPage();
-        var innerHeaderView = new App.Vitalis.Views.InnerHeader({title: "Mis solicitudes"});
+        var innerHeaderView = new App.Vitalis.Views.InnerHeader({   title: "Mis solicitudes",
+                                                                    secondary_action: {
+                                                                        icon: 'person_add',
+                                                                        action: function(event){
+                                                                            Urls.go('vitalis:new_request');
+                                                                        }
+                                                                }});
 
         App.header.show(innerHeaderView);
         App.main.show(followRequestPage);

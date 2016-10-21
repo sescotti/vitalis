@@ -13,12 +13,14 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
 
         ui: {
             searchField: 'input#search',
-            resetButton: 'i#reset-btn'
+            resetButton: 'i#reset-btn',
+            searchForm: 'form#search-form'
         },
 
         events: {
             'keyup @ui.searchField': 'search',
-            'click @ui.resetButton': 'resetSearch'
+            'click @ui.resetButton': 'resetSearch',
+            'submit @ui.searchForm': 'onSubmit'
 
         },
 
@@ -48,6 +50,10 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         resetSearch: function(){
             $(this.ui.searchField).val('');
             this.collection.reset();
+        },
+
+        onSubmit: function(e){
+            e.preventDefault();
         }
     });
 });
