@@ -13,6 +13,18 @@ div#header-container {
     left: 50%;
 }
 
+.nav-title {
+    position: absolute;
+    display: inline-block;
+    font-size: 1.7rem;
+    color: #9e9e9e !important;
+    padding: 0;
+    white-space: nowrap;
+    transform: translateX(-50%);
+    left: 50%;
+    font-weight: normal;
+}
+
 a#back-btn,
 a#menu-btn {
 	display: inherit;

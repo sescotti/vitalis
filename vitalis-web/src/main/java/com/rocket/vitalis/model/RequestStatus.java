@@ -22,4 +22,14 @@ public enum RequestStatus {
         return requestStatus;
     }
 
+    public static RequestStatus fromString(String status){
+        for (RequestStatus type: values()){
+            if(type.requestStatus.equals(status)){
+                return type;
+            }
+        }
+        return null;
+    }
+
+
 }

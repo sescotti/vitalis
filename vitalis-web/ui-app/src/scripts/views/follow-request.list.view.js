@@ -8,16 +8,28 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         Header      = App.module('Header'),
         Vitalis     = App.module('Vitalis');
 
-    Views.MonitoringSensorMeasurementList = Marionette.CompositeView.extend({
+    Views.FollowRequestsList = Marionette.CompositeView.extend({
 
         template: App.Vitalis.templates.collection_wrapper_with_title,
         childViewContainer: "ul.collection",
-        childView: App.Vitalis.Views.MonitoringSensorMeasurementItem,
+        childView: App.Vitalis.Views.FollowRequestItem,
 
         templateHelpers: function() {
             return {
                 collection_title: this.getOption('title')
             }
+        },
+
+        initialize: function(){
+            this.collection.fetch();
+        },
+
+        childEvents: {
+            // This callback will be called whenever a child is rendered or emits a `render` event
+            destroy: function(child) {
+                this.collection.remove(child.model);
+            }
         }
+  
     });
 });

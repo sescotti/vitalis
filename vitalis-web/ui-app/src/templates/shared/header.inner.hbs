@@ -9,11 +9,15 @@
 
             <a id="back-btn" href="#" data-role='back-btn' data-activates="nav-mobile" class="button-collapse pad-left"><i class="material-icons">keyboard_arrow_left</i></a>
 
-            <a href="#" class="brand-logo">Vitalis</a>
+            {{#if useBrandAsTitle}}
+                <a class="brand-logo">{{title}}</a>
+            {{else}}
+                <a class="nav-title">{{title}}</a>
+            {{/if}}
             <ul class="right">
                 <li>
-                    <a href="#" data-activates="nav-mobile" >
-                        <i class="material-icons">notifications</i>
+                    <a href="#" data-role="secondary-action">
+                        <i class="material-icons">{{secondary_action.icon}}</i>
                     </a>
                 </li>
             </ul>

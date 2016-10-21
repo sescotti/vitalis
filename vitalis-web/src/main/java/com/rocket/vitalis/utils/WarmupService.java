@@ -2,6 +2,7 @@ package com.rocket.vitalis.utils;
 
 import com.rocket.vitalis.model.*;
 import com.rocket.vitalis.repositories.*;
+import com.rocket.vitalis.services.RequestService;
 import com.rocket.vitalis.utils.PBKDF2Service;
 import com.rocket.vitalis.utils.VitalisUtils;
 import lombok.extern.log4j.Log4j;
@@ -34,13 +35,17 @@ public class WarmupService {
     @Autowired  private MonitoringRepository    monitoringRepository;
     @Autowired  private SensorRepository        sensorRepository;
     @Autowired  private MeasurementRepository   measurementRepository;
-    @Autowired  private FollowerRepository followerRepository;
+    @Autowired  private FollowerRepository      followerRepository;
+    @Autowired  private RequestRepository       requestRepository;
 
     public void initApplicationData(){
 
         Collection<User> users = new ArrayList<>(6);
 
-        users.add(registerUser("sebastians@vitalis.com", "1234", "Sebastian Scotti"));
+        User sebas = registerUser("sebastians@vitalis.com", "1234", "Sebastian Scotti");
+
+        users.add(sebas);
+//        users.add(registerUser("sebastians@vitalis.com", "1234", "Sebastian Scotti"));
         users.add(registerUser("ailin@vitalis.com", "1234", "Ailin Merlo"));
         users.add(registerUser("sebastianp@vitalis.com", "1234", "Sebastian Pantuso"));
         users.add(registerUser("aldo@vitalis.com", "1234", "Aldo Flores"));
@@ -52,20 +57,25 @@ public class WarmupService {
 
         Collection<Monitoring> monitorings = new ArrayList<>(users.size());
         Collection<Follower> followers = new ArrayList<>(users.size());
+        Collection<Request> followRequests = new ArrayList<>(users.size());
+
+        Monitoring sanchoMonitoring = createMonitoring(sancho);
+        createMeasurements(sanchoMonitoring);
 
         for(User user : users){
             Monitoring monitoring = createMonitoring(user);
             createMeasurements(monitoring);
 
             monitorings.add(monitoring);
-            followers.add(createFollower(sancho, monitoring));
+//            followers.add(createFollower(sancho, monitoring));
         }
 
-        Monitoring monitoring = createMonitoring(sancho);
-        createMeasurements(monitoring);
-
+        for(Monitoring monitoring : monitorings){
+            followRequests.add(new Request(sebas, monitoring));
+        }
 
         followerRepository.save(followers);
+        requestRepository.save(followRequests);
     }
 
     private Follower createFollower(User user, Monitoring monitoring) {
@@ -73,6 +83,7 @@ public class WarmupService {
         follower.setFollowerType(RELATIVE);
         follower.setMonitoring(monitoring);
         follower.setUser(user);
+        follower.setIsAdmin(true);
 
         return follower;
     }

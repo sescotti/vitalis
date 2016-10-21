@@ -14,8 +14,17 @@ div#app{
 .visibiliy-hidden {
     visibility: hidden;
 }
+
 .no-margin {
     margin: 0;
+}
+
+.no-upper-margin {
+    margin-top: 0;
+}
+
+.no-lower-margin {
+    margin-bottom: 0;
 }
 
 .position-fixed{
@@ -71,4 +80,29 @@ p.active {
 
 .collection li.collection-item:not(.active):hover {
     background-color: #ddd;
+}
+
+.brand {
+    text-transform: uppercase;
+    font-family: SignoriaBold;
+}
+
+.text-align-right {
+    text-align: right;
+}
+
+.text-align-left {
+    text-align: left;
+}
+
+.text-align-center {
+    text-align: center;
+}
+
+.inherit-font-size {
+    font-size: inherit;
+}
+
+.btn-secondary {
+    background-color: #dfdfdf;
 }

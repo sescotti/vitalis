@@ -1,13 +1,25 @@
 <div id="home-container" class="app-container">
 
-    <h5 class="subheader">Mi estado</h5>
-    <div id="mystatus">
-    </div>
+    <div id="mystatus"></div>
 
-    <h5 class="subheader">Siguiendo</h5>
-    <div id="following">
+    <div id="following"></div>
 
-    </div>
 
+  <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+    <a class="btn-floating btn-large">
+      <i class="large material-icons">add</i>
+    </a>
+    <ul>
+      <li>
+      <a class="btn-floating tooltipped blue" data-role="execute-action" data-target="vitalis:new_request" data-position="left" data-delay="50" data-tooltip="Nueva solicitud"><i class="material-icons">person_add</i></a>
+      </li>
+      <li>
+      <a class="btn-floating tooltipped yellow darken-4" data-role="execute-action" data-target="vitalis:new_module" data-position="left" data-delay="50" data-tooltip="Registrar nuevo m&oacute;dulo"><i class="material-icons">memory</i></a>
+      </li>
+      <li>
+      <a class="btn-floating tooltipped green" data-position="left" data-role="execute-action" data-target="vitalis:new_alert" data-delay="50" data-tooltip="Nueva alerta"><i class="material-icons">notifications_active</i></a>
+      </li>
+    </ul>
+  </div>
 
 </div>

@@ -1,5 +1,6 @@
 package com.rocket.vitalis.dto;
 
+import com.rocket.vitalis.model.RequestStatus;
 import lombok.Data;
 
 /**
@@ -8,5 +9,5 @@ import lombok.Data;
 @Data
 public class FollowerRequest {
     private Long requestId;
-    private Boolean accepted;
+    private RequestStatus status;
 }
