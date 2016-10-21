@@ -47,10 +47,11 @@ public class HomeController extends AbstractApiController {
 
         try {
 
-            Monitoring monitoring = monitoringRepository.findByPatientId(user.getId());
+            Monitoring monitoring = monitoringRepository.findByPatientIdAndFinishDateIsNull(user.getId());
+
             List<Monitoring> monitorings = monitoring != null ? asList(monitoring) : Collections.<Monitoring>emptyList();
             // Devuelvo como una lista para poder reutilizar vistas
-            return new ResponseEntity<>(monitorings, OK);
+            return new ResponseEntity<>(asList(monitoring), OK);
 
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>("{\"error\": \"" + e.getMessage() + "\"}", BAD_REQUEST);

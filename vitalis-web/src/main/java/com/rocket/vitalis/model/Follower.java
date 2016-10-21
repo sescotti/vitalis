@@ -38,7 +38,5 @@ public class Follower extends AbstractModel {
     }
 
     public Follower(){
-
     }
-
 }
