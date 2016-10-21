@@ -25,25 +25,23 @@ public class Monitoring extends AbstractModel {
     @Getter @Setter
     private Date finishDate;
 
-    /*
-    DEBE ESTAR RELACIONADO CON Module, relación *-1
-    */
     @ManyToOne
     @Getter @Setter
     private Module module;
 
-    /*
-    DEBE ESTAR RELACIONADO CON User, relación *-1
-    */
     @ManyToOne
     @Getter @Setter
     private User patient;
 
-    /*
-    DEBE ESTAR RELACIONADO CON Sensor, relación *-*
-    */
     @OneToMany(cascade = {MERGE, REMOVE, REFRESH, DETACH})
     @Getter @Setter
     private Collection<Sensor> sensors;
 
+    public Monitoring (Module module, User user){
+        this.startDate = new Date();
+        this.module = module;
+        this.patient = user;
+    }
+
+    public Monitoring(){}
 }

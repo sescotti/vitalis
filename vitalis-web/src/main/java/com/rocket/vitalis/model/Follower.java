@@ -37,4 +37,6 @@ public class Follower extends AbstractModel {
         this.monitoring= monitoring;
     }
 
+    public Follower(){
+    }
 }
