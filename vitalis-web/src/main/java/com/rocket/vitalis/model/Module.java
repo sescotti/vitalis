@@ -18,9 +18,6 @@ public class Module extends AbstractModel {
     @Getter @Setter @NonNull
     private String serial;
 
-    /*
-    DEBE ESTAR RELACIONADO CON User, relación *-1
-    */
     @ManyToOne
     @Getter @Setter
     private User registeredBy;
@@ -34,4 +31,12 @@ public class Module extends AbstractModel {
     @Getter @Setter
     private Date updateDate;
 
+    public Module(String serial, User user){
+        this.serial= serial;
+        this.registeredBy =  user;
+        this.registrationDate = new Date();
+        this.updateDate = new Date();
+    }
+
+    public Module(){}
 }
