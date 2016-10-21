@@ -7,6 +7,7 @@
     "vitalis:patients": "app/patients",
     "vitalis:monitoring": "app/monitoring/:id",
     "vitalis:requests": "app/requests",
+    "vitalis:new_request": "app/requests/new",
     "vitalis:measurements": "app/monitoring/:monitoringId/sensors/:measurementType"
   }
 }

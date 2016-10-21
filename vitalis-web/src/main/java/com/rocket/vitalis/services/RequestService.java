@@ -22,8 +22,6 @@ public class RequestService {
 
     @Autowired
     private MonitoringRepository monitoringRepository;
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private RequestRepository requestRepository;
@@ -31,31 +29,6 @@ public class RequestService {
     @Autowired
     private FollowerRepository followerRepository;
 
-
-    public Collection<SimpleMonitoring> findMonitoringByUserName(User user, String userName){
-
-        /*Todos los monitoreos ACTIVOS cuyo nombre de usuario comienzan con "userName" */
-        Iterable<SimpleMonitoring> monitorings = monitoringRepository.findByPatientNameStartingWithIgnoreCaseAndFinishDateIsNull(userName);
-        /*Lo copio en una coleccion para ir borrando los que no van*/
-        Collection<SimpleMonitoring> collectionMonitorings = new ArrayList<SimpleMonitoring>();
-        monitorings.forEach(collectionMonitorings::add);
-
-        /*Todos los Request hechos por el usuario  - para no mostrar Monitoreos que ya tienen un Request hecho"
-        Sea Pendiente (Se muestra en Pendientes), Rechazado (No se muestra mas), Aceptado(se muestra en Siguiendo) */
-        Iterable<SimpleRequest> requests = requestRepository.findByRequestedBy(user);
-
-        /*Todos los Following del usuario - para no mostrar Monitoreos que ya se estan siguiendo*/
-        Iterable<SimpleFollower> followers = followerRepository.findByUser(user);
-
-        for (SimpleMonitoring item : monitorings) {
-            if (StreamSupport.stream(requests.spliterator(), false).anyMatch(miItem -> item.getId().equals(miItem.getMonitoring().getId())))
-                collectionMonitorings.remove(item);
-            if (StreamSupport.stream(followers.spliterator(), false).anyMatch(miItem -> item.getId().equals(miItem.getMonitoring().getId())))
-                collectionMonitorings.remove(item);
-        }
-
-        return collectionMonitorings;
-    }
 
     public Iterable<SimpleRequest> findSentRequest(User user){
         Iterable<SimpleRequest> request = requestRepository.findByRequestedBy(user);

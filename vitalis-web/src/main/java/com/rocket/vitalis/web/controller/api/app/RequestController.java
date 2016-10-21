@@ -35,15 +35,6 @@ public class RequestController extends AbstractApiController {
     @Autowired
     private FollowerRepository followerRepository;
 
-
-    @RequestMapping("/findUsers/{userName}")
-    @ResponseBody
-    public ResponseEntity<?> getUsersLike(@ModelAttribute("user") User user,
-                                          @PathVariable("userName") String userName){
-        Collection<SimpleMonitoring> monitorings = requestService.findMonitoringByUserName(user, userName);
-        return new ResponseEntity<>(monitorings, OK);
-    }
-
     @RequestMapping("/sentRequest")
     @ResponseBody
     public ResponseEntity<?> getSentRequest(@ModelAttribute("user") User user){
@@ -51,15 +42,17 @@ public class RequestController extends AbstractApiController {
         return new ResponseEntity<>(request, OK);
     }
 
-    @RequestMapping(method = POST, value = "/sendRequest", consumes = "application/json", produces = "application/json")
-    public Object sendRequest(@ModelAttribute("user") User user,
+    @RequestMapping(method = POST, value = "/", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<?> sendRequest(@ModelAttribute("user") User user,
                               @RequestBody FollowingRequest request){
         try {
             Monitoring monitoring = requestService.findMonitoring(request.getMonitoringId());
 
             /* Create new Request */
             Request requestFollowing = new Request(user, monitoring);
-            return requestRepository.save(requestFollowing);
+            requestRepository.save(requestFollowing);
+
+            return new ResponseEntity<Object>(requestFollowing, OK);
 
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>("{\"error\": \"" + e.getMessage() + "\"}", BAD_REQUEST);

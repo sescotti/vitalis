@@ -98,3 +98,7 @@ p.active {
 .text-align-center {
     text-align: center;
 }
+
+.inherit-font-size {
+    font-size: inherit;
+}

@@ -44,6 +44,7 @@ public class WarmupService {
 
         User sebas = registerUser("sebastians@vitalis.com", "1234", "Sebastian Scotti");
 
+        users.add(sebas);
 //        users.add(registerUser("sebastians@vitalis.com", "1234", "Sebastian Scotti"));
         users.add(registerUser("ailin@vitalis.com", "1234", "Ailin Merlo"));
         users.add(registerUser("sebastianp@vitalis.com", "1234", "Sebastian Pantuso"));

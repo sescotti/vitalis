@@ -8,4 +8,8 @@ App.module('Vitalis.Models', function (Models, App, Backbone, Marionette, $, _) 
         },
         urlRoot: '/api/app/monitoring/patientstatus'
     });
+
+    Models.MonitoringsSearchList = Models.AbstractCollection.extend({
+    	url: "/api/app/monitoring/search"
+    });
 });

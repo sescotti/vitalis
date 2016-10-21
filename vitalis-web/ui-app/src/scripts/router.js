@@ -62,13 +62,23 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
     };
 
     controller.requests = function(){
-        var homeView = new App.Vitalis.Views.FollowRequestPage();
+        var followRequestPage = new App.Vitalis.Views.FollowRequestPage();
         var innerHeaderView = new App.Vitalis.Views.InnerHeader({title: "Mis solicitudes"});
 
         App.header.show(innerHeaderView);
-        App.main.show(homeView);
+        App.main.show(followRequestPage);
 
     };
+
+    controller.new_request = function(){
+
+        var newFollowRequestPage = new App.Vitalis.Views.NewFollowRequestPage();
+        var innerHeaderView = new App.Vitalis.Views.InnerHeader({title: "Nueva solicitud"});
+
+        App.header.show(innerHeaderView);
+        App.main.show(newFollowRequestPage);
+    };
+
 
 
     /**
@@ -92,6 +102,7 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
     addRoute('measurements');
     addRoute('monitoring');
     addRoute('requests');
+    addRoute('new_request');
 
     App.Vitalis.Router = Marionette.AppRouter.extend({
         'appRoutes': routes,
