@@ -46,7 +46,7 @@ public class HomeController extends AbstractApiController {
 
         try {
 
-            Monitoring monitoring = monitoringRepository.findByPatientId(user.getId());
+            Monitoring monitoring = monitoringRepository.findByPatientIdAndFinishDateIsNull(user.getId());
 
             // Devuelvo como una lista para poder reutilizar vistas
             return new ResponseEntity<>(asList(monitoring), OK);
