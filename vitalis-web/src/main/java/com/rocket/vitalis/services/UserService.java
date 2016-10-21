@@ -5,8 +5,12 @@ import com.rocket.vitalis.exceptions.EmailAlreadyRegisteredException;
 import com.rocket.vitalis.exceptions.InvalidLoginException;
 import com.rocket.vitalis.exceptions.InvalidTokenException;
 import com.rocket.vitalis.model.AccessToken;
+import com.rocket.vitalis.model.Follower;
+import com.rocket.vitalis.model.SimpleMonitoring;
 import com.rocket.vitalis.model.User;
 import com.rocket.vitalis.repositories.AccessTokenRepository;
+import com.rocket.vitalis.repositories.FollowerRepository;
+import com.rocket.vitalis.repositories.MonitoringRepository;
 import com.rocket.vitalis.repositories.UserRepository;
 import com.rocket.vitalis.utils.PBKDF2Service;
 import org.hibernate.exception.ConstraintViolationException;
@@ -18,9 +22,11 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.UUID;
+import java.util.stream.StreamSupport;
 
 import static com.rocket.vitalis.utils.PBKDF2Service.createHash;
 import static com.rocket.vitalis.utils.PBKDF2Service.verifyPassword;
@@ -38,6 +44,12 @@ public class UserService {
 
     @Autowired
     private AccessTokenRepository accessTokenRepository;
+
+    @Autowired
+    private MonitoringRepository monitoringRepository;
+
+    @Autowired
+    private FollowerRepository followerRepository;
 
     private static final int TOKEN_TTL_IN_HS = 24;
 
@@ -157,5 +169,25 @@ public class UserService {
     public User getUser(Long userId){
         return userRepository.findOne(userId);
     }
+
+
+    public Collection<User> findPatientsLikeWithOutMonitoring(String userName){
+        /* Todos los usuarios */
+        Collection<User> users = userRepository.findByNameContainingIgnoreCase(userName);
+        Collection<User> collectionUsers = new ArrayList<User>();
+        users.forEach(collectionUsers::add);
+
+        /* Los usuarios que tienen monitoreos*/
+        Collection<SimpleMonitoring> monitorings = monitoringRepository.findByFinishDateIsNull();
+
+        for (User item : users) {
+            if (StreamSupport.stream(monitorings.spliterator(), false).anyMatch(miItem -> item.getId().equals(miItem.getPatient().getId())))
+                collectionUsers.remove(item);
+        }
+
+        return collectionUsers;
+    }
+
+
 
 }
