@@ -41,7 +41,6 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
                 var message = "Aceptaste la solicitud de " + requesterName + " para " + patientName;
                 Materialize.toast(message, 3500, '', function(){})
             });
-            // $('#modal1').closeModal();
         },
 
         rejectFollowRequest: function(){
@@ -56,7 +55,6 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
 
                 Materialize.toast(message, 3500, '', function(){})
             });
-            // $('#modal1').closeModal();
         }
 
     });

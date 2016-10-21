@@ -22,7 +22,14 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
 
         initialize: function(){
             this.collection.fetch();
-        }
+        },
 
+        childEvents: {
+            // This callback will be called whenever a child is rendered or emits a `render` event
+            destroy: function(child) {
+                this.collection.remove(child.model);
+            }
+        }
+  
     });
 });
