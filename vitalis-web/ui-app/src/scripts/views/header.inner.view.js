@@ -19,6 +19,15 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
             'click @ui.backButton': 'goBack'
         },
 
+        templateHelpers: function(){
+            var useBrandAsTitle = this.getOption('title') === undefined
+            var title = useBrandAsTitle ? "Vitalis" : this.getOption('title');
+            return {
+                useBrandAsTitle: useBrandAsTitle,
+                title: title
+            }
+        },
+
 
         goBack: function(a){
             if(window.history.state == null){

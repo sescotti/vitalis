@@ -86,4 +86,8 @@ public class RequestService {
         return request;
     }
 
+    public Request save(Request request){
+        return requestRepository.save(request);
+    }
+
 }

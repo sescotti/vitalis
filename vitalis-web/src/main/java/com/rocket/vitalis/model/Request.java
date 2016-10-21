@@ -8,6 +8,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.Date;
 
+import static com.rocket.vitalis.model.RequestStatus.PENDING;
+
 /**
  * Created by Sebastian on 25/9/2016.
  */
@@ -17,35 +19,30 @@ import java.util.Date;
 public class Request extends AbstractModel {
 
     @Column
-    @Getter
-    @Setter
+    @Getter @Setter
     private RequestStatus requestStatus;
 
     @Column
-    @Getter
-    @Setter
+    @Getter @Setter
     private Date requestDay;
 
     @Column
-    @Getter
-    @Setter
+    @Getter @Setter
     private Date completionDay;
 
     @ManyToOne
-    @Getter
-    @Setter
+    @Getter @Setter
     private User requestedBy;
 
     @ManyToOne
-    @Getter
-    @Setter
+    @Getter @Setter
     private Monitoring monitoring;
 
     public Request(User user, Monitoring monitoring) {
-        this.requestStatus = RequestStatus.PENDING;
-        this.requestDay = new Date();
-        this.requestedBy=user;
-        this.monitoring=monitoring;
+        this.monitoring     = monitoring;
+        this.requestedBy    = user;
+        this.requestDay     = new Date();
+        this.requestStatus  = PENDING;
     }
 
 }

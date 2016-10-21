@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -47,9 +48,9 @@ public class HomeController extends AbstractApiController {
         try {
 
             Monitoring monitoring = monitoringRepository.findByPatientId(user.getId());
-
+            List<Monitoring> monitorings = monitoring != null ? asList(monitoring) : Collections.<Monitoring>emptyList();
             // Devuelvo como una lista para poder reutilizar vistas
-            return new ResponseEntity<>(asList(monitoring), OK);
+            return new ResponseEntity<>(monitorings, OK);
 
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>("{\"error\": \"" + e.getMessage() + "\"}", BAD_REQUEST);

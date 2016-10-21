@@ -7,20 +7,23 @@ import com.rocket.vitalis.repositories.FollowerRepository;
 import com.rocket.vitalis.repositories.RequestRepository;
 import com.rocket.vitalis.services.RequestService;
 import com.rocket.vitalis.web.controller.api.AbstractApiController;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.Collection;
+
+import static com.rocket.vitalis.model.RequestStatus.REJECTED;
+import static com.rocket.vitalis.model.RequestStatus.ACCEPTED;
 import static org.springframework.http.HttpStatus.*;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 /**
  * Created by Ailin on 18/10/2016.
  */
 @Controller
-@RequestMapping(value ="/api/app/request", consumes = "application/json", produces = "application/json")
+@RequestMapping(value ="/api/app/request", produces = "application/json")
 public class RequestController extends AbstractApiController {
 
     @Autowired
@@ -66,14 +69,14 @@ public class RequestController extends AbstractApiController {
     }
 
 
-    @RequestMapping("/myPendingRequest")
+    @RequestMapping("/myPendingRequests")
     @ResponseBody
     public ResponseEntity<?> getMyPendingRequest(@ModelAttribute("user") User user){
         Iterable<SimpleRequest> request = requestService.findMyPendingRequest(user);
         return new ResponseEntity<>(request, OK);
     }
 
-    @RequestMapping("/pendingRequest")
+    @RequestMapping("/otherPendingRequests")
     @ResponseBody
     public ResponseEntity<?> getPendingRequest(@ModelAttribute("user") User user){
         Iterable<SimpleRequest> request = requestService.findPendingRequest(user);
@@ -81,26 +84,25 @@ public class RequestController extends AbstractApiController {
     }
 
 
-    @RequestMapping(method = POST, value = "/reponseRequest", consumes = "application/json", produces = "application/json")
-    public Object AcceptRequest(@ModelAttribute("user") User user, @RequestBody FollowerRequest followerRequest){
+    @RequestMapping(method = PUT, value = {"/myPendingRequests/{followRequestId}", "/otherPendingRequests/{followRequestId}"}, consumes = "application/json", produces = "application/json")
+    public ResponseEntity<?> solveRequest(@ModelAttribute("user") User user, @PathVariable("followRequestId") Long followRequestId, @RequestBody FollowerRequest followerRequest){
         try {
-            Boolean isAccepted = followerRequest.getAccepted();
-            Request modifyRequest = requestService.findRequest(followerRequest.getRequestId());
+            Boolean isAccepted = ACCEPTED.equals(followerRequest.getStatus());
+            Request modifyRequest = requestService.findRequest(followRequestId);
+
+            modifyRequest.setRequestStatus(followerRequest.getStatus());
 
             if (isAccepted){
                 /* Seteo el Estado del Request en ACEPTADO */
-                modifyRequest.setRequestStatus(RequestStatus.ACCEPTED);
 
                 /*Guardo en Follower*/
                 Follower newFollower =  new Follower(modifyRequest.getRequestedBy(), modifyRequest.getMonitoring());
                 followerRepository.save(newFollower);
             }
-            else
-            {
-                /* Seteo el Estado del Request en ACEPTADO */
-                modifyRequest.setRequestStatus(RequestStatus.REJECTED);
-            }
-            return requestRepository.save(modifyRequest);
+
+            Request request = requestRepository.save(modifyRequest);
+
+            return new ResponseEntity<>(request, OK);
 
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>("{\"error\": \"" + e.getMessage() + "\"}", BAD_REQUEST);

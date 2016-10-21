@@ -1,6 +1,7 @@
 package com.rocket.vitalis.web.controller.api;
 
 import com.rocket.vitalis.model.MeasurementType;
+import com.rocket.vitalis.model.RequestStatus;
 import com.rocket.vitalis.model.User;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -29,6 +30,13 @@ public class AbstractApiController {
             @Override
             public void setAsText(String text) throws IllegalArgumentException {
                 super.setValue(MeasurementType.fromString(text));
+            }
+        });
+
+        binder.registerCustomEditor(RequestStatus.class, new PropertyEditorSupport(){
+            @Override
+            public void setAsText(String text) throws IllegalArgumentException {
+                super.setValue(RequestStatus.fromString(text));
             }
         });
     }
