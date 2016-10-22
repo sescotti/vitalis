@@ -19,7 +19,7 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         },
 
         events:{
-            'click @ui.assignMonitoring': 'assignMonitoring',
+            'click @ui.assignMonitoringButton': 'assignMonitoring',
             'click @ui.deleteModuleButton': 'deleteModule',
             'click @ui.moreInfoButton': 'goToModule',
             'click @ui.confirmDeleteButton': 'confirmDelete'
@@ -35,7 +35,7 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
 
         assignMonitoring: function(){
             var moduleId = this.model.get('id');
-            Urls.go('vitalis:new-monitoring', [moduleId]);
+            Urls.go('vitalis:new_monitoring', [moduleId]);
         },
 
         deleteModule: function(){

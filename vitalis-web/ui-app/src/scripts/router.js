@@ -93,6 +93,13 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
         App.main.show(modulesPage);        
     }
 
+    controller.new_monitoring = function(moduleId){
+        var newMonitoringPage = new App.Vitalis.Views.NewMonitoringPage({model: new Vitalis.Models.Module({id: moduleId})});
+        var innerHeaderView = new App.Vitalis.Views.InnerHeader({title: "Nuevo monitoreo"});
+
+        App.header.show(innerHeaderView);
+        App.main.show(newMonitoringPage);
+    };
 
 
     /**
@@ -118,6 +125,7 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
     addRoute('requests');
     addRoute('new_request');
     addRoute('modules');
+    addRoute('new_monitoring');
 
     App.Vitalis.Router = Marionette.AppRouter.extend({
         'appRoutes': routes,

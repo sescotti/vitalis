@@ -8,13 +8,14 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         Header      = App.module('Header'),
         Vitalis     = App.module('Vitalis');
 
-    Views.NewFollowRequestPage = Marionette.LayoutView.extend({
-        template: App.Vitalis.templates.new_follow_request_page,
+    Views.UserSearchSingleSelectionModal = Marionette.LayoutView.extend({
+        template: App.Vitalis.templates.user_search_modal_single_selection_wrapper,
+        childViewContainer: "div#search-results",
 
         ui: {
             searchField: 'input#search',
             resetButton: 'i#reset-btn',
-            searchForm: 'form#search-form'
+            searchForm: 'form#search-form'            
         },
 
         events: {
@@ -28,12 +29,16 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         },
 
         onShow: function(){
-            var monitoringsList = new Vitalis.Models.MonitoringsSearchList();
+            var monitoringsList = new Vitalis.Models.UserSearchList();
             var searchResultsView = new App.Vitalis.Views.SearchMonitoringsResultsListView({collection: monitoringsList,
                                                                                             title: "Resultados de búsqueda"});
 
             this.collection = monitoringsList;
             this.getRegion('searchResults').show(searchResultsView);
+
+            $(document).ready(function(){
+                $('.modal').openModal();
+            });
         },
 
         search: function(e){

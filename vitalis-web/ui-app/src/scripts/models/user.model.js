@@ -8,4 +8,10 @@ App.module('Vitalis.Models', function (Models, App, Backbone, Marionette, $, _) 
         },
         url: '/api/app/user/profile'
     });
+
+
+    Models.UserSearchList =  Models.AbstractCollection.extend({
+    	url: "/api/app/users/search",
+    	model: Models.User
+    });
 });

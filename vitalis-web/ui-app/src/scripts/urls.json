@@ -9,6 +9,7 @@
     "vitalis:requests": "app/requests",
     "vitalis:new_request": "app/requests/new",
     "vitalis:modules": "app/modules",
+    "vitalis:new_monitoring": "app/modules/:moduleId/new_monitoring",
     "vitalis:measurements": "app/monitoring/:monitoringId/sensors/:measurementType"
   }
 }
