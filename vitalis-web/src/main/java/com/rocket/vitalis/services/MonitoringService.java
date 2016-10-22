@@ -4,6 +4,8 @@ import com.rocket.vitalis.dto.MeasurementDto;
 import com.rocket.vitalis.dto.MonitoringDto;
 import com.rocket.vitalis.dto.SensorDto;
 import com.rocket.vitalis.model.*;
+import com.rocket.vitalis.repositories.*;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.rocket.vitalis.repositories.FollowerRepository;
 import com.rocket.vitalis.repositories.MeasurementRepository;
 import com.rocket.vitalis.repositories.MonitoringRepository;
@@ -25,7 +27,6 @@ import java.util.stream.StreamSupport;
 //import static com.rocket.vitalis.model.MeasurementType.DIASTOLIC_PRESSURE;
 //import static com.rocket.vitalis.model.MeasurementType.SYSTOLIC_PRESSURE;
 import static java.util.Arrays.asList;
-import static java.util.stream.Collectors.toList;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 
 /**
@@ -42,6 +43,7 @@ public class MonitoringService {
 
     @Autowired private RequestRepository requestRepository;
     @Autowired private FollowerRepository followerRepository;
+    @Autowired private UserRepository userRepository;
 
     @Transactional
     public Monitoring findById(Long id){
@@ -84,8 +86,67 @@ public class MonitoringService {
         return collectionMonitorings;
     }
 
-    public Collection<Monitoring> getModuleMonitorings(Collection<Module> modules) {
-        List<Long> moduleIds = modules.stream().map(AbstractModel::getId).collect(toList());
-        return monitoringRepository.findAllByModuleId(moduleIds);
+    public Collection<SimpleFollower> findMonitoringByUser(User user){
+        Collection<SimpleFollower> monitorings = followerRepository.findByUser(user);
+        return monitorings;
     }
+
+    public Collection<MeasurementType> getMonitoringSensors(Long monitoringId){
+        Monitoring monitoring = monitoringRepository.findOne(monitoringId);
+        Collection<Sensor> sensorCollection = monitoring.getSensors() ;
+        Collection<MeasurementType> measurementTypes = new ArrayList<MeasurementType>();
+        sensorCollection.forEach(item -> measurementTypes.add(item.getMeasurementType()));
+        return measurementTypes;
+    }
+
+    public Collection<User> findUsersLikeNotFollowers(Long montoringId, String userName){
+        /* Todos los usuarios */
+        Collection<User> users = userRepository.findByNameContainingIgnoreCase(userName);
+        Collection<User> collectionUsers = new ArrayList<User>();
+        users.forEach(collectionUsers::add);
+
+        /* Los usuarios que tienen monitoreos*/
+        Collection<Follower> followers = followerRepository.findByMonitoringId(montoringId);
+
+        for (User item : users) {
+            if (StreamSupport.stream(followers.spliterator(), false).anyMatch(miItem -> item.getId().equals(miItem.getUser().getId())))
+                collectionUsers.remove(item);
+        }
+        return collectionUsers;
+    }
+
+    public Collection<Follower> getFollowers(Long monitoringId){
+        Collection<Follower> followers = followerRepository.findByMonitoringId(monitoringId);
+        return followers;
+    }
+
+    public Follower addFollower(Long monitoringId, Long userId){
+        User user = userRepository.findOne(userId);
+        Monitoring monitoring = monitoringRepository.findOne(monitoringId);
+        Follower follower = new Follower(user, monitoring);
+        followerRepository.save(follower);
+        return  follower;
+    }
+
+    public Follower modifyFollower(Long followerId, Boolean isAdmin){
+        Follower follower = followerRepository.findOne(followerId);
+        follower.setIsAdmin(isAdmin);
+        followerRepository.save(follower);
+        return  follower;
+    }
+
+    public Follower deleteFollower(Long followerId){
+        Follower follower = followerRepository.findOne(followerId);
+        follower.setIsAdmin(!(follower.getIsAdmin()));
+        followerRepository.delete(follower);
+        return  follower;
+    }
+
+    public Monitoring finishMonitoring(Long monitoringId){
+        Monitoring monitoring = monitoringRepository.findOne(monitoringId);
+        monitoring.setFinishDate(new Date());
+        monitoringRepository.save(monitoring);
+        return monitoring;
+    }
+
 }

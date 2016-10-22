@@ -35,19 +35,23 @@ public class Alert extends AbstractModel {
     @Getter @Setter
     private double to;
 
-    /*
-    DEBE ESTAR RELACIONADO CON Monitoring, relación *-1
-    */
     @ManyToOne
     @Getter @Setter
     private Monitoring monitoring;
 
-    /*
-    DEBE ESTAR RELACIONADO CON User, relación *-1
-    */
     @ManyToOne
     @Getter @Setter
     private User createdBy;
 
+    public Alert(){}
+
+    public Alert(MeasurementType measurementType, Monitoring monitoring,User user, Double from, Double to ){
+        this.measurementType = measurementType;
+        this.monitoring = monitoring;
+        this.creationDay = new Date();
+        this.createdBy = user;
+        this.from = from;
+        this.to = to;
+    }
 
 }
