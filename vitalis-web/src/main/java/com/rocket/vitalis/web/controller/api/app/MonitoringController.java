@@ -80,6 +80,22 @@ public class MonitoringController extends AbstractApiController {
         return new ResponseEntity<>(followers, OK);
     }
 
+    @RequestMapping("/{monitoringId}/sensors")
+    @ResponseBody
+    public ResponseEntity<?> getSensors(@ModelAttribute("user") User user,
+                                          @PathVariable("monitoringId") Long monitoringId){
+        Collection<MeasurementType> measurementTypes = monitoringService.getMonitoringSensors(monitoringId);
+        return new ResponseEntity<>(measurementTypes, OK);
+    }
+
+
+    @RequestMapping("/following")
+    @ResponseBody
+    public ResponseEntity<?> getFollowings(@ModelAttribute("user") User user){
+        Collection<SimpleFollower> monitorings = monitoringService.findMonitoringByUser(user);
+        return new ResponseEntity<>(monitorings, OK);
+    }
+
     @RequestMapping(method = POST, value = "/{monitoringId}/addFollower/{UserId}", produces = "application/json")
     public ResponseEntity<?> addFollower(@ModelAttribute("user") User user,
                                             @PathVariable("monitoringId") Long monitoringId,
