@@ -189,5 +189,11 @@ public class UserService {
     }
 
 
+    public User setDoctor(Long userId){
+        User user = userRepository.findOne(userId);
+        user.setIsDoctor(true);
+        userRepository.save(user);
+        return user;
+    }
 
 }
