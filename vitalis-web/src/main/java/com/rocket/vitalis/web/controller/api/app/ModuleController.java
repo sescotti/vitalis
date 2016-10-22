@@ -4,6 +4,7 @@ import com.rocket.vitalis.dto.FollowingRequest;
 import com.rocket.vitalis.dto.ModuleRequest;
 import com.rocket.vitalis.model.*;
 import com.rocket.vitalis.services.ModuleService;
+import com.rocket.vitalis.services.MonitoringService;
 import com.rocket.vitalis.web.controller.api.AbstractApiController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,20 +22,24 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
  * Created by Ailin on 20/10/2016.
  */
 @Controller
-@RequestMapping(value ="/api/app/module")
+@RequestMapping(value ="/api/app/modules")
 public class ModuleController extends AbstractApiController {
 
     @Autowired
     private ModuleService moduleService;
 
-    @RequestMapping("/getModules")
+    @Autowired
+    private MonitoringService monitoringService;
+
+    @RequestMapping("/")
     @ResponseBody
     public ResponseEntity<?> getModules(@ModelAttribute("user") User user){
         Collection<Module> modules = moduleService.findModules(user);
+
         return new ResponseEntity<>(modules, OK);
     }
 
-    @RequestMapping(method = POST, value = "/addModule", consumes = "application/json", produces = "application/json")
+    @RequestMapping(method = POST, value = "/", consumes = "application/json", produces = "application/json")
     public ResponseEntity<?> addModule(@ModelAttribute("user") User user,
                               @RequestBody ModuleRequest request){
         try {
@@ -48,14 +53,14 @@ public class ModuleController extends AbstractApiController {
     }
 
 
-    @RequestMapping("/getModule/{moduleId}")
+    @RequestMapping("/{moduleId}")
     @ResponseBody
     public ResponseEntity<?> getModule(@ModelAttribute("user") User user, @PathVariable("moduleId") Long moduleId){
         Module module = moduleService.getModule(moduleId);
         return new ResponseEntity<>(module, OK);
     }
 
-    @RequestMapping("/getModule/{moduleId}/monitoring")
+    @RequestMapping("/{moduleId}/monitorings")
     @ResponseBody
     public ResponseEntity<?> getMonitoring(@ModelAttribute("user") User user, @PathVariable("moduleId") Long moduleId){
         Monitoring monitoring = moduleService.getMonitoring(moduleId);

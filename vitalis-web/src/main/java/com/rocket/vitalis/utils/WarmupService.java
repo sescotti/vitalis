@@ -2,6 +2,7 @@ package com.rocket.vitalis.utils;
 
 import com.rocket.vitalis.model.*;
 import com.rocket.vitalis.repositories.*;
+import com.rocket.vitalis.services.ModuleService;
 import com.rocket.vitalis.services.RequestService;
 import com.rocket.vitalis.utils.PBKDF2Service;
 import com.rocket.vitalis.utils.VitalisUtils;
@@ -37,6 +38,7 @@ public class WarmupService {
     @Autowired  private MeasurementRepository   measurementRepository;
     @Autowired  private FollowerRepository      followerRepository;
     @Autowired  private RequestRepository       requestRepository;
+    @Autowired  private ModuleService           moduleService;
 
     public void initApplicationData(){
 
@@ -76,6 +78,13 @@ public class WarmupService {
 
         followerRepository.save(followers);
         requestRepository.save(followRequests);
+
+        registerModule(sancho);
+    }
+
+    private void registerModule(User owner) {
+        String serialNumber = UUID.randomUUID().toString().replace("-","").substring(10);
+        moduleService.addModule(owner, serialNumber);
     }
 
     private Follower createFollower(User user, Monitoring monitoring) {

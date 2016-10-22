@@ -103,6 +103,23 @@ p.active {
     font-size: inherit;
 }
 
+.valign-bottom {
+    vertical-align: bottom;
+}
+
 .btn-secondary {
     background-color: #dfdfdf;
+}
+
+i.material-icons+span {
+    padding-left: 10px;
+}
+
+a {
+   color: rgba(0, 0, 0, 0.87);
+}
+
+.modal-action {
+    cursor: pointer;
+    cursor: hand;
 }

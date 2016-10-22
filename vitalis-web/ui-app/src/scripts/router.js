@@ -85,6 +85,14 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
         App.main.show(newFollowRequestPage);
     };
 
+    controller.modules = function(){
+        var modulesPage = new App.Vitalis.Views.ModulesPage();
+        var innerHeaderView = new App.Vitalis.Views.InnerHeader({title: "Mis módulos"});
+
+        App.header.show(innerHeaderView);
+        App.main.show(modulesPage);        
+    }
+
 
 
     /**
@@ -109,6 +117,7 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
     addRoute('monitoring');
     addRoute('requests');
     addRoute('new_request');
+    addRoute('modules');
 
     App.Vitalis.Router = Marionette.AppRouter.extend({
         'appRoutes': routes,

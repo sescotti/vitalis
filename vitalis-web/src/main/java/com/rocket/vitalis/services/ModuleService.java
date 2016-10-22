@@ -34,8 +34,7 @@ public class ModuleService {
     private FollowerRepository followerRepository;
 
     public Collection<Module> findModules(User user){
-        Collection<Module> modules = moduleRepository.findByRegisteredBy(user);
-        return modules;
+        return moduleRepository.findByOwner(user);
     }
 
     public Module addModule(User user, String serial){

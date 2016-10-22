@@ -25,6 +25,7 @@ import java.util.stream.StreamSupport;
 //import static com.rocket.vitalis.model.MeasurementType.DIASTOLIC_PRESSURE;
 //import static com.rocket.vitalis.model.MeasurementType.SYSTOLIC_PRESSURE;
 import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toList;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 
 /**
@@ -83,4 +84,8 @@ public class MonitoringService {
         return collectionMonitorings;
     }
 
+    public Collection<Monitoring> getModuleMonitorings(Collection<Module> modules) {
+        List<Long> moduleIds = modules.stream().map(AbstractModel::getId).collect(toList());
+        return monitoringRepository.findAllByModuleId(moduleIds);
+    }
 }
