@@ -42,5 +42,4 @@ public class UserController extends AbstractApiController{
         return new ResponseEntity<>(users, OK);
     }
 
-
 }

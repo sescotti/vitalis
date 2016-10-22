@@ -82,6 +82,19 @@ public class MonitoringService {
         return collectionMonitorings;
     }
 
+    public Collection<SimpleFollower> findMonitoringByUser(User user){
+        Collection<SimpleFollower> monitorings = followerRepository.findByUser(user);
+        return monitorings;
+    }
+
+    public Collection<MeasurementType> getMonitoringSensors(Long monitoringId){
+        Monitoring monitoring = monitoringRepository.findOne(monitoringId);
+        Collection<Sensor> sensorCollection = monitoring.getSensors() ;
+        Collection<MeasurementType> measurementTypes = new ArrayList<MeasurementType>();
+        sensorCollection.forEach(item -> measurementTypes.add(item.getMeasurementType()));
+        return measurementTypes;
+    }
+
     public Collection<User> findUsersLikeNotFollowers(Long montoringId, String userName){
         /* Todos los usuarios */
         Collection<User> users = userRepository.findByNameContainingIgnoreCase(userName);
