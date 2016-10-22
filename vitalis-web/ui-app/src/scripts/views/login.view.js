@@ -39,7 +39,7 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
             console.log('show login');
             $(document).ready(function() {
                 Materialize.updateTextFields();
-
+                $('.modal').closeModal();
                 //$('form.container').validate({
                 //    rules: {
                 //        email: {

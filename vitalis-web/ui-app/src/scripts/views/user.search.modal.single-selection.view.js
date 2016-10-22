@@ -15,7 +15,7 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         ui: {
             searchField: 'input#search',
             resetButton: 'i#reset-btn',
-            searchForm: 'form#search-form'            
+            searchForm: 'form#search-form'
         },
 
         events: {
@@ -32,6 +32,10 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
             var monitoringsList = new Vitalis.Models.UserSearchList();
             var searchResultsView = new App.Vitalis.Views.SearchMonitoringsResultsListView({collection: monitoringsList,
                                                                                             title: "Resultados de búsqueda"});
+            var self = this;
+            searchResultsView.on('add:user', function(args){
+                self.trigger('add:user', args);
+            })
 
             this.collection = monitoringsList;
             this.getRegion('searchResults').show(searchResultsView);
@@ -45,7 +49,9 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
             var searchQuery = e.target.value;
             var self = this;
             if(searchQuery.length > 3){
-                this.collection.fetch({data: $.param({query: searchQuery})});
+                this.collection.fetch({data: $.param({  query: searchQuery,
+                                                        exclude_with_monitoring: true})
+                                                    });
             } else {
                 this.collection.reset();
             }

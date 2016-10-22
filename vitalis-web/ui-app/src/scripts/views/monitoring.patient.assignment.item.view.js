@@ -8,30 +8,23 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
 
     Views.MonitoringPatientAssignmentItemView = Marionette.ItemView.extend({
         template: App.Vitalis.templates.user_search_result_item,
-        
+
         ui: {
-            addButton: 'button[data-role="add"]'
+            addButton: 'button[data-role="add"]',
+            deleteButton: 'button[data-role="delete"]',
         },
 
-        events:{
-            'click @ui.addButton': 'addUser'
+        triggers:{
+            'click @ui.addButton': 'add:user',
+            'click @ui.deleteButton': 'remove:user'
         },
 
-        addUser: function(event){
-            var userId = this.model.get("id");
-
-            
-            var request = new Vitalis.Models.NewFollowRequest({monitoring_id: monitoringId});
-            var followButton = event.target;
-
-            request.save().then(function(){
-                Materialize.toast("Solicitud enviada", 3500, '', function(){})
-
-                var i = $(followButton).text('check');
-                // $(followButton).text('Solicitud enviada');
-                $(followButton).parent().prop('disabled', true);
-            });
-            
+        templateHelpers: function(){
+            var role = this.getOption('role');
+            return {
+                role: role
+            };
         }
+
     });
 });

@@ -25,12 +25,12 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         },
 
         assignPatient: function(){
-
             var searchUsersModal = new Vitalis.Views.UserSearchSingleSelectionModal();
-
+            var self = this;
+            searchUsersModal.on('add:user', function(args){
+                self.trigger('add:user', args.model);
+            });
             this.getRegion('searchUsersContainer').show(searchUsersModal);
-
-            // $(this.ui.searchUsersModal).openModal();
         }
     });
 });

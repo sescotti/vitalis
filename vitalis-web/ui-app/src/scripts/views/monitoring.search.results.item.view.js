@@ -30,7 +30,7 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
                 // $(followButton).text('Solicitud enviada');
                 $(followButton).parent().prop('disabled', true);
             });
-            
+
         }
     });
 });

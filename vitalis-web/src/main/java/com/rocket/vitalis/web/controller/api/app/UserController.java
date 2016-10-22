@@ -5,7 +5,6 @@ import com.rocket.vitalis.model.User;
 import com.rocket.vitalis.services.UserService;
 import com.rocket.vitalis.web.controller.api.AbstractApiController;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +17,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 /**
  * Created by sscotti on 10/9/16.
  */
-@RequestMapping("/api/app/user")
+@RequestMapping("/api/app/users")
 @Controller
 public class UserController extends AbstractApiController{
 
@@ -36,9 +35,18 @@ public class UserController extends AbstractApiController{
 
     @RequestMapping("/search")
     @ResponseBody
-    public ResponseEntity<?> getPatientsLikeWithOutMonitoring(@ModelAttribute("user") User user,
-                                             @RequestParam("query") String query){
-        Collection<User> users = userService.findPatientsLikeWithOutMonitoring(query);
+    public ResponseEntity<?> searchPatientsWithoutMonitoring(
+                                            @ModelAttribute("user") User user,
+                                            @RequestParam("query") String query,
+                                            @RequestParam(value = "exclude_with_monitoring", required = false) boolean excludeWithMonitoring
+                                                             ){
+        Collection<User> users;
+        if(excludeWithMonitoring){
+            users = userService.searchPatientsWithoutMonitoring(query);
+        } else {
+            users = userService.searchPatientsWithoutMonitoring(query);
+        }
+
         return new ResponseEntity<>(users, OK);
     }
 
