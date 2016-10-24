@@ -54,6 +54,12 @@ public class ModuleService {
         return module;
     }
 
+    public Module deleteModule(Long moduleId){
+        Module module = moduleRepository.findOne(moduleId);
+        moduleRepository.delete(module);
+        return module;
+    }
+
 
     public Monitoring initMonitoring(Long moduleId, MonitoringRequest.PatientDto patientId,  Collection<MonitoringRequest.FollowerDto> followers,
                                      Collection<MonitoringRequest.SensorDto> sensors ){
