@@ -2,7 +2,7 @@
 # Created by https://www.gitignore.io/api/maven,intellij,java,node,sass
 
 ### Gulp ###
-ui-build/ 
+#ui-build/ 
 
 
 ### Maven ###
