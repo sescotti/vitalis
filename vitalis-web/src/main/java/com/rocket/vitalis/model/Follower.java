@@ -37,6 +37,13 @@ public class Follower extends AbstractModel {
         this.monitoring= monitoring;
     }
 
+    public Follower(User user, Monitoring monitoring, boolean isAdmin){
+        this.followerType = FollowerType.RELATIVE;
+        this.isAdmin=isAdmin;
+        this.user=user;
+        this.monitoring= monitoring;
+    }
+
     public Follower(){
     }
 }

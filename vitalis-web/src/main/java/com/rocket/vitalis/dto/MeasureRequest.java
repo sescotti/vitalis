@@ -10,6 +10,6 @@ import lombok.Data;
 public class MeasureRequest {
     private Long idModule;
     private String measureDate;
-    private String measureName;
+    private MeasurementType measureName;
     private Double value;
 }

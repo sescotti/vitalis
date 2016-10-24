@@ -9,6 +9,7 @@ import com.rocket.vitalis.model.Monitoring;
 import com.rocket.vitalis.model.MeasurementType;
 import com.rocket.vitalis.model.User;
 import com.rocket.vitalis.model.Module;
+import com.rocket.vitalis.web.controller.api.AbstractApiController;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @RestController
 @RequestMapping(value = "/api/measures", consumes = "application/json", produces = "application/json")
 @Log4j
-public class MeasureController {
+public class MeasureController  extends AbstractApiController {
     @Autowired
     private MeasurementRepository measurementRepository;
     @Autowired
@@ -58,7 +59,7 @@ public class MeasureController {
 
 
         /*Get measureType from string */
-        MeasurementType measurementType = MeasurementType.fromString(request.getMeasureName());
+        //MeasurementType measurementType = MeasurementType.fromString(request.getMeasureName());
 
         /* Get Date from string */
         Date measureDate = null;
@@ -70,7 +71,7 @@ public class MeasureController {
         }
 
         /* Create new MEASURE */
-        Measurement measure = new Measurement(monitoring,measureDate,measurementType, request.getValue());
+        Measurement measure = new Measurement(monitoring,measureDate,request.getMeasureName(), request.getValue());
         return measurementRepository.save(measure);
     }
 

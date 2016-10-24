@@ -37,10 +37,11 @@ public class Monitoring extends AbstractModel {
     @Getter @Setter
     private Collection<Sensor> sensors;
 
-    public Monitoring (Module module, User user){
+    public Monitoring (Module module, User user, Collection<Sensor> sensors){
         this.startDate = new Date();
         this.module = module;
         this.patient = user;
+        this.sensors  = sensors;
     }
 
     public Monitoring(){}
