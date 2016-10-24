@@ -2,8 +2,11 @@ package com.rocket.vitalis.dto;
 
 import com.rocket.vitalis.model.Module;
 import com.rocket.vitalis.model.Monitoring;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import com.rocket.vitalis.model.User;
+import lombok.*;
+
+import javax.persistence.Column;
+import javax.persistence.ManyToOne;
 
 /**
  * Created by sscotti on 10/21/16.
@@ -12,7 +15,11 @@ import lombok.Data;
 @AllArgsConstructor
 public class ModuleDto {
 
-    private Module module;
-    private Monitoring monitoring;
+    private String serialNumber;
+    private UserDto owner;
 
+    public ModuleDto(Module module){
+        this.serialNumber = module.getSerialNumber();
+        this.owner = new UserDto(module.getOwner());
+    }
 }

@@ -11,7 +11,7 @@ App.module('Vitalis.Models', function (Models, App, Backbone, Marionette, $, _) 
 
         url: function(){
             var moduleId = this.get('module_id');
-            return '/api/app/'+ moduleId + '/monitorings';
+            return '/api/app/modules/'+ moduleId + '/monitorings';
         }
     });
 

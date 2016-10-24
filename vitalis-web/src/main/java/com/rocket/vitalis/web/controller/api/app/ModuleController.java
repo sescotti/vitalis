@@ -70,7 +70,8 @@ public class ModuleController extends AbstractApiController {
                                             @PathVariable("moduleId") Long moduleId,
                                             @RequestBody MonitoringRequest request){
         try {
-            Monitoring monitoring= moduleService.initMonitoring(moduleId,request.getPatient(), request.getFollowers(), request.getSensors());
+            MonitoringRequest.PatientDto patient = request.getPatient().iterator().next();
+            Monitoring monitoring= moduleService.initMonitoring(moduleId, patient, request.getFollowers(), request.getSensors());
             return new ResponseEntity<>(monitoring, OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>("{\"error\": \"" + e.getMessage() + "\"}", BAD_REQUEST);

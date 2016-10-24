@@ -21,10 +21,9 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         goToMonitoring: function(){
             var monitoringId = this.model.get("monitoring_id");
             var measurementType = this.model.get("measurement_type");
-
-            Urls.go('vitalis:measurements', [monitoringId, measurementType]);
-        },
-
-
+            if(this.model.get('last_value')){
+                Urls.go('vitalis:measurements', [monitoringId, measurementType]);
+            }
+        }
     });
 });

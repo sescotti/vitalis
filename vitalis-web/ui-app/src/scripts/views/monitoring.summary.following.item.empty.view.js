@@ -18,8 +18,8 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
             'click @ui.emptyCard': 'sendRequest'
         },
 
-        registerModule: function(){
-            Urls.go('vitalis:requests');
+        sendRequest: function(){
+            Urls.go('vitalis:new_request');
         }
     });
 });

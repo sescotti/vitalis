@@ -44,8 +44,8 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
 
         confirmDelete: function(){
             var serialNumber = this.model.get("serial_number");
+            $('.modal').closeModal();
             this.model.destroy().then(function(){
-                $('#options-modal').closeModal();
                 var message = "Eliminaste el módulo " + serialNumber;
                 Materialize.toast(message, 3500, '', function(){});
             });

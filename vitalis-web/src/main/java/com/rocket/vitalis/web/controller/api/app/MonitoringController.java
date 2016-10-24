@@ -1,6 +1,7 @@
 package com.rocket.vitalis.web.controller.api.app;
 
 import com.rocket.vitalis.dto.AdminFollowerRequest;
+import com.rocket.vitalis.dto.MonitoringDto;
 import com.rocket.vitalis.model.*;
 import com.rocket.vitalis.repositories.FollowerRepository;
 import com.rocket.vitalis.services.MonitoringService;
@@ -38,10 +39,11 @@ public class MonitoringController extends AbstractApiController {
     @ResponseBody
     public ResponseEntity<?> getPatientStatus(@ModelAttribute("user") User user,
                                               @PathVariable("monitoringId") Long monitoringId){
-//        MonitoringDto monitoring = monitoringService.findById(monitoringId);
         Monitoring monitoring = monitoringService.findById(monitoringId);
 
-        return new ResponseEntity<>(monitoring, OK);
+        MonitoringDto monitoringDto = new MonitoringDto(monitoring);
+
+        return new ResponseEntity<>(monitoringDto, OK);
     }
 
     @RequestMapping("/patientstatus/{monitoringId}/sensors/{measurementType}")

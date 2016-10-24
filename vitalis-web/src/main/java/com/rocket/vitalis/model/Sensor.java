@@ -35,6 +35,9 @@ public class Sensor extends AbstractModel {
     private Double lastValueSecondary;
 
 
+    // Required by Hibernate
+    protected Sensor(){}
+
     public Sensor(MeasurementType measurementType,SensorStatus status){
         this.measurementType= measurementType;
         this.status =  status;
