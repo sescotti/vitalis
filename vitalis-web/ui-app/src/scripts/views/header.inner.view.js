@@ -12,14 +12,15 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         template: App.Vitalis.templates.header.inner,
 
         ui: {
-             backButton: 'a[data-role="back-btn"]',
-             secondaryActionButton: 'a[data-role="secondary-action"]'
-
+            backButton: 'a[data-role="back-btn"]',
+            secondaryActionButton: 'a[data-role="secondary-action"]',
+            menuOption: 'li[data-role^="menu-"]'
         },
 
         events:{
             'click @ui.backButton': 'goBack',
-            'click @ui.secondaryActionButton': 'executeSecondaryAction'
+            'click @ui.secondaryActionButton': 'executeSecondaryAction',
+            'click @ui.menuOption' : 'executeMenuAction'
         },
 
         templateHelpers: function(){
@@ -28,10 +29,10 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
             return {
                 useBrandAsTitle: useBrandAsTitle,
                 title: title,
-                secondary_action: this.getOption('secondary_action')
+                secondary_action: this.getOption('secondary_action'),
+                menu: this.getOption('menu')
             }
         },
-
 
         goBack: function(a){
             if(window.history.state == null){
@@ -45,6 +46,19 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         executeSecondaryAction: function(event){
             var secondaryActionOption = this.getOption('secondary_action');
             secondaryActionOption.action(event);
+        },
+
+        executeMenuAction: function(event){
+            var trigger = event.target;
+            var menuOptions = this.getOption('menu');
+            for(var index in menuOptions.options){
+                var option = menuOptions.options[index];
+                if(option.id == [trigger.id]){
+                    option.action(event);
+                    break;
+                }
+            }
         }
+
     });
 });

@@ -14,13 +14,39 @@
             {{else}}
                 <a class="nav-title">{{title}}</a>
             {{/if}}
+
+            {{#if  (or secondary_action menu )}}
             <ul class="right">
+            {{/if}}
+                {{#if secondary_action}}
                 <li>
                     <a href="#" data-role="secondary-action">
                         <i class="material-icons">{{secondary_action.icon}}</i>
                     </a>
                 </li>
+                {{else if menu}}
+                <li>
+                    <a href="#" data-activates='menu-dropdown' class="dropdown-button" data-constrainwidth="false" data-beloworigin="true">
+                        <i class="material-icons">more_vert</i>
+                    </a>
+
+                    <ul id='menu-dropdown' class='dropdown-content'>
+                        {{#each menu.options}}
+                            <li data-role="menu-{{id}}"><a href="#!" id="{{id}}">{{label}}</a></li>
+                        {{/each}}
+                    </ul>
+
+                </li>
+
+                {{/if}}
+            {{#if  (or secondary_action menu )}}
             </ul>
+            {{/if}}
+
+
+
+
+
         </div>
     </nav>
 </div>

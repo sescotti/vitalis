@@ -1,6 +1,8 @@
 App.module('Vitalis.Models', function (Models, App, Backbone, Marionette, $, _) {
 
-    Models.Monitoring = Models.AbstractModel.extend({});
+    Models.Monitoring = Models.AbstractModel.extend({
+        url: '/api/app/monitoring'
+    });
 
     Models.MonitoringsList = Models.AbstractCollection.extend({
         model: Models.Monitoring,

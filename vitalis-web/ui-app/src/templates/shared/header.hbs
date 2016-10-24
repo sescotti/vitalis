@@ -3,15 +3,15 @@
         <div class="userView row">
 
             <div class="col s9 m9 l9">
-                <img class="background" src="/img/navbar-background.png">        
+                <img class="background" src="/img/navbar-background.png">
                 <a href="#!user"><img class="circle" src="{{ picture_url }}"></a>
                 <a href="#!name"><span class="white-text name">{{ name }}</span></a>
                 <a href="#!email"><span class="white-text email">{{ email }}</span></a>
             </div>
             <div class="col s3 m3 l3" id="logout-div">
-                <a href="#!email"><i class="white-text material-icons">exit_to_app</i></a>
+                <a href="#!email" data-role="navbar-link" data-link="vitalis:logout"><i class="white-text material-icons">exit_to_app</i></a>
             </div>
-        
+
 
     </div></li>
     <li><a href="#!" data-role="navbar-link" data-link="vitalis:home"><i class="material-icons">home</i>Página principal</a></li>

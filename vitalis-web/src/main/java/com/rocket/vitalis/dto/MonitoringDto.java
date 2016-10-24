@@ -19,7 +19,7 @@ import static java.util.stream.Collectors.toList;
  * Created by sscotti on 10/19/16.
  */
 @Data
-public class MonitoringDto {
+public class MonitoringDto extends AbstractDto {
 
     private Date startDate;
 
@@ -31,13 +31,17 @@ public class MonitoringDto {
 
     private Collection<SensorDto> sensors;
 
-    public MonitoringDto(){ }
+    public MonitoringDto(){
+        super();
+    }
 
     public MonitoringDto(Monitoring monitoring) {
+        super(monitoring);
         this.startDate = monitoring.getStartDate();
         this.finishDate = monitoring.getFinishDate();
         this.module = monitoring.getModule() != null ? new ModuleDto(monitoring.getModule()) : null;
         this.patient = new UserDto(monitoring.getPatient());
         this.sensors = monitoring.getSensors().stream().map(SensorDto::new).collect(toList());
     }
+
 }
