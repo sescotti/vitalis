@@ -14,4 +14,5 @@ public interface FollowerRepository extends CrudRepository<Follower, Long> {
         Collection<SimpleFollower> findByUser(User user);
         Collection<Follower> findByUserAndIsAdminTrue(User user);
         Collection<Follower> findByMonitoringId(Long monitoringId);
+        Collection<SimpleFollower> findByUserAndMonitoringFinishDateIsNull(User user);
 }

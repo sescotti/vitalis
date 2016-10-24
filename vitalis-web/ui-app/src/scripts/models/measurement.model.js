@@ -10,7 +10,7 @@ App.module('Vitalis.Models', function (Models, App, Backbone, Marionette, $, _) 
             var monitoringId = this.models[0].get('monitoringId');
             var measurementType = this.models[0].get('measurementType');
 
-            return '/api/app/monitoring/patientstatus/'+ monitoringId + '/sensors/' + measurementType;
+            return '/api/app/monitorings/'+ monitoringId + '/sensors/' + measurementType;
         }
     });
 });

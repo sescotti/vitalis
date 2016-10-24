@@ -14,28 +14,20 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
  * Created by sscotti on 10/10/16.
  */
 @Controller
-@RequestMapping("/api/app/monitoring")
+@RequestMapping("/api/app/monitorings")
 public class MonitoringController extends AbstractApiController {
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private MonitoringService monitoringService;
 
-    @Autowired
-	private FollowerRepository followerRepository;
-
-    @RequestMapping("/patientstatus/{monitoringId}")
+    @GetMapping("/{monitoringId}")
     @ResponseBody
     public ResponseEntity<?> getPatientStatus(@ModelAttribute("user") User user,
                                               @PathVariable("monitoringId") Long monitoringId){
@@ -46,7 +38,7 @@ public class MonitoringController extends AbstractApiController {
         return new ResponseEntity<>(monitoringDto, OK);
     }
 
-    @RequestMapping("/patientstatus/{monitoringId}/sensors/{measurementType}")
+    @RequestMapping("/{monitoringId}/sensors/{measurementType}")
     @ResponseBody
     public ResponseEntity<?> getMeasurements(@ModelAttribute("user") User user,
                                               @PathVariable("monitoringId") Long monitoringId,
@@ -94,7 +86,7 @@ public class MonitoringController extends AbstractApiController {
     @RequestMapping("/following")
     @ResponseBody
     public ResponseEntity<?> getFollowings(@ModelAttribute("user") User user){
-        Collection<SimpleFollower> monitorings = monitoringService.findMonitoringByUser(user);
+        Collection<SimpleFollower> monitorings = monitoringService.findActiveMonitoringsFollowedByUser(user);
         return new ResponseEntity<>(monitorings, OK);
     }
 
@@ -141,18 +133,17 @@ public class MonitoringController extends AbstractApiController {
         }
     }
 
-    @RequestMapping(method = POST, value = "/{monitoringId}/finishMonitoring", produces = "application/json")
+    @DeleteMapping("/{monitoringId}")
     public ResponseEntity<?> finishMonitoring(@ModelAttribute("user") User user,
                                               @PathVariable("monitoringId") Long monitoringId){
         try {
-            Monitoring monitoring= monitoringService.finishMonitoring(monitoringId);
-            return new ResponseEntity<>(monitoring, OK);
+            monitoringService.finishMonitoring(monitoringId);
+            return new ResponseEntity<>(NO_CONTENT);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>("{\"error\": \"" + e.getMessage() + "\"}", BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity<>("{\"error\": \"internal_server_error\"}", INTERNAL_SERVER_ERROR);
         }
     }
-
 
 }

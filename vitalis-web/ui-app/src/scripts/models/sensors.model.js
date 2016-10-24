@@ -8,7 +8,7 @@ App.module('Vitalis.Models', function (Models, App, Backbone, Marionette, $, _) 
 
     Models.Sensors = Models.AbstractCollection.extend({
         model: Models.Sensor,
-        url: '/api/app/home/monitoring/'
+        url: '/api/app/home/monitorings/'
     });
 
     Models.AvailableSensors = Models.AbstractCollection.extend({

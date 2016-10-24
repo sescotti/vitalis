@@ -86,8 +86,8 @@ public class MonitoringService {
         return collectionMonitorings;
     }
 
-    public Collection<SimpleFollower> findMonitoringByUser(User user){
-        Collection<SimpleFollower> monitorings = followerRepository.findByUser(user);
+    public Collection<SimpleFollower> findActiveMonitoringsFollowedByUser(User user){
+        Collection<SimpleFollower> monitorings = followerRepository.findByUserAndMonitoringFinishDateIsNull(user);
         return monitorings;
     }
 
@@ -149,4 +149,7 @@ public class MonitoringService {
         return monitoring;
     }
 
+    public Monitoring findActiveMonitoringByUser(User user) {
+        return monitoringRepository.findByPatientIdAndFinishDateIsNull(user.getId());
+    }
 }

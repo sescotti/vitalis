@@ -7,6 +7,7 @@ import com.rocket.vitalis.model.SimpleMonitoring;
 import com.rocket.vitalis.model.User;
 import com.rocket.vitalis.repositories.FollowerRepository;
 import com.rocket.vitalis.repositories.MonitoringRepository;
+import com.rocket.vitalis.services.MonitoringService;
 import com.rocket.vitalis.web.controller.api.AbstractApiController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -30,7 +32,7 @@ import static org.springframework.http.HttpStatus.*;
 @RequestMapping("/api/app/home")
 public class HomeController extends AbstractApiController {
 
-    @Autowired  private FollowerRepository      followerRepository;
+    @Autowired  private MonitoringService       monitoringService;
     @Autowired  private MonitoringRepository    monitoringRepository;
 
     @RequestMapping("/index")
@@ -47,11 +49,12 @@ public class HomeController extends AbstractApiController {
 
         try {
 
-            Monitoring monitoring = monitoringRepository.findByPatientIdAndFinishDateIsNull(user.getId());
+            Monitoring monitoring = monitoringService.findActiveMonitoringByUser(user);
 
             List<Monitoring> monitorings = monitoring != null ? asList(monitoring) : Collections.<Monitoring>emptyList();
+
             // Devuelvo como una lista para poder reutilizar vistas
-            return new ResponseEntity<>(asList(monitoring), OK);
+            return new ResponseEntity<>(monitorings, OK);
 
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>("{\"error\": \"" + e.getMessage() + "\"}", BAD_REQUEST);
@@ -67,9 +70,11 @@ public class HomeController extends AbstractApiController {
 
         try {
 
-            List<SimpleMonitoring> monitorings = followerRepository   .findByUser(user)
+            Collection<SimpleFollower> activeMonitoringsFollowedByUser = monitoringService.findActiveMonitoringsFollowedByUser(user);
+
+            List<SimpleMonitoring> monitorings = activeMonitoringsFollowedByUser
                                                                 .stream()
-                                                                .map(SimpleFollower::getMonitoring)
+                    .map(SimpleFollower::getMonitoring)
                                                                 .collect(toList());
 
 

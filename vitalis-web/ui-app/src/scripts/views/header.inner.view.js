@@ -17,6 +17,10 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
             menuOption: 'li[data-role^="menu-"]'
         },
 
+        regions: {
+            actionableContainer: 'div#actionable-container'
+        },
+
         events:{
             'click @ui.backButton': 'goBack',
             'click @ui.secondaryActionButton': 'executeSecondaryAction',
@@ -34,13 +38,25 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
             }
         },
 
+        onShow: function(){
+            $('.dropdown-button').dropdown({
+                    inDuration: 300,
+                    outDuration: 225,
+                    constrain_width: true, // Does not change width of dropdown to that of the activator
+                    hover: true, // Activate on hover
+                    gutter: 0, // Spacing from edge
+                    belowOrigin: true, // Displays dropdown below the button
+                    alignment: 'left' // Displays dropdown with edge aligned to the left of button
+                }
+            );
+        },
+
         goBack: function(a){
             if(window.history.state == null){
                 Urls.go('vitalis:home');
             } else {
                 window.history.back();
             }
-            //Urls.go('vitalis:home');
         },
 
         executeSecondaryAction: function(event){
@@ -54,7 +70,8 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
             for(var index in menuOptions.options){
                 var option = menuOptions.options[index];
                 if(option.id == [trigger.id]){
-                    option.action(event);
+                    var actionableContainer = this.getRegion('actionableContainer');
+                    option.action(event, actionableContainer);
                     break;
                 }
             }
