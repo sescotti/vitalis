@@ -17,6 +17,8 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 /**
  * Created by Ailin on 20/10/2016.
@@ -48,13 +50,28 @@ public class ModuleController extends AbstractApiController {
         }
     }
 
+    @RequestMapping(method = DELETE, value = "/{moduleId}",  produces = "application/json")
+    public ResponseEntity<?> deleteModule(@ModelAttribute("user") User user,
+                                          @PathVariable("moduleId") Long moduleId){
+        try {
+            Module module = moduleService.deleteModule(moduleId);
+            return new ResponseEntity<>(module, OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>("{\"error\": \"" + e.getMessage() + "\"}", BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("{\"error\": \"internal_server_error\"}", INTERNAL_SERVER_ERROR);
+        }
+    }
 
-    @RequestMapping("/{moduleId}")
+
+    @RequestMapping(method = GET, value = "/{moduleId}")
     @ResponseBody
     public ResponseEntity<?> getModule(@ModelAttribute("user") User user, @PathVariable("moduleId") Long moduleId){
         Module module = moduleService.getModule(moduleId);
         return new ResponseEntity<>(module, OK);
     }
+
+
 
     @RequestMapping("/{moduleId}/monitorings")
     @ResponseBody
@@ -79,5 +96,7 @@ public class ModuleController extends AbstractApiController {
             return new ResponseEntity<>("{\"error\": \"internal_server_error\"}", INTERNAL_SERVER_ERROR);
         }
     }
+
+
 
 }
