@@ -1,10 +1,8 @@
 package com.rocket.vitalis.services;
 
+import com.rocket.vitalis.dto.MonitoringRequest;
 import com.rocket.vitalis.model.*;
-import com.rocket.vitalis.repositories.FollowerRepository;
-import com.rocket.vitalis.repositories.ModuleRepository;
-import com.rocket.vitalis.repositories.MonitoringRepository;
-import com.rocket.vitalis.repositories.UserRepository;
+import com.rocket.vitalis.repositories.*;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +31,9 @@ public class ModuleService {
     @Autowired
     private FollowerRepository followerRepository;
 
+    @Autowired
+    private SensorRepository sensorRepository;
+
     public Collection<Module> findModules(User user){
         return moduleRepository.findByOwner(user);
     }
@@ -54,11 +55,27 @@ public class ModuleService {
     }
 
 
-    public Monitoring initMonitoring(Long moduleId, Long userId){
+    public Monitoring initMonitoring(Long moduleId, MonitoringRequest.PatientDto patientId,  Collection<MonitoringRequest.FollowerDto> followers,
+                                     Collection<MonitoringRequest.SensorDto> sensors ){
+
+        Collection<Sensor> mySensors = new ArrayList<Sensor>();
+        for (MonitoringRequest.SensorDto item : sensors) {
+            Sensor sensor = new Sensor(item.getType(), item.getStatus());
+            sensorRepository.save(sensor);
+            mySensors.add(sensor);
+        }
+
         Module module = moduleRepository.findOne(moduleId);
-        User user = userRepository.findOne(userId);
-        Monitoring monitoring = new Monitoring(module,user);
+        User patient = userRepository.findOne(patientId.getId() );
+        Monitoring monitoring = new Monitoring(module,patient, mySensors);
         monitoringRepository.save(monitoring);
+
+        for (MonitoringRequest.FollowerDto item : followers) {
+            User user = userRepository.findOne(item.getId());
+            Follower follower = new Follower(user, monitoring, item.isAdmin());
+            followerRepository.save(follower);
+        }
+
         return monitoring;
     }
 

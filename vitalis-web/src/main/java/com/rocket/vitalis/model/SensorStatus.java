@@ -20,4 +20,13 @@ public enum SensorStatus {
     public String toString() {
         return sensorStatus;
     }
+
+    public static SensorStatus fromString(String sensorStatus){
+        for (SensorStatus type: values()){
+            if(type.sensorStatus.equals(sensorStatus)){
+                return type;
+            }
+        }
+        return null;
+    }
 }

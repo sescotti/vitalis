@@ -170,11 +170,7 @@ public class WarmupService {
     }
 
     private Sensor createSensor(MeasurementType type) {
-        Sensor temperatureSensor = new Sensor();
-        temperatureSensor.setMeasurementType(type);
-        temperatureSensor.setStatus(SensorStatus.ENABLED);
-
-        return temperatureSensor;
+        return  new Sensor(type, SensorStatus.ENABLED);
     }
 
     public User registerUser(String email, String password, String name){
