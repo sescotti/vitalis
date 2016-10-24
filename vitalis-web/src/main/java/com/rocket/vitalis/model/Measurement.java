@@ -32,12 +32,9 @@ public class Measurement extends AbstractModel {
     private Double valueSecondary;
 
     @Column
-    @Getter @Setter
+    @Getter @Setter @NonNull
     private MeasurementType type;
 
-    /*
-    DEBE ESTAR RELACIONADO CON Monitoring, relación *-1
-    */
     @ManyToOne
     @Getter @Setter @NonNull
     private Monitoring monitoring;
