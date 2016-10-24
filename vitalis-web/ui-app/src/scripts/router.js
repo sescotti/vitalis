@@ -90,11 +90,13 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
         var innerHeaderView = new App.Vitalis.Views.InnerHeader({title: "Mis módulos"});
 
         App.header.show(innerHeaderView);
-        App.main.show(modulesPage);        
+        App.main.show(modulesPage);
     }
 
     controller.new_monitoring = function(moduleId){
-        var newMonitoringPage = new App.Vitalis.Views.NewMonitoringPage({model: new Vitalis.Models.Module({id: moduleId})});
+        var monitoring = new Vitalis.Models.ModuleMonitoring({module_id: moduleId})
+
+        var newMonitoringPage = new App.Vitalis.Views.NewMonitoringPage({model: monitoring});
         var innerHeaderView = new App.Vitalis.Views.InnerHeader({title: "Nuevo monitoreo"});
 
         App.header.show(innerHeaderView);

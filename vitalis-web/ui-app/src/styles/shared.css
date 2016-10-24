@@ -111,6 +111,14 @@ p.active {
     background-color: #dfdfdf;
 }
 
+.btn-minimal {
+    background-color: transparent;
+}
+
+.btn-minimal > i.material-icons {
+    color: #343434;
+}
+
 i.material-icons+span {
     padding-left: 10px;
 }

@@ -11,72 +11,67 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
     Views.NewMonitoringPage = Marionette.LayoutView.extend({
         template: App.Vitalis.templates.new_monitoring_page,
 
+        ui: {
+            initMonitoringButton: 'a[data-role="init-monitoring"]'
+        },
+
+        events: {
+            'click @ui.initMonitoringButton': 'initMonitoring'
+        },
+
         regions: {
             patient: 'div#patient',
-            followers: 'div#followers'
+            followers: 'div#followers',
+            sensors: 'div#sensors'
         },
 
         onShow: function(){
             var emptyPatientItemView = Vitalis.Views.MonitoringPatientAssignmentEmptyItem;
             var emptyFollowerItemView = Vitalis.Views.MonitoringFollowerAssignmentEmptyItem;
 
-            Vitalis.Models.CurentMonitoring = new Vitalis.Models.Monitoring();
+            var GenericList = Backbone.Collection.extend({});
 
-            var UserList = Backbone.Collection.extend({});
+            var patientsList = new GenericList();
+            var followersList = new GenericList();
+            var sensorsList = new Vitalis.Models.AvailableSensors();
 
-            var patientsList = new UserList();
-            var followersList = new UserList();
-
-            var patientView = new Vitalis.Views.MonitoringPatientAssignmentListView({emptyView: emptyPatientItemView,
+            var patientView = new Vitalis.Views.MonitoringPatientAssignmentListView({
+                                                                    emptyView: emptyPatientItemView,
                                                                     title: "Asignar paciente",
                                                                     collection: patientsList
             });
 
-            var followersView = new Vitalis.Views.MonitoringFollowerAssignmentListView({emptyView: emptyFollowerItemView,
+            var followersView = new Vitalis.Views.MonitoringFollowerAssignmentListView({
+                                                                    emptyView: emptyFollowerItemView,
                                                                     title: "Asignar seguidores",
-                                                                    collection: followersList
+                                                                    collection: followersList,
+                                                                    action: {
+                                                                        icon: 'add',
+                                                                        role: 'addFollower'
+                                                                    }
             });
 
-            //patientView.on('add:user', function(args){
-            //    console.log('sarasaaa');
-            //});
-            //Vitalis.Models.CurentMonitoring.on('change:patient', function(model){
-            //    var patient = model.get('patient');
-            //    console.log('Usuario cambiado ' + patient.get('name'));
-            //    if(patient){
-            //        patientView.collection.add(patient);
-            //    } else{
-            //        patientView.collection.reset();
-            //    }
-            //});
+            var sensorsView = new Vitalis.Views.MonitoringSensorSelectionListView({
+                title: "Asignar sensores",
+                collection: sensorsList
+            });
 
-            // var userSearchView = new Vitalis.Models.UserSearchResultListView({emptyView: emptyPatientItemView});
-            // var monitoringsList = new Vitalis.Models.MonitoringsSearchList();
-            // var searchResultsView = new App.Vitalis.Views.SearchMonitoringsResultsListView({collection: monitoringsList,
-            //                                                                                 title: "Resultados de búsqueda"});
+            this.model.set('patient', patientsList);
+            this.model.set('followers', followersList);
+            this.model.set('sensors', sensorsList);
 
-            // this.collection = monitoringsList;
             this.getRegion('patient').show(patientView);
             this.getRegion('followers').show(followersView);
+            this.getRegion('sensors').show(sensorsView);
         },
 
-        search: function(e){
-            var searchQuery = e.target.value;
-            var self = this;
-            if(searchQuery.length > 3){
-                this.collection.fetch({data: $.param({query: searchQuery})});
-            } else {
-                this.collection.reset();
-            }
-        },
+        initMonitoring: function(event){
+            this.model.save().then(function(){
+                Urls.go('vitalis:modules');
+                var message = "Monitoreo en línea";
+                Materialize.toast(message, 3500, '', function(){});
 
-        resetSearch: function(){
-            $(this.ui.searchField).val('');
-            this.collection.reset();
-        },
-
-        onSubmit: function(e){
-            e.preventDefault();
+            })
         }
     });
 });

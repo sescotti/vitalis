@@ -34,6 +34,7 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
                                                                                             title: "Resultados de búsqueda"});
             var self = this;
             searchResultsView.on('add:user', function(args){
+                console.log('add:user@modal_search_view');
                 self.trigger('add:user', args);
             })
 
@@ -47,11 +48,20 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
 
         search: function(e){
             var searchQuery = e.target.value;
-            var self = this;
+
+            var extraParams = this.getOption('extra_params');
+
+            var searchParams = {query: searchQuery};
+
+            if(extraParams){
+                for(param in extraParams){
+                    searchParams[param] = extraParams[param];
+                }
+            }
+
+
             if(searchQuery.length > 3){
-                this.collection.fetch({data: $.param({  query: searchQuery,
-                                                        exclude_with_monitoring: true})
-                                                    });
+                this.collection.fetch({data: $.param(searchParams)});
             } else {
                 this.collection.reset();
             }

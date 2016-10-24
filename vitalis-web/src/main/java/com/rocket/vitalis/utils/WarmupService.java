@@ -45,7 +45,7 @@ public class WarmupService {
         Collection<User> users = new ArrayList<>(6);
 
         User sebas = registerUser("sebastians@vitalis.com", "1234", "Sebastian Scotti");
-
+        User señorX = registerUser("senorx@vitalis.com", "1234", "Señor X");
         users.add(sebas);
 //        users.add(registerUser("sebastians@vitalis.com", "1234", "Sebastian Scotti"));
         users.add(registerUser("ailin@vitalis.com", "1234", "Ailin Merlo"));
@@ -55,6 +55,7 @@ public class WarmupService {
 
         User sancho = registerUser("sancho@vitalis.com", "1234", "Sancho Panza");
 
+        userRepository.save(señorX);
         userRepository.save(sancho);
 
         Collection<Monitoring> monitorings = new ArrayList<>(users.size());
@@ -69,7 +70,7 @@ public class WarmupService {
             createMeasurements(monitoring);
 
             monitorings.add(monitoring);
-//            followers.add(createFollower(sancho, monitoring));
+            followers.add(createFollower(sancho, monitoring));
         }
 
         for(Monitoring monitoring : monitorings){

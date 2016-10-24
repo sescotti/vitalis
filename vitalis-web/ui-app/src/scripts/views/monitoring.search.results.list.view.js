@@ -21,6 +21,7 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
 
         childEvents:{
             'add:user': function(args){
+                console.log('add:user@search_list_view');
                 this.trigger('add:user', args);
             }
         }

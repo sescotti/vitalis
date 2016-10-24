@@ -8,6 +8,7 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
 
     Views.MonitoringPatientAssignmentItemView = Marionette.ItemView.extend({
         template: App.Vitalis.templates.user_search_result_item,
+        //template: App.Vitalis.templates.monitoring_search_result_item,
 
         ui: {
             addButton: 'button[data-role="add"]',

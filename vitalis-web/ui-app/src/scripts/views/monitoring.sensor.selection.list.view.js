@@ -8,7 +8,11 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         Header      = App.module('Header'),
         Vitalis     = App.module('Vitalis');
 
-    Views.MonitoringFollowerAssignmentListView = Views.AbstractListView.extend({
-        childView: App.Vitalis.Views.MonitoringFollowerAssignmentItemView
+    Views.MonitoringSensorSelectionListView = Views.AbstractListView.extend({
+        childView: App.Vitalis.Views.MonitoringSensorSelectionItem,
+
+        initialize: function(){
+            this.collection.fetch();
+        }
     });
 });

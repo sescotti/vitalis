@@ -7,4 +7,12 @@ App.module('Vitalis.Models', function (Models, App, Backbone, Marionette, $, _) 
         url: '/api/app/monitorings/'
     });
 
+    Models.ModuleMonitoring = Models.AbstractModel.extend({
+
+        url: function(){
+            var moduleId = this.get('module_id');
+            return '/api/app/'+ moduleId + '/monitorings';
+        }
+    });
+
 });

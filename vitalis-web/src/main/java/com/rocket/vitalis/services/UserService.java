@@ -171,6 +171,10 @@ public class UserService {
     }
 
 
+    public Collection<User> searchPatients(String userName){
+        return userRepository.findByNameContainingIgnoreCase(userName);
+    }
+
     public Collection<User> searchPatientsWithoutMonitoring(String userName){
         /* Todos los usuarios */
         Collection<User> users = userRepository.findByNameContainingIgnoreCase(userName);

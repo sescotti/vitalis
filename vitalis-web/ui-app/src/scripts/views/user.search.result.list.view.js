@@ -8,16 +8,7 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         Header      = App.module('Header'),
         Vitalis     = App.module('Vitalis');
 
-    Views.UserSearchResultListView = Marionette.CompositeView.extend({
-
-        template: App.Vitalis.templates.user_search_result_wrapper,
-        childViewContainer: "select.icons",
-        childView: App.Vitalis.Views.UserSearchResultItemView,
-
-        templateHelpers: function() {
-            return {
-                collection_title: this.getOption('title')
-            }
-        }
+    Views.FollowRequestUserSearchResultListView = Views.AbstractListView.extend({
+        childView: App.Vitalis.Views.FollowRequestUserSearchResultItemView
     });
 });

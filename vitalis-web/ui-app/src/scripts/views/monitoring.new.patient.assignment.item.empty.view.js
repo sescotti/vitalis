@@ -25,9 +25,15 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         },
 
         assignPatient: function(){
-            var searchUsersModal = new Vitalis.Views.UserSearchSingleSelectionModal();
+            var searchUsersModal = new Vitalis.Views.UserSearchSingleSelectionModal({
+                                                                        extra_params: {
+                                                                            exclude_with_monitoring: true
+                                                                        }
+            });
+
             var self = this;
             searchUsersModal.on('add:user', function(args){
+                console.log('add:user@empty_item');
                 self.trigger('add:user', args.model);
             });
             this.getRegion('searchUsersContainer').show(searchUsersModal);

@@ -44,7 +44,7 @@ public class UserController extends AbstractApiController{
         if(excludeWithMonitoring){
             users = userService.searchPatientsWithoutMonitoring(query);
         } else {
-            users = userService.searchPatientsWithoutMonitoring(query);
+            users = userService.searchPatients(query);
         }
 
         return new ResponseEntity<>(users, OK);

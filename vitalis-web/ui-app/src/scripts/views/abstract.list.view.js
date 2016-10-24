@@ -18,4 +18,15 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
             }
         }
     });
+
+    Views.AbstractActionableListView = Views.AbstractListView.extend({
+        template: App.Vitalis.templates.collection_wrapper_with_title_and_action,
+
+        templateHelpers: function(){
+            return {
+                collection_title: this.getOption('title'),
+                action: this.getOption('action')
+            }
+        }
+    });
 });
