@@ -61,8 +61,9 @@ App.module('Vitalis.Utils', function (Utils, App, Backbone, Marionette, $, _){
         return joint;
     });
 
+    var assetsHost = $('input[type="hidden"]#x_assets_host').val();
     Handlebars.registerHelper('img_url', function(path){
-        return '//localhost:3000/ui-build/images/'+path;
+        return assetsHost + '/ui-build/images/'+path;
     });
 
     HandlebarsIntl.registerWith(Handlebars);
