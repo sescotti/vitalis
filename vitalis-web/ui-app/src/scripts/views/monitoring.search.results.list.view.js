@@ -11,11 +11,18 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
     Views.SearchMonitoringsResultsListView = Marionette.CompositeView.extend({
         template: App.Vitalis.templates.collection_wrapper_with_title,
         childViewContainer: "ul.collection",
-        childView: App.Vitalis.Views.SearchMonitoringsResultsItemView,
+        childView: App.Vitalis.Views.MonitoringPatientAssignmentItemView,
 
         templateHelpers: function() {
             return {
                 collection_title: this.getOption('title')
+            }
+        },
+
+        childEvents:{
+            'add:user': function(args){
+                console.log('add:user@search_list_view');
+                this.trigger('add:user', args);
             }
         }
     });

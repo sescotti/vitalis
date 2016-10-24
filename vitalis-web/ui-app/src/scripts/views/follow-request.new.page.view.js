@@ -21,7 +21,6 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
             'keyup @ui.searchField': 'search',
             'click @ui.resetButton': 'resetSearch',
             'submit @ui.searchForm': 'onSubmit'
-
         },
 
         regions: {
@@ -30,7 +29,7 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
 
         onShow: function(){
             var monitoringsList = new Vitalis.Models.MonitoringsSearchList();
-            var searchResultsView = new App.Vitalis.Views.SearchMonitoringsResultsListView({collection: monitoringsList,
+            var searchResultsView = new App.Vitalis.Views.FollowRequestUserSearchResultListView({collection: monitoringsList,
                                                                                             title: "Resultados de búsqueda"});
 
             this.collection = monitoringsList;

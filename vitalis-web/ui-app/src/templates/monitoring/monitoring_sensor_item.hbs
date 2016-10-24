@@ -4,18 +4,31 @@
     <img src="{{ img_url ( concat 'icon_' measurement_type '.png') }}" alt="{{ tr measurement_type }}" class="measurement-icon">
     <span class="title">{{ tr measurement_type }}</span>
     <p>
-        Última medici&oacute;n {{ formatRelative last_monitoring_date }}
+        {{#if last_monitoring_date }}
+            Última medici&oacute;n {{ formatRelative last_monitoring_date }}
+        {{else}}
+            Sin mediciones
+        {{/if}}
     </p>
     <p {{#if (eq status "enabled")}} class="blue-text text-darken-4"{{/if}}>
         {{ tr status }}
     </p>
 
-    {{#if ( eq measurement_type 'blood_pressure' ) }}
-        <a href="#!" class="last-measure secondary-content">{{ last_value }}/{{ last_value_secondary }}</a>
+    <a href="#!" class="last-measure secondary-content">
+    {{#if last_value}}
+        {{#if ( eq measurement_type 'blood_pressure' ) }}
+            {{ last_value }}/{{ last_value_secondary }}</a>
+        {{else}}
+            {{ measure last_value measurement_type }}
+        {{/if}}
     {{else}}
-        <a href="#!" class="last-measure secondary-content">{{ measure last_value measurement_type }}</a>
+        - -
     {{/if}}
-    
-    <a href="#!" class="secondary-content"><i class="material-icons">keyboard_arrow_right</i></a>
+    </a>
+
+    {{#if last_value}}
+        <a href="#!" class="secondary-content"><i class="material-icons">keyboard_arrow_right</i></a>
+    {{/if}}
+
 </li>
 {{/intl}}

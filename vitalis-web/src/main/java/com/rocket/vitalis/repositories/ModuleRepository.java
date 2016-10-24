@@ -13,7 +13,7 @@ import java.util.Collection;
  */
 public interface ModuleRepository extends CrudRepository<Module, Long> {
 
-    Collection<Module> findByRegisteredBy(User registeredBy);
+    Collection<Module> findByOwner(User owner);
 
 
 }

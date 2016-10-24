@@ -12,7 +12,7 @@ import java.util.Collection;
 @Data
 public class MonitoringRequest {
 
-    private PatientDto patient;
+    private Collection<PatientDto> patient;
     private Collection<FollowerDto> followers;
     private Collection<SensorDto> sensors;
 

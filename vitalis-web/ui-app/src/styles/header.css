@@ -29,3 +29,8 @@ a#back-btn,
 a#menu-btn {
 	display: inherit;
 }
+
+#logout-div > a{
+    position: absolute;
+    bottom: 0;
+}

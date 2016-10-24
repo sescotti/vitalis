@@ -16,26 +16,19 @@ public class Module extends AbstractModel {
 
     @Column(nullable = false, unique = true)
     @Getter @Setter @NonNull
-    private String serial;
+    private String serialNumber;
 
     @ManyToOne
     @Getter @Setter
-    private User registeredBy;
+    private User owner;
 
-
-    @Column
+    @OneToOne(mappedBy = "module")
     @Getter @Setter
-    private Date registrationDate;
+    private Monitoring monitoring;
 
-    @Column
-    @Getter @Setter
-    private Date updateDate;
-
-    public Module(String serial, User user){
-        this.serial= serial;
-        this.registeredBy =  user;
-        this.registrationDate = new Date();
-        this.updateDate = new Date();
+    public Module(String serialNumber, User owner){
+        this.serialNumber= serialNumber;
+        this.owner =  owner;
     }
 
     public Module(){}

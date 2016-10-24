@@ -1,0 +1,51 @@
+<li class="collection-item avatar row">
+	<div class="col s10 m6 l8">
+		<img src="{{ img_url 'logo-64x64-color.png' }}" alt="" class="measurement-icon">
+		<span class="title">M&oacute;dulo {{ serial_number }}</span>
+		{{#if monitoring }}
+    	<span class="blue-text text-darken-4">Asignado</span>
+    	<p>({{ monitoring.patient.name }})</p>
+    	{{else}}
+		<p>No asignado</p>
+    	{{/if}}
+	</div>
+
+    <div class="col s2 m6 l4 right-align no-padding" >
+    	<a href="#options-modal" class="secondary-content modal-trigger"><i class="material-icons">more_vert</i></a>
+    </div>
+
+	<div id="options-modal" class="modal bottom-sheet">
+	<h5 class="subheader">Opciones</h5>
+	<div>
+	  <ul class="collection">
+	  	<li class="collection-item modal-action" data-role='delete-module'>
+	  		<a href="#"><i class="valign-bottom material-icons">delete</i><span>Eliminar</span></a>
+	  	</li>
+
+		{{#unless monitoring }}
+	  	<li class="collection-item modal-action modal-close" data-role='assign-monitoring'>
+	  		<a href="#"><i class="valign-bottom material-icons">add_to_queue</i><span>Comenzar nuevo monitoreo</span></a>
+	  	</li>
+		{{/unless}}
+
+	  	<li class="collection-item modal-action modal-close" data-role='more-info'>
+	  		<a href="#"><i class="valign-bottom material-icons">info</i><span>Más informaci&oacute;n</span></a>
+	  	</li>
+	  </ul>
+	</div>
+	</div>
+
+	  	<!-- Modal Structure -->
+	<div id="delete-module-modal" class="modal">
+	    <div class="modal-content">
+	      <h4>Eliminar m&oacute;dulo</h4>
+	      <p>¿Est&aacute; seguro que quiere eliminar este m&oacute;dulo? Este paso no se puede deshacer.</p>
+	    </div>
+	    <div class="modal-footer">
+	      <a href="#!" id="confirm-delete" data-role="confirm-delete" class="modal-action modal-close waves-effect waves-green btn-flat">Eliminar</a>
+	      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
+	    </div>
+  	</div>
+
+</li>
+	

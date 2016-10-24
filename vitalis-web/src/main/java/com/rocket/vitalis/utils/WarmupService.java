@@ -2,6 +2,7 @@ package com.rocket.vitalis.utils;
 
 import com.rocket.vitalis.model.*;
 import com.rocket.vitalis.repositories.*;
+import com.rocket.vitalis.services.ModuleService;
 import com.rocket.vitalis.services.RequestService;
 import com.rocket.vitalis.utils.PBKDF2Service;
 import com.rocket.vitalis.utils.VitalisUtils;
@@ -37,13 +38,14 @@ public class WarmupService {
     @Autowired  private MeasurementRepository   measurementRepository;
     @Autowired  private FollowerRepository      followerRepository;
     @Autowired  private RequestRepository       requestRepository;
+    @Autowired  private ModuleService           moduleService;
 
     public void initApplicationData(){
 
         Collection<User> users = new ArrayList<>(6);
 
         User sebas = registerUser("sebastians@vitalis.com", "1234", "Sebastian Scotti");
-
+        User señorX = registerUser("senorx@vitalis.com", "1234", "Señor X");
         users.add(sebas);
 //        users.add(registerUser("sebastians@vitalis.com", "1234", "Sebastian Scotti"));
         users.add(registerUser("ailin@vitalis.com", "1234", "Ailin Merlo"));
@@ -53,6 +55,7 @@ public class WarmupService {
 
         User sancho = registerUser("sancho@vitalis.com", "1234", "Sancho Panza");
 
+        userRepository.save(señorX);
         userRepository.save(sancho);
 
         Collection<Monitoring> monitorings = new ArrayList<>(users.size());
@@ -67,7 +70,7 @@ public class WarmupService {
             createMeasurements(monitoring);
 
             monitorings.add(monitoring);
-//            followers.add(createFollower(sancho, monitoring));
+            followers.add(createFollower(sancho, monitoring));
         }
 
         for(Monitoring monitoring : monitorings){
@@ -76,6 +79,13 @@ public class WarmupService {
 
         followerRepository.save(followers);
         requestRepository.save(followRequests);
+
+        registerModule(sancho);
+    }
+
+    private void registerModule(User owner) {
+        String serialNumber = UUID.randomUUID().toString().replace("-","").substring(10);
+        moduleService.addModule(owner, serialNumber);
     }
 
     private Follower createFollower(User user, Monitoring monitoring) {

@@ -37,9 +37,10 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
                 self.destroy();
 
                 var requesterName = self.model.get("requested_by").name;
-                var patientName = self.model.get("monitoring").patient.name;
-                var message = "Aceptaste la solicitud de " + requesterName + " para " + patientName;
-                Materialize.toast(message, 3500, '', function(){})
+                // var patientName = self.model.get("monitoring").patient.name;
+                // var message = "Aceptaste la solicitud de " + requesterName + " para " + patientName;
+                var message = "Aceptaste la solicitud de " + requesterName;
+                Materialize.toast(message, 3500, '', function(){});
             });
         },
 
@@ -50,10 +51,10 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
                 self.destroy();
 
                 var requesterName = self.model.get("requested_by").name;
-                var patientName = self.model.get("monitoring").patient.name;
-                var message = "Rechazaste la solicitud de " + requesterName + " para " + patientName;
-
-                Materialize.toast(message, 3500, '', function(){})
+                // var patientName = self.model.get("monitoring").patient.name;
+                // var message = "Rechazaste la solicitud de " + requesterName + " para " + patientName;
+                var message = "Rechazaste la solicitud de " + requesterName;
+                Materialize.toast(message, 3500, '', function(){});
             });
         }
 

@@ -1,0 +1,12 @@
+<li class="collection-item avatar">
+    <img src="{{ picture_url }}" alt="" class="circle">
+    <span class="title">{{ name }}</span>
+    <div class="switch">
+        <label>
+            Administrador
+            <input data-role="admin" type="checkbox" {{#if is_admin}}checked{{/if}}>
+            <span class="lever"></span>
+        </label>
+    </div>
+    <button data-role="delete" class="btn btn-floating btn-minimal btn-flat secondary-content"><i class="material-icons">close</i></button>
+</li>
