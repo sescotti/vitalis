@@ -65,12 +65,12 @@ public class ModuleController extends AbstractApiController {
     }
 
 
-    @RequestMapping(method = POST, value = "/{moduleId}/monitorings", produces = "application/json")
+    @RequestMapping(method = POST, value = "/{moduleId}/monitorings", consumes = "application/json", produces = "application/json")
     public ResponseEntity<?> initMonitoring(@ModelAttribute("user") User user,
                                             @PathVariable("moduleId") Long moduleId,
                                             @RequestBody MonitoringRequest request){
         try {
-            Monitoring monitoring= moduleService.initMonitoring(moduleId,request.getUserId());
+            Monitoring monitoring= moduleService.initMonitoring(moduleId,request.getPatient(), request.getFollowers(), request.getSensors());
             return new ResponseEntity<>(monitoring, OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>("{\"error\": \"" + e.getMessage() + "\"}", BAD_REQUEST);

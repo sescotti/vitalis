@@ -34,4 +34,9 @@ public class Sensor extends AbstractModel {
     @Getter @Setter
     private Double lastValueSecondary;
 
+
+    public Sensor(MeasurementType measurementType,SensorStatus status){
+        this.measurementType= measurementType;
+        this.status =  status;
+    }
 }
