@@ -9,7 +9,7 @@ import java.util.Date;
  * Created by sscotti on 10/23/16.
  */
 @Data
-public class UserDto {
+public class UserDto extends AbstractDto {
 
     private String email;
 
@@ -37,11 +37,12 @@ public class UserDto {
 
     private BloodType bloodType;
 
-    private String pictureUrl;
+    private String pictureUrl = "/imdefault-profile-icon.png";
 
     public UserDto(User user){
+        super(user);
         this.email          = user.getEmail();
-        this.password       = user.getPassword();
+        this.password = user.getPassword();
         this.userType       = user.getUserType();
         this.isDoctor       = user.getIsDoctor();
         this.clinic         = user.getClinic();

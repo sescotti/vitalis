@@ -1,7 +1,7 @@
 
 'use strict';
 
-App.module('Utils.Vitalis', function (Utils, App, Backbone, Marionette, $, _){
+App.module('Vitalis.Utils', function (Utils, App, Backbone, Marionette, $, _){
 
     var translations = {
         enabled: "Activo",
@@ -39,6 +39,10 @@ App.module('Utils.Vitalis', function (Utils, App, Backbone, Marionette, $, _){
         return arg1 === arg2;
     });
 
+    Handlebars.registerHelper('or', function(arg1, arg2){
+        return arg1 || arg2;
+    });
+
     Handlebars.registerHelper('measure', function(value, measurementType){
         var unit = measures[measurementType];
         return value + unit;
@@ -62,5 +66,9 @@ App.module('Utils.Vitalis', function (Utils, App, Backbone, Marionette, $, _){
     });
 
     HandlebarsIntl.registerWith(Handlebars);
+
+    Utils.toast = function(message, callback){
+        Materialize.toast(message, 3500, '', callback);
+    }
 
 });

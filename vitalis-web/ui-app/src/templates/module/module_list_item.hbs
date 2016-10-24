@@ -3,8 +3,7 @@
 		<img src="{{ img_url 'logo-64x64-color.png' }}" alt="" class="measurement-icon">
 		<span class="title">M&oacute;dulo {{ serial_number }}</span>
 		{{#if monitoring }}
-    	<span class="blue-text text-darken-4">Asignado</span>
-    	<p>({{ monitoring.patient.name }})</p>
+    	<span class="blue-text text-darken-4">Asignado a {{ monitoring.patient.name }}</span>
     	{{else}}
 		<p>No asignado</p>
     	{{/if}}
@@ -22,11 +21,15 @@
 	  		<a href="#"><i class="valign-bottom material-icons">delete</i><span>Eliminar</span></a>
 	  	</li>
 
-		{{#unless monitoring }}
-	  	<li class="collection-item modal-action modal-close" data-role='assign-monitoring'>
-	  		<a href="#"><i class="valign-bottom material-icons">add_to_queue</i><span>Comenzar nuevo monitoreo</span></a>
-	  	</li>
-		{{/unless}}
+		{{#if monitoring }}
+            <li class="collection-item modal-action modal-close" data-role='goto-monitoring'>
+                <a href="#"><i class="valign-bottom material-icons">tv</i><span>Ver monitoreo</span></a>
+            </li>
+        {{else}}
+            <li class="collection-item modal-action modal-close" data-role='assign-monitoring'>
+                <a href="#"><i class="valign-bottom material-icons">add_to_queue</i><span>Comenzar nuevo monitoreo</span></a>
+            </li>
+		{{/if}}
 
 	  	<li class="collection-item modal-action modal-close" data-role='more-info'>
 	  		<a href="#"><i class="valign-bottom material-icons">info</i><span>Más informaci&oacute;n</span></a>
@@ -48,4 +51,4 @@
   	</div>
 
 </li>
-	
+

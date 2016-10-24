@@ -2,24 +2,55 @@ package com.rocket.vitalis.dto;
 
 import com.rocket.vitalis.model.Module;
 import com.rocket.vitalis.model.Monitoring;
-import com.rocket.vitalis.model.User;
-import lombok.*;
+import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.ManyToOne;
+import java.util.Collection;
+import java.util.Date;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * Created by sscotti on 10/21/16.
  */
 @Data
-@AllArgsConstructor
-public class ModuleDto {
+public class ModuleDto extends AbstractDto {
 
-    private String serialNumber;
-    private UserDto owner;
+    private String          serialNumber;
+    private UserDto         owner;
+    private MonitoringDto   monitoring;
 
     public ModuleDto(Module module){
-        this.serialNumber = module.getSerialNumber();
-        this.owner = new UserDto(module.getOwner());
+        super(module);
+        this.serialNumber   = module.getSerialNumber();
+        this.owner          = new UserDto(module.getOwner());
+        this.monitoring     = module.getMonitoring() != null ? new MonitoringDto(module.getMonitoring()) : null;
+    }
+
+    /**
+     * Created by sscotti on 10/19/16.
+     */
+    @Data
+    public static class MonitoringDto extends AbstractDto {
+
+        private Date startDate;
+
+        private Date finishDate;
+
+        private UserDto patient;
+
+        private Collection<SensorDto> sensors;
+
+        public MonitoringDto(){
+            super();
+        }
+
+        public MonitoringDto(Monitoring monitoring) {
+            super(monitoring);
+            this.startDate = monitoring.getStartDate();
+            this.finishDate = monitoring.getFinishDate();
+            this.patient = new UserDto(monitoring.getPatient());
+            this.sensors = monitoring.getSensors().stream().map(SensorDto::new).collect(toList());
+        }
+
     }
 }

@@ -1,6 +1,7 @@
 package com.rocket.vitalis.web.controller.api.app;
 
 import com.rocket.vitalis.dto.FollowingRequest;
+import com.rocket.vitalis.dto.ModuleDto;
 import com.rocket.vitalis.dto.ModuleRequest;
 import com.rocket.vitalis.dto.MonitoringRequest;
 import com.rocket.vitalis.model.*;
@@ -12,7 +13,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.OK;
@@ -34,7 +38,12 @@ public class ModuleController extends AbstractApiController {
     @ResponseBody
     public ResponseEntity<?> getModules(@ModelAttribute("user") User user){
         Collection<Module> modules = moduleService.findModules(user);
-        return new ResponseEntity<>(modules, OK);
+
+        List<ModuleDto> moduleDtos = modules.stream()
+                                            .map(ModuleDto::new)
+                                            .collect(toList());
+
+        return new ResponseEntity<>(moduleDtos, OK);
     }
 
     @RequestMapping(method = POST, value = "/", consumes = "application/json", produces = "application/json")

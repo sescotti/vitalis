@@ -6,6 +6,7 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
 
     var Urls    = App.module('Urls'),
         Vitalis = App.module('Vitalis'),
+        Utils   = App.module('Vitalis.Utils'),
         controller = {};
 
     controller.index = function () {
@@ -40,7 +41,25 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
 
     controller.monitoring = function(monitoringId){
         var monitoringPageView = new App.Vitalis.Views.MonitoringPage({model: new Vitalis.Models.PatientStatus({id: monitoringId})});
-        var innerHeaderView = new App.Vitalis.Views.InnerHeader({title: "Ver monitoreo"});
+        var innerHeaderView = new App.Vitalis.Views.InnerHeader({
+            title: "Ver monitoreo",
+            menu: {
+                options: [
+                    {
+                        id: 'finish_monitoring',
+                        label: "Finalizar monitoreo",
+                        action: function(event){
+                            var monitoring = new Vitalis.Models.Monitoring({id: monitoringId, status: 'finished'});
+
+                            monitoring.save().then(function(){
+                                Utils.toast("Monitoreo finalizado");
+                            });
+                        }
+                    }
+                ]
+
+            }
+        });
 
         App.header.show(innerHeaderView);
         App.main.show(monitoringPageView);
@@ -90,10 +109,10 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
 
         App.header.show(innerHeaderView);
         App.main.show(modulesPage);
-    }
+    };
 
     controller.new_monitoring = function(moduleId){
-        var monitoring = new Vitalis.Models.ModuleMonitoring({module_id: moduleId})
+        var monitoring = new Vitalis.Models.ModuleMonitoring({module_id: moduleId});
 
         var newMonitoringPage = new App.Vitalis.Views.NewMonitoringPage({model: monitoring});
         var innerHeaderView = new App.Vitalis.Views.InnerHeader({title: "Nuevo monitoreo"});

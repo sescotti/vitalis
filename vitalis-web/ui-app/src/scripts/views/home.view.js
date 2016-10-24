@@ -41,6 +41,7 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
 
         executeAction: function(event){
             //parentElement porque siempre agarra el <i> en lugar del <a>
+            $('.tooltipped').tooltip('remove');
             var target = event.target.parentElement.getAttribute('data-target');
             Urls.go(target);
         },
