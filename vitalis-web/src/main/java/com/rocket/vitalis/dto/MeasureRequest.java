@@ -12,4 +12,5 @@ public class MeasureRequest {
     private String measureDate;
     private MeasurementType measureName;
     private Double value;
+    private Double valueSecondary;
 }
