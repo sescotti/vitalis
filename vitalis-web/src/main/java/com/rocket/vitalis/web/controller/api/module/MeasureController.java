@@ -18,6 +18,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
+import static com.rocket.vitalis.model.MeasurementType.BLOOD_PRESSURE;
 import static java.time.Instant.now;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -71,7 +72,12 @@ public class MeasureController  extends AbstractApiController {
         }
 
         /* Create new MEASURE */
-        Measurement measure = new Measurement(monitoring,measureDate,request.getMeasureName(), request.getValue());
+        Measurement measure;
+        if (BLOOD_PRESSURE.equals(request.getMeasureName()))
+            measure = new Measurement(monitoring,measureDate,request.getMeasureName(), request.getValue(), request.getValueSecondary());
+        else
+            measure = new Measurement(monitoring,measureDate,request.getMeasureName(), request.getValue());
+
         return measurementRepository.save(measure);
     }
 
