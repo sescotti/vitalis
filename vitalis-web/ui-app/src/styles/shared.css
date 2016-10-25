@@ -91,7 +91,8 @@ div#contentin > div {
 
 @font-face {
     font-family: SignoriaBold;
-    src: url("http://localhost:8080/fonts/signoria/signoria_bold.ttf") /* EOT file for IE */
+    src:    url("//localhost:8080/fonts/signoria/signoria_bold.ttf"),
+            url("/fonts/signoria/signoria_bold.ttf") /* EOT file for IE */
 }
 
 .subheader {
