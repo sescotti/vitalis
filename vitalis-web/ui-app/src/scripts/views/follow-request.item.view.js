@@ -6,7 +6,8 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
 
     var Urls        = App.module('Urls'),
         Header      = App.module('Header'),
-        Vitalis     = App.module('Vitalis');
+        Vitalis     = App.module('Vitalis'),
+        Utils       = App.module('Vitalis.Utils');
 
     Views.FollowRequestItem = Marionette.ItemView.extend({
         template: App.Vitalis.templates.follow_request_item,
@@ -30,32 +31,32 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
             });
         },
 
-        acceptFollowRequest: function(){          
-            var self = this;  
+        acceptFollowRequest: function(){
+            var self = this;
 
-            this.model.save({status:'accepted'}).then(function(){
-                self.destroy();
+            this.model.save({status:'accepted'}, {
+                            success: function(){
+                                self.destroy();
 
-                var requesterName = self.model.get("requested_by").name;
-                // var patientName = self.model.get("monitoring").patient.name;
-                // var message = "Aceptaste la solicitud de " + requesterName + " para " + patientName;
-                var message = "Aceptaste la solicitud de " + requesterName;
-                Materialize.toast(message, 3500, '', function(){});
+                                var requesterName = self.model.get("requested_by").name;
+                                var message = "Aceptaste la solicitud de " + requesterName;
+                                Utils.toast(message);
+                            }
             });
         },
 
         rejectFollowRequest: function(){
             var self = this;
 
-            this.model.save({status: 'rejected'}).then(function(){
+            this.model.save({status: 'rejected'}, {success: function(){
+
                 self.destroy();
 
                 var requesterName = self.model.get("requested_by").name;
-                // var patientName = self.model.get("monitoring").patient.name;
-                // var message = "Rechazaste la solicitud de " + requesterName + " para " + patientName;
                 var message = "Rechazaste la solicitud de " + requesterName;
-                Materialize.toast(message, 3500, '', function(){});
-            });
+                Utils.toast(message);
+
+            }});
         }
 
     });

@@ -17,7 +17,7 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
 
         initialize: function(){
             var self = this;
-            this.model.fetch().then(function(){
+            this.model.fetch({success: function(){
                 self.render();
 
                 var sensors = self.model.get('sensors');
@@ -30,7 +30,8 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
                 var sensorsView = new App.Vitalis.Views.MonitoringSensorList({collection: sensorsCollection});
 
                 self.getRegion('sensors').show(sensorsView);
-            });
+
+            }});
         }
 
     });

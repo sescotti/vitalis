@@ -39,19 +39,12 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
 
         registerModule: function(event){
             var self = this;
-            this.model.save().then(function(){
+            this.model.save({}, {success: function(){
                 var message = 'Registraste correctamente el módulo ' + self.model.get('serial_number');
                 Utils.toast(message);
                 Urls.go('vitalis:modules');
-            });
+            }});
         }
-
-        //onShow: function(){
-        //    var module     = new Vitalis.Models.ModulesList();
-        //    var modulesListView = new App.Vitalis.Views.ModulesListView({collection: modulesList, title: "Nuevo módulo"});
-        //
-        //    this.getRegion('myModules').show(modulesListView);
-        //}
 
     });
 });

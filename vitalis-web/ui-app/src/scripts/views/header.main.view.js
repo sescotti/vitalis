@@ -13,15 +13,14 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
 
         initialize: function(){
             var self = this;
-            this.model.fetch().then(function(){
+            this.model.fetch({success: function(){
                 self.render();
                 self.onShow();
-            });
+            }});
         },
 
         ui: {
              'navbarLinks': 'a[data-role="navbar-link"]'
-            //'navbarLinks': 'a'
         },
 
         events:{
