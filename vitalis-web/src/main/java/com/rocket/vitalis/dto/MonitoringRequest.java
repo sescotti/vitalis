@@ -25,12 +25,26 @@ public class MonitoringRequest {
     public static class FollowerDto {
         private Long Id;
         private boolean isAdmin;
+
+        public FollowerDto(Long Id, boolean IsAdmin){
+            this.Id=Id;
+            this.isAdmin=isAdmin;
+        }
+
+        public FollowerDto(){}
     }
 
     @Data
     public static class SensorDto {
         private MeasurementType type;
         private SensorStatus status;
+
+        public SensorDto(MeasurementType type, SensorStatus status){
+            this.type= type;
+            this.status=status;
+        }
+
+        public SensorDto(){}
     }
 
 }

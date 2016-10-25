@@ -16,6 +16,7 @@ public class StartupHousekeeper implements ApplicationListener<ContextRefreshedE
 
     @Autowired
     private WarmupService warmupService;
+    //private LoadDataBase warmupService;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
