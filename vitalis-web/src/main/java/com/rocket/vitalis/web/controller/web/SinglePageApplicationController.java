@@ -41,7 +41,7 @@ public class SinglePageApplicationController {
             if ("dev".equals(profile)) {
                 assetsHost = "//localhost:3000";
             } else if ("prod".equals(profile)) {
-                assetsHost = "/";
+                assetsHost = "";
             }
         }
     }
