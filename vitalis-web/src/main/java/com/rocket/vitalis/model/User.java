@@ -1,18 +1,24 @@
 package com.rocket.vitalis.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.experimental.Delegate;
+import static javax.persistence.FetchType.EAGER;
 
-import javax.persistence.*;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
 
-import static javax.persistence.FetchType.EAGER;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Created by sscotti on 8/10/16.
@@ -63,6 +69,7 @@ public class User extends AbstractModel{
     
     @Column
     @Getter @Setter
+    @Enumerated(EnumType.STRING)
     private DocumentType documentType;
 
     @Column
@@ -75,10 +82,12 @@ public class User extends AbstractModel{
 
     @Column
     @Getter @Setter
+    @Enumerated(EnumType.STRING)
     private BloodFactor bloodFactor;
 
     @Column
     @Getter @Setter
+    @Enumerated(EnumType.STRING)
     private BloodType bloodType;
 
     @Column
