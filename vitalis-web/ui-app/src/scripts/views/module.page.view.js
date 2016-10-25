@@ -32,7 +32,7 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         },
 
         addModule: function(event){
-
+            Urls.go('vitalis:new_module');
         }
 
     });

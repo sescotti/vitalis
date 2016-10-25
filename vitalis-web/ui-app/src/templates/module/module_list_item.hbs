@@ -1,9 +1,9 @@
 <li class="collection-item avatar row">
 	<div class="col s10 m6 l8">
 		<img src="{{ img_url 'logo-64x64-color.png' }}" alt="" class="measurement-icon">
-		<span class="title">M&oacute;dulo {{ serial_number }}</span>
+		<p class="title">M&oacute;dulo {{ serial_number }}</p>
 		{{#if monitoring }}
-    	<span class="blue-text text-darken-4">Asignado a {{ monitoring.patient.name }}</span>
+    	<p class="blue-text text-darken-4">Asignado a {{ monitoring.patient.name }}</p>
     	{{else}}
 		<p>No asignado</p>
     	{{/if}}
