@@ -22,16 +22,10 @@ public class Follower extends AbstractModel {
     @Getter @Setter
     private Boolean isAdmin;
 
-    /*
-    DEBE ESTAR RELACIONADO CON User, relación *-1
-    */
     @ManyToOne
     @Getter @Setter
     private User user;
 
-    /*
-   DEBE ESTAR RELACIONADO CON Monitoring, relación *-1
-   */
     @ManyToOne
     @Getter @Setter
     private Monitoring monitoring;
