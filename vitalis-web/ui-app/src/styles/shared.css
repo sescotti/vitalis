@@ -153,3 +153,7 @@ a {
     cursor: pointer;
     cursor: hand;
 }
+
+.form-input {
+    color: #e0e0e0;
+}

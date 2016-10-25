@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
 
+import static javax.persistence.EnumType.STRING;
 import static javax.persistence.FetchType.EAGER;
 
 /**
@@ -32,15 +33,13 @@ public class User extends AbstractModel{
 
     @Column
     @Getter @Setter
+    @Enumerated(STRING)
     private UserType userType;
 
     @Column
     @Getter @Setter
     private Boolean isDoctor;
 
-    /*
-    DEBE ESTAR RELACIONADO CON Clinic, relación *-1
-    */
     @ManyToOne
     @Getter @Setter
     private Clinic clinic;
@@ -51,6 +50,7 @@ public class User extends AbstractModel{
 
     @Column
     @Getter @Setter
+    @Enumerated(STRING)
     private Gender gender;
 
     @Column
@@ -63,6 +63,11 @@ public class User extends AbstractModel{
 
     @Column
     @Getter @Setter
+    @Enumerated(EnumType.STRING)
+    private DocumentType documentType;
+
+    @Column
+    @Getter @Setter
     private String docNumber;
 
     @Column
@@ -71,10 +76,12 @@ public class User extends AbstractModel{
 
     @Column
     @Getter @Setter
+    @Enumerated(STRING)
     private BloodFactor bloodFactor;
 
     @Column
     @Getter @Setter
+    @Enumerated(STRING)
     private BloodType bloodType;
 
     @Column
@@ -88,4 +95,9 @@ public class User extends AbstractModel{
     public String getPassword(){
         return this.password;
     }
+
+    public Clinic getClinic(){
+        return this.clinic;
+    }
 }
+
