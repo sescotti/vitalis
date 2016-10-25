@@ -140,13 +140,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>repackage</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 			<plugin>
 				<groupId>com.github.eirslett</groupId>
@@ -202,6 +195,8 @@
 					<include>**/index.hbs</include>
 					<include>**/*/.hbs</include>
 					<include>**/*.hbs</include>
+					<include>**/*.css</include>
+					<include>**/*.*</include>
 					<include>**/*/.html</include>
 				</includes>
 			</resource>
