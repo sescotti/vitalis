@@ -21,6 +21,7 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         events: {
             'submit #mydataForm': 'onSubmit',
             'blur @ui.inputs': 'setModelData',
+            'change @ui.inputs': 'setModelData',
             'keydown': 'keyaction'
         },
 
@@ -38,8 +39,8 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         
         onRender: function(){
             $(document).ready(function() {
-                Materialize.updateTextFields();
                 $('select').material_select();
+                Materialize.updateTextFields();
             });
         },
         
