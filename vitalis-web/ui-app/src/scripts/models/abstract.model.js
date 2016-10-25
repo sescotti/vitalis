@@ -4,6 +4,8 @@ App.module('Vitalis.Models', function (Models, App, Backbone, Marionette, $, _) 
 
     function fetch(args, options){
 
+        $('#preloader-header').removeClass('hidden');
+
         args = args || {};
 
         var onError = args.error || function(model, response, options){};
@@ -26,6 +28,8 @@ App.module('Vitalis.Models', function (Models, App, Backbone, Marionette, $, _) 
 
     function destroy(args, options){
 
+        $('#preloader-header').removeClass('hidden');
+
         args = args || {};
 
         var onError = args.error || function(model, response, options){};
@@ -47,6 +51,8 @@ App.module('Vitalis.Models', function (Models, App, Backbone, Marionette, $, _) 
     }
 
     function save(args, options){
+        $('#preloader-header').removeClass('hidden');
+
         args = args || {};
         options = options || {};
 
@@ -63,6 +69,10 @@ App.module('Vitalis.Models', function (Models, App, Backbone, Marionette, $, _) 
             } else {
                 onError(model, response, options);
             }
+        };
+
+        options.success = function(model, response, options){
+            $('#preloader-header').addClass('hidden');
         };
 
         return Backbone.Model.prototype.save.call(this, args, options);

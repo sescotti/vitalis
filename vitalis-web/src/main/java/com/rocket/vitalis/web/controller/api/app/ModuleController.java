@@ -50,7 +50,7 @@ public class ModuleController extends AbstractApiController {
     public ResponseEntity<?> addModule(@ModelAttribute("user") User user,
                               @RequestBody ModuleRequest request){
         try {
-            Module module = moduleService.addModule(user, request.getModuleSerial());
+            Module module = moduleService.addModule(user, request.getSerialNumber());
             return new ResponseEntity<>(module, OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>("{\"error\": \"" + e.getMessage() + "\"}", BAD_REQUEST);
