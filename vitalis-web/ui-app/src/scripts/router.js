@@ -51,9 +51,14 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
                         action: function(event, container){
                             var monitoring = new Vitalis.Models.Monitoring({id: monitoringId});
 
-                            monitoring.destroy().then(function(){
-                                Utils.toast("Monitoreo finalizado");
-                                Urls.go('vitalis:home');
+                            monitoring.destroy({
+                                        success: function(){
+                                                    Utils.toast("Monitoreo finalizado");
+                                                    Urls.go('vitalis:home');
+                                        },
+                                        error: function(){
+                                            Utils.toast("Ups! No pudimos finalizar el monitoreo");
+                                        }
                             });
                         }
                     }

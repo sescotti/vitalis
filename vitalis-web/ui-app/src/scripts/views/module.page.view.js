@@ -25,8 +25,13 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         },
 
         onShow: function(){
+            var emptyView       = Views.ModuleListEmptyItem;
             var modulesList     = new Vitalis.Models.ModulesList();
-            var modulesListView = new App.Vitalis.Views.ModulesListView({collection: modulesList, title: "Información módulos"});
+            var modulesListView = new App.Vitalis.Views.ModulesListView({
+                                                        collection: modulesList,
+                                                        title: "Información módulos",
+                                                        emptyView: emptyView
+            });
 
             this.getRegion('myModules').show(modulesListView);
         },

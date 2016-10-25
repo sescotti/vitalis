@@ -8,17 +8,10 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         Header      = App.module('Header'),
         Vitalis     = App.module('Vitalis');
 
-    Views.ModulesListView = Marionette.CompositeView.extend({
+    Views.ModulesListView = Views.AbstractListView.extend({
 
-        template: App.Vitalis.templates.collection_wrapper_with_title,
-        childViewContainer: "ul.collection",
         childView: App.Vitalis.Views.ModuleListItemView,
-
-        templateHelpers: function() {
-            return {
-                collection_title: this.getOption('title')
-            }
-        },
+        emptyView: App.Vitalis.Views.ModuleListEmptyItem,
 
         initialize: function(){
             this.collection.fetch();
@@ -28,8 +21,9 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
             // This callback will be called whenever a child is rendered or emits a `render` event
             destroy: function(child) {
                 this.collection.remove(child.model);
+                //this.render();
             }
         }
-  
+
     });
 });

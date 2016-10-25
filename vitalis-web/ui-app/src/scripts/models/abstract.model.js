@@ -9,6 +9,7 @@ App.module('Vitalis.Models', function (Models, App, Backbone, Marionette, $, _) 
         args = args || {};
 
         var onError = args.error || function(model, response, options){};
+        var onSuccess = args.success || function(model, response, options){};
 
         args.beforeSend = function(xhr){
             xhr.setRequestHeader('X-Auth-Token', localStorage.getItem('accesstoken'));
@@ -21,6 +22,11 @@ App.module('Vitalis.Models', function (Models, App, Backbone, Marionette, $, _) 
             } else {
                 onError(model, response, options);
             }
+        };
+
+        args.success = function(model, response, options){
+            $('#preloader-header').addClass('hidden');
+            onSuccess(model, response, options);
         };
 
         return Backbone.Model.prototype.fetch.call(this, args, options);
@@ -33,6 +39,7 @@ App.module('Vitalis.Models', function (Models, App, Backbone, Marionette, $, _) 
         args = args || {};
 
         var onError = args.error || function(model, response, options){};
+        var onSuccess = args.success || function(model, response, options){};
 
         args.beforeSend = function(xhr){
             xhr.setRequestHeader('X-Auth-Token', localStorage.getItem('accesstoken'));
@@ -47,6 +54,11 @@ App.module('Vitalis.Models', function (Models, App, Backbone, Marionette, $, _) 
             }
         };
 
+        args.success = function(model, response, options){
+            $('#preloader-header').addClass('hidden');
+            onSuccess(model, response, options);
+        };
+
         return Backbone.Model.prototype.destroy.call(this, args, options);
     }
 
@@ -56,7 +68,8 @@ App.module('Vitalis.Models', function (Models, App, Backbone, Marionette, $, _) 
         args = args || {};
         options = options || {};
 
-        var onError = args.error || function(model, response, options){};
+        var onError = options.error || function(model, response, options){};
+        var onSuccess = options.success || function(model, response, options){};
 
         options.beforeSend = function(xhr){
             xhr.setRequestHeader('X-Auth-Token', localStorage.getItem('accesstoken'));
@@ -73,7 +86,9 @@ App.module('Vitalis.Models', function (Models, App, Backbone, Marionette, $, _) 
 
         options.success = function(model, response, options){
             $('#preloader-header').addClass('hidden');
+            onSuccess(model, response, options);
         };
+
 
         return Backbone.Model.prototype.save.call(this, args, options);
     }

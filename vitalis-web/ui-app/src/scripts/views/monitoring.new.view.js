@@ -6,7 +6,8 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
 
     var Urls        = App.module('Urls'),
         Header      = App.module('Header'),
-        Vitalis     = App.module('Vitalis');
+        Vitalis     = App.module('Vitalis'),
+        Utils       = App.module('Vitalis.Utils');
 
     Views.NewMonitoringPage = Marionette.LayoutView.extend({
         template: App.Vitalis.templates.new_monitoring_page,
@@ -66,12 +67,11 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         },
 
         initMonitoring: function(event){
-            this.model.save().then(function(){
+            this.model.save({}, { success: function(){
                 Urls.go('vitalis:modules');
                 var message = "Monitoreo en línea";
-                Materialize.toast(message, 3500, '', function(){});
-
-            })
+                Utils.toast(message, 3500, '', function(){});
+            }});
         }
     });
 });
