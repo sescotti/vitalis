@@ -17,4 +17,5 @@ public class VitalisWebConfig {
     public Filter shallowEtagHeaderFilter() {
         return new VitalisAuthenticationFilter();
     }
+
 }
