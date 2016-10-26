@@ -1,5 +1,6 @@
 package com.rocket.vitalis.model;
 
+import com.rocket.vitalis.dto.MonitoringRequest;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -37,6 +38,11 @@ public class Sensor extends AbstractModel {
 
     // Required by Hibernate
     protected Sensor(){}
+
+    public Sensor(MonitoringRequest.SensorDto sensor){
+        this.measurementType = sensor.getType();
+        this.status = sensor.getStatus();
+    }
 
     public Sensor(MeasurementType measurementType,SensorStatus status){
         this.measurementType= measurementType;

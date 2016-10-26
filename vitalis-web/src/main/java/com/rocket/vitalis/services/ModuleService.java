@@ -9,6 +9,7 @@ import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -82,19 +83,18 @@ public class ModuleService {
     }
 
 
+    @Transactional
     public Monitoring initMonitoring(Long moduleId, MonitoringRequest.PatientDto patientId,  Collection<MonitoringRequest.FollowerDto> followers,
                                      Collection<MonitoringRequest.SensorDto> sensors, User userOwner ){
 
-        Collection<Sensor> mySensors = new ArrayList<Sensor>();
-        for (MonitoringRequest.SensorDto item : sensors) {
-            Sensor sensor = new Sensor(item.getType(), item.getStatus());
-            sensorRepository.save(sensor);
-            mySensors.add(sensor);
-        }
+        List<Sensor> mySensors = sensors.stream().map(Sensor::new).collect(toList());
+
+        sensorRepository.save(mySensors);
 
         Module module = moduleRepository.findOne(moduleId);
-        User patient = userRepository.findOne(patientId.getId() );
+        User patient = userRepository.findOne(patientId.getId());
         Monitoring monitoring = new Monitoring(module,patient, mySensors);
+
         monitoringRepository.save(monitoring);
 
         Map<Long, MonitoringRequest.FollowerDto> followersMap = followers.stream().collect(toMap(MonitoringRequest.FollowerDto::getId, followerDto -> followerDto));
