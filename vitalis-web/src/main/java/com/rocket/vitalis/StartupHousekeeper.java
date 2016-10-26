@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 public class StartupHousekeeper implements ApplicationListener<ContextRefreshedEvent> {
 
     @Autowired
-    private WarmupService warmupService;
+    private LoadDataBase warmupService;
 
 
     @Override
