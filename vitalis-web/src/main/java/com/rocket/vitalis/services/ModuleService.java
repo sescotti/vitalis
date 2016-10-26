@@ -82,7 +82,7 @@ public class ModuleService {
 
 
     public Monitoring initMonitoring(Long moduleId, MonitoringRequest.PatientDto patientId,  Collection<MonitoringRequest.FollowerDto> followers,
-                                     Collection<MonitoringRequest.SensorDto> sensors ){
+                                     Collection<MonitoringRequest.SensorDto> sensors, User userOwner ){
 
         Collection<Sensor> mySensors = new ArrayList<Sensor>();
         for (MonitoringRequest.SensorDto item : sensors) {
@@ -101,6 +101,10 @@ public class ModuleService {
             Follower follower = new Follower(user, monitoring, item.isAdmin());
             followerRepository.save(follower);
         }
+
+        User user = userRepository.findOne(userOwner.getId());
+        Follower follower = new Follower(user, monitoring, true);
+        followerRepository.save(follower);
 
         return monitoring;
     }
