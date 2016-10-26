@@ -18,17 +18,17 @@ public class MonitoringRequest {
 
     @Data
     public static class PatientDto {
-        private Long Id;
+        private Long id;
     }
 
     @Data
     public static class FollowerDto {
-        private Long Id;
+        private Long id;
         private boolean isAdmin;
 
-        public FollowerDto(Long Id, boolean IsAdmin){
-            this.Id=Id;
-            this.isAdmin=isAdmin;
+        public FollowerDto(Long id, boolean isAdmin){
+            this.id = id;
+            this.isAdmin = isAdmin;
         }
 
         public FollowerDto(){}
