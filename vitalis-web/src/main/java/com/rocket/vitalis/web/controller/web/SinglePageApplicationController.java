@@ -59,7 +59,7 @@ public class SinglePageApplicationController {
 
         String[] activeProfiles = environment.getActiveProfiles();
 
-        assetsHost = "";
+        assetsHost = null;
 
         for (String profile : activeProfiles) {
             if ("dev".equals(profile)) {
@@ -67,6 +67,11 @@ public class SinglePageApplicationController {
             } else if ("prod".equals(profile)) {
                 assetsHost = "";
             }
+        }
+
+        // Asumo que va en dev
+        if(assetsHost == null){
+            assetsHost = "//localhost:3000";
         }
 
         this.holder = new ResourcesHolder(assetsHost, cssBundle, jsBundle, jsCore);
