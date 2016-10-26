@@ -37,12 +37,7 @@ public class ModuleController extends AbstractApiController {
     @RequestMapping("/")
     @ResponseBody
     public ResponseEntity<?> getModules(@ModelAttribute("user") User user){
-        Collection<Module> modules = moduleService.findModules(user);
-
-        List<ModuleDto> moduleDtos = modules.stream()
-                                            .map(ModuleDto::new)
-                                            .collect(toList());
-
+        Collection<ModuleDto> moduleDtos = moduleService.getModules(user);
         return new ResponseEntity<>(moduleDtos, OK);
     }
 

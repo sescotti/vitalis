@@ -23,7 +23,13 @@ public class ModuleDto extends AbstractDto {
         super(module);
         this.serialNumber   = module.getSerialNumber();
         this.owner          = new UserDto(module.getOwner());
-        this.monitoring     = module.getMonitoring() != null ? new MonitoringDto(module.getMonitoring()) : null;
+    }
+
+    public ModuleDto(Module module, Monitoring monitoring){
+        super(module);
+        this.serialNumber   = module.getSerialNumber();
+        this.owner          = new UserDto(module.getOwner());
+        this.monitoring     = monitoring != null ? new MonitoringDto(monitoring) : null;
     }
 
     /**

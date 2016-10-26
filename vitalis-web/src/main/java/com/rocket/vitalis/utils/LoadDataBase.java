@@ -146,7 +146,7 @@ public class LoadDataBase {
             sensor.setLastValueSecondary(lastValuesSecondary.get(sensor.getMeasurementType()));
         });
 
-        //monitoringRepository.save(monitoring);
+        monitoringRepository.save(monitoring);
         measurementRepository.save(measurements);
     }
 
