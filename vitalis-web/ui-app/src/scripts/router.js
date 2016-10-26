@@ -61,6 +61,25 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
                                         }
                             });
                         }
+                    },
+                    {
+                        id: 'stop-following',
+                        label: 'Dejar de seguir',
+                        action: function(event, container){
+                            var follower = new Vitalis.Models.MonitoringFollower({monitoring_id: monitoringId});
+
+                            follower.destroy({
+                                url: '/api/app/monitorings/' + monitoringId + "/follower",
+                                success: function(){
+                                    Utils.toast("Listo! Ya dejaste de seguir este monitoreo");
+                                    Urls.go('vitalis:home');
+                                },
+                                error: function(){
+                                    Utils.toast("Ups! No pudimos ejecutar esta acción");
+                                }
+                            });
+
+                        }
                     }
                 ]
 

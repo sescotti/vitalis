@@ -74,6 +74,14 @@ public class MonitoringController extends AbstractApiController {
         return new ResponseEntity<>(followers, OK);
     }
 
+    @DeleteMapping("/{monitoringId}/follower")
+    @ResponseBody
+    public ResponseEntity<?> removeFollower(@ModelAttribute("user") User user,
+                                            @PathVariable("monitoringId") Long monitoringId){
+        monitoringService.deleteFollower(monitoringId, user.getId());
+        return new ResponseEntity<>(NO_CONTENT);
+    }
+
     @RequestMapping("/{monitoringId}/sensors")
     @ResponseBody
     public ResponseEntity<?> getSensors(@ModelAttribute("user") User user,

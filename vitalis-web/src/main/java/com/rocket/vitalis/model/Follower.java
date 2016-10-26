@@ -12,6 +12,7 @@ import javax.persistence.*;
  */
 
 @Entity
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"monitoring_id", "user_id"})})
 public class Follower extends AbstractModel {
 
     @Column(nullable = false)
