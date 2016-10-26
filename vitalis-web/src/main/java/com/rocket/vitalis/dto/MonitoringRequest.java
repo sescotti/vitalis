@@ -24,9 +24,9 @@ public class MonitoringRequest {
     @Data
     public static class FollowerDto {
         private Long id;
-        private boolean isAdmin;
+        private Boolean isAdmin;
 
-        public FollowerDto(Long id, boolean isAdmin){
+        public FollowerDto(Long id, Boolean isAdmin){
             this.id = id;
             this.isAdmin = isAdmin;
         }

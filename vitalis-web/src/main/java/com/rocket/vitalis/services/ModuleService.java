@@ -98,7 +98,7 @@ public class ModuleService {
 
         for (MonitoringRequest.FollowerDto item : followers) {
             User user = userRepository.findOne(item.getId());
-            Follower follower = new Follower(user, monitoring, item.isAdmin());
+            Follower follower = new Follower(user, monitoring, item.getIsAdmin());
             followerRepository.save(follower);
         }
 
