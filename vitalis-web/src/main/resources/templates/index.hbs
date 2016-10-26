@@ -14,7 +14,14 @@
     <!--<link href="/css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>-->
 
     <!--<link href="/ui-build/core__large.css" rel="stylesheet">-->
-    <link href="{{assets_host}}/ui-build/bundle__large.css" type="text/css" rel="stylesheet">
+
+    {{#if is_prod }}
+        <link href="{{resources.assetsHost}}/ui-dist/{{resources.cssBundle}}" type="text/css" rel="stylesheet">
+    {{else}}
+        <link href="{{resources.assetsHost}}/ui-build/bundle__large.css" type="text/css" rel="stylesheet">
+    {{/if}}
+
+
 
     <meta name="config:lang" content="es" />
 </head>
@@ -27,17 +34,22 @@
 
 <!--  Scripts-->
 
-<input id="x_assets_host" type="hidden" value="{{assets_host}}"/>
+<input id="x_assets_host" type="hidden" value="{{resources.assetsHost}}"/>
 
-<!--<script type="text/javascript" src="/ui-build/urls/bundle.js"></script>-->
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-<script type="text/javascript" src="{{assets_host}}/ui-build/core__large.js"></script>
-<!--<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js"></script>-->
-<script src="/js/materialize.js"></script>
-<script type="text/javascript" src="{{assets_host}}/ui-build/bundle__large.js"></script>
+<!--<script src="/js/materialize.js"></script>-->
 
-<script id="__bs_script__">//<![CDATA[
-//document.write("<script async src='http://HOST:3000/browser-sync/browser-sync-client.2.12.5.js'><\/script>".replace("HOST", location.hostname));
-//]]></script>
+{{#if is_prod }}
+    <script type="text/javascript" src="{{resources.assetsHost}}/ui-dist/{{resources.jsCore}}"></script>
+    <script src="/js/materialize.js"></script>
+    <script type="text/javascript" src="{{resources.assetsHost}}/ui-dist/{{resources.jsBundle}}"></script>
+{{else}}
+    <script type="text/javascript" src="{{resources.assetsHost}}/ui-build/core__large.js"></script>
+    <script src="/js/materialize.js"></script>
+    <script type="text/javascript" src="{{assetsresources.assetsHost_host}}/ui-build/bundle__large.js"></script>
+{{/if}}
+
+
+<!--<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.js"></script>-->
 </body>
 </html>
