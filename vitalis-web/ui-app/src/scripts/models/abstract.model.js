@@ -16,6 +16,7 @@ App.module('Vitalis.Models', function (Models, App, Backbone, Marionette, $, _) 
         };
 
         args.error = function(model, response, options){
+            $('#preloader-header').addClass('hidden');
             if(response.status === 401){
                 $('.modal').closeModal();
                 Urls.go('vitalis:login')
@@ -46,6 +47,7 @@ App.module('Vitalis.Models', function (Models, App, Backbone, Marionette, $, _) 
         };
 
         args.error = function(model, response, options){
+            $('#preloader-header').addClass('hidden');
             if(response.status === 401){
                 $('.modal').closeModal();
                 Urls.go('vitalis:login')
@@ -76,6 +78,7 @@ App.module('Vitalis.Models', function (Models, App, Backbone, Marionette, $, _) 
         };
 
         options.error = function(model, response, options){
+            $('#preloader-header').addClass('hidden');
             if(response.status === 401){
                 $('.modal').closeModal();
                 Urls.go('vitalis:login')

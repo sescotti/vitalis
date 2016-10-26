@@ -1,5 +1,6 @@
 package com.rocket.vitalis.utils;
 
+import com.rocket.vitalis.exceptions.ModuleAlreadyRegisteredException;
 import com.rocket.vitalis.model.*;
 import com.rocket.vitalis.repositories.*;
 import com.rocket.vitalis.services.ModuleService;
@@ -85,7 +86,11 @@ public class WarmupService {
 
     private void registerModule(User owner) {
         String serialNumber = UUID.randomUUID().toString().replace("-","").substring(10);
-        moduleService.addModule(owner, serialNumber);
+        try {
+            moduleService.addModule(owner, serialNumber);
+        } catch (ModuleAlreadyRegisteredException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private Follower createFollower(User user, Monitoring monitoring) {

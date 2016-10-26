@@ -1,18 +1,20 @@
 package com.rocket.vitalis.services;
 
 import com.rocket.vitalis.dto.ModuleDto;
-import com.rocket.vitalis.dto.MonitoringDto;
 import com.rocket.vitalis.dto.MonitoringRequest;
+import com.rocket.vitalis.exceptions.ModuleAlreadyRegisteredException;
 import com.rocket.vitalis.model.*;
 import com.rocket.vitalis.repositories.*;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
@@ -46,11 +48,15 @@ public class ModuleService {
         return monitoringRepository.findByModuleInAndFinishDateIsNull(modules);
     }
 
+    public Module addModule(User user, String serial) throws ModuleAlreadyRegisteredException {
+        try{
+            Module module = new Module(serial, user);
+            moduleRepository.save(module);
+            return module;
+        } catch (DataIntegrityViolationException e) {
+            throw new ModuleAlreadyRegisteredException(e);
+        }
 
-    public Module addModule(User user, String serial){
-        Module module = new Module(serial, user);
-        moduleRepository.save(module);
-        return module;
     }
 
     public Monitoring getMonitoring(Long moduleId){

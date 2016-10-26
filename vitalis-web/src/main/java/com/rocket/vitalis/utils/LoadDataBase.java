@@ -1,6 +1,7 @@
 package com.rocket.vitalis.utils;
 
 import com.rocket.vitalis.dto.MonitoringRequest;
+import com.rocket.vitalis.exceptions.ModuleAlreadyRegisteredException;
 import com.rocket.vitalis.model.*;
 import com.rocket.vitalis.repositories.*;
 import com.rocket.vitalis.services.ModuleService;
@@ -101,7 +102,11 @@ public class LoadDataBase {
 
     private Module registerModule(User owner) {
         String serialNumber = UUID.randomUUID().toString().replace("-","").substring(10);
-        return moduleService.addModule(owner, serialNumber);
+        try {
+            return moduleService.addModule(owner, serialNumber);
+        } catch (ModuleAlreadyRegisteredException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

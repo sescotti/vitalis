@@ -19,7 +19,7 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         },
 
         registerModule: function(){
-            Urls.go('vitalis:module');
+            Urls.go('vitalis:modules');
         }
     });
 });

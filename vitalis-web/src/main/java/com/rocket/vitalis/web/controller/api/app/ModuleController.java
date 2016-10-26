@@ -4,6 +4,7 @@ import com.rocket.vitalis.dto.FollowingRequest;
 import com.rocket.vitalis.dto.ModuleDto;
 import com.rocket.vitalis.dto.ModuleRequest;
 import com.rocket.vitalis.dto.MonitoringRequest;
+import com.rocket.vitalis.exceptions.ModuleAlreadyRegisteredException;
 import com.rocket.vitalis.model.*;
 import com.rocket.vitalis.services.ModuleService;
 import com.rocket.vitalis.web.controller.api.AbstractApiController;
@@ -17,9 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -49,9 +48,12 @@ public class ModuleController extends AbstractApiController {
             return new ResponseEntity<>(module, OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>("{\"error\": \"" + e.getMessage() + "\"}", BAD_REQUEST);
+        } catch(ModuleAlreadyRegisteredException e){
+            return new ResponseEntity<>("{\"error\": \"" + e.getMessage() + "\"}", CONFLICT);
         } catch (Exception e) {
             return new ResponseEntity<>("{\"error\": \"internal_server_error\"}", INTERNAL_SERVER_ERROR);
         }
+
     }
 
     @RequestMapping(method = DELETE, value = "/{moduleId}",  produces = "application/json")

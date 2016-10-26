@@ -43,6 +43,9 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
                 var message = 'Registraste correctamente el módulo ' + self.model.get('serial_number');
                 Utils.toast(message);
                 Urls.go('vitalis:modules');
+            }, error: function(){
+                var message = 'El módulo ' + self.model.get('serial_number') + 'ya se encuentra registrado';
+                Utils.toast(message);
             }});
         }
 
