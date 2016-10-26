@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 
 /**
  * Created by Ailin on 20/10/2016.
@@ -96,15 +97,23 @@ public class ModuleService {
         Monitoring monitoring = new Monitoring(module,patient, mySensors);
         monitoringRepository.save(monitoring);
 
-        for (MonitoringRequest.FollowerDto item : followers) {
-            User user = userRepository.findOne(item.getId());
-            Follower follower = new Follower(user, monitoring, item.getIsAdmin());
-            followerRepository.save(follower);
+        Map<Long, MonitoringRequest.FollowerDto> followersMap = followers.stream().collect(toMap(MonitoringRequest.FollowerDto::getId, followerDto -> followerDto));
+
+        MonitoringRequest.FollowerDto followerDto = followersMap.get(userOwner.getId());
+
+        // El dueño del módulo es admin por defecto
+        if(followerDto != null){
+            followerDto.setIsAdmin(true);
+        } else {
+            followers.add(new MonitoringRequest.FollowerDto(userOwner.getId(), true));
         }
 
-        User user = userRepository.findOne(userOwner.getId());
-        Follower follower = new Follower(user, monitoring, true);
-        followerRepository.save(follower);
+        List<Follower> collect = followers.stream().map(item -> {
+            User user = userRepository.findOne(item.getId());
+            return new Follower(user, monitoring, item.getIsAdmin());
+        }).collect(toList());
+
+        followerRepository.save(collect);
 
         return monitoring;
     }
