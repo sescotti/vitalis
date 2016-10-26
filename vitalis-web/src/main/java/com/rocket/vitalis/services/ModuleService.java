@@ -1,5 +1,7 @@
 package com.rocket.vitalis.services;
 
+import com.rocket.vitalis.dto.ModuleDto;
+import com.rocket.vitalis.dto.MonitoringDto;
 import com.rocket.vitalis.dto.MonitoringRequest;
 import com.rocket.vitalis.model.*;
 import com.rocket.vitalis.repositories.*;
@@ -7,10 +9,11 @@ import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * Created by Ailin on 20/10/2016.
@@ -37,6 +40,10 @@ public class ModuleService {
     public Collection<Module> findModules(User user){
         return moduleRepository.findByOwner(user);
     }
+    public Collection<Monitoring> findMonitorings(Collection<Module> modules){
+        return monitoringRepository.findByModuleInAndFinishDateIsNull(modules);
+    }
+
 
     public Module addModule(User user, String serial){
         Module module = new Module(serial, user);
@@ -54,6 +61,19 @@ public class ModuleService {
         return module;
     }
 
+    public Collection<ModuleDto> getModules(User user){
+        Collection<Module> modules = findModules(user);
+        Collection<Monitoring> monitorings = findMonitorings(modules);
+
+        Map<Long, Monitoring> moma = monitorings.stream().collect(Collectors.toMap(monitoring -> monitoring.getModule().getId(), o -> o));
+
+        return modules.stream().map(module -> {
+            Monitoring monitoring = moma.get(module.getId());
+            return new ModuleDto(module, monitoring);
+        }).collect(toList());
+
+    }
+
     public Module deleteModule(Long moduleId){
         Module module = moduleRepository.findOne(moduleId);
         moduleRepository.delete(module);
@@ -62,7 +82,7 @@ public class ModuleService {
 
 
     public Monitoring initMonitoring(Long moduleId, MonitoringRequest.PatientDto patientId,  Collection<MonitoringRequest.FollowerDto> followers,
-                                     Collection<MonitoringRequest.SensorDto> sensors ){
+                                     Collection<MonitoringRequest.SensorDto> sensors, User userOwner ){
 
         Collection<Sensor> mySensors = new ArrayList<Sensor>();
         for (MonitoringRequest.SensorDto item : sensors) {
@@ -81,6 +101,10 @@ public class ModuleService {
             Follower follower = new Follower(user, monitoring, item.isAdmin());
             followerRepository.save(follower);
         }
+
+        User user = userRepository.findOne(userOwner.getId());
+        Follower follower = new Follower(user, monitoring, true);
+        followerRepository.save(follower);
 
         return monitoring;
     }

@@ -37,12 +37,7 @@ public class ModuleController extends AbstractApiController {
     @RequestMapping("/")
     @ResponseBody
     public ResponseEntity<?> getModules(@ModelAttribute("user") User user){
-        Collection<Module> modules = moduleService.findModules(user);
-
-        List<ModuleDto> moduleDtos = modules.stream()
-                                            .map(ModuleDto::new)
-                                            .collect(toList());
-
+        Collection<ModuleDto> moduleDtos = moduleService.getModules(user);
         return new ResponseEntity<>(moduleDtos, OK);
     }
 
@@ -97,7 +92,7 @@ public class ModuleController extends AbstractApiController {
                                             @RequestBody MonitoringRequest request){
         try {
             MonitoringRequest.PatientDto patient = request.getPatient().iterator().next();
-            Monitoring monitoring= moduleService.initMonitoring(moduleId, patient, request.getFollowers(), request.getSensors());
+            Monitoring monitoring= moduleService.initMonitoring(moduleId, patient, request.getFollowers(), request.getSensors(), user);
             return new ResponseEntity<>(monitoring, OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>("{\"error\": \"" + e.getMessage() + "\"}", BAD_REQUEST);

@@ -72,7 +72,7 @@ public class LoadDataBase {
         sensors.add(new MonitoringRequest.SensorDto(MeasurementType.HEART_RATE, SensorStatus.ENABLED));
         sensors.add(new MonitoringRequest.SensorDto(MeasurementType.RESPIRATORY_RATE, SensorStatus.ENABLED));
         sensors.add(new MonitoringRequest.SensorDto(MeasurementType.TEMPERATURE, SensorStatus.ENABLED));
-        Monitoring monitoring1 = moduleService.initMonitoring(module1.getId(),patient,followerDtos,sensors );
+        Monitoring monitoring1 = moduleService.initMonitoring(module1.getId(),patient,followerDtos,sensors, sancho);
         monitoring1.setFinishDate(new Date());
         monitoringRepository.save(monitoring1);
 
@@ -93,7 +93,7 @@ public class LoadDataBase {
         sensors2.add(new MonitoringRequest.SensorDto(MeasurementType.HEART_RATE, SensorStatus.ENABLED));
         sensors2.add(new MonitoringRequest.SensorDto(MeasurementType.RESPIRATORY_RATE, SensorStatus.ENABLED));
         sensors2.add(new MonitoringRequest.SensorDto(MeasurementType.TEMPERATURE, SensorStatus.ENABLED));
-        Monitoring monitoring2 = moduleService.initMonitoring(module1.getId(),patient2,followerDtos2,sensors2 );
+        Monitoring monitoring2 = moduleService.initMonitoring(module1.getId(),patient2,followerDtos2,sensors2, sancho);
 
         createMeasurements(monitoring2);
 
@@ -146,7 +146,7 @@ public class LoadDataBase {
             sensor.setLastValueSecondary(lastValuesSecondary.get(sensor.getMeasurementType()));
         });
 
-        //monitoringRepository.save(monitoring);
+        monitoringRepository.save(monitoring);
         measurementRepository.save(measurements);
     }
 
