@@ -1,5 +1,6 @@
 package com.rocket.vitalis;
 
+import com.rocket.vitalis.utils.LoadDataBase;
 import com.rocket.vitalis.utils.WarmupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -16,6 +17,7 @@ public class StartupHousekeeper implements ApplicationListener<ContextRefreshedE
 
     @Autowired
     private WarmupService warmupService;
+
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
