@@ -8,6 +8,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.Date;
 
+import static javax.persistence.EnumType.STRING;
+
 /**
  * Created by Sebastian on 25/9/2016.
  */
@@ -17,6 +19,7 @@ public class Sensor extends AbstractModel {
 
     @Column(nullable = false)
     @Getter @Setter @NonNull
+    @Enumerated(STRING)
     private MeasurementType measurementType;
 
     @Column
