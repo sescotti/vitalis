@@ -24,6 +24,7 @@
 		<java.version>1.8</java.version>
 		<dbh2.version>1.4.187</dbh2.version>
 		<gulp.goal>dist</gulp.goal>
+		<gulp.skip>false</gulp.skip>
 	</properties>
 
 	<dependencies>
@@ -152,6 +153,7 @@
 					<installDirectory>target</installDirectory>
 					<nodeVersion>v0.12.5</nodeVersion>
 					<npmVersion>2.11.2</npmVersion>
+					<skip>${gulp.skip}</skip>
 				</configuration>
 
 				<executions>
