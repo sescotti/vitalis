@@ -41,6 +41,7 @@ public class ModuleService {
         return moduleRepository.findByOwner(user);
     }
     public Collection<Monitoring> findMonitorings(Collection<Module> modules){
+        return monitoringRepository.findByModuleInAndFinishDateIsNull(modules);
     }
 
 
