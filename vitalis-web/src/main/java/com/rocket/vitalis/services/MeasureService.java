@@ -42,8 +42,11 @@ public class MeasureService {
         /* Get Date from string */
         Date measureDate = null;
         try {
-            String dateS = measureDateString;
-            measureDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").parse(dateS);
+            if(measureDateString == null){
+                measureDate = new Date();
+            } else {
+                measureDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").parse(measureDateString);
+            }
         } catch (ParseException e) {
             measureDate = new Date();
         }

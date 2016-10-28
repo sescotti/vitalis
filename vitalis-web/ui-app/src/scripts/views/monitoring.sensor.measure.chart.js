@@ -27,15 +27,19 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
             var ctx = $(this.ui.chartCanvas);
             var measurementType = $(this.ui.measurementType).val();
 
+            var animationOptions = this.getOption('animationOptions') || {};
+            var chartAnimation = animationOptions.chart_animation !== undefined ? animationOptions.chart_animation : true;
             var labels          = [];
             var values          = [];
             var secondaryValues = [];
+
+
 
             this.collection.models.forEach(function(model){
                 labels.unshift(new Date(model.get('measurement_date')).format('HH:MM'));
                 values.unshift(model.get('value'));
                 if(model.get('value_secondary')){
-                    secondaryValues.unshift(model.get('value_secondary'));    
+                    secondaryValues.unshift(model.get('value_secondary'));
                 }
             });
 
@@ -50,7 +54,7 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
                 datasets.push({
                     borderColor: "#9966ff",
                     data: secondaryValues
-                });                
+                });
             }
 
             var myChart = new Chart(ctx, {
@@ -60,6 +64,9 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
                     datasets: datasets
                 },
                 options: {
+                    animation: {
+                        duration: chartAnimation ? 1000 : 0
+                    },
                     title: {
                         display: true,
                         text: measurementType,

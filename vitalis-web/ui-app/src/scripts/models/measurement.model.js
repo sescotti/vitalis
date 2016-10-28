@@ -7,8 +7,8 @@ App.module('Vitalis.Models', function (Models, App, Backbone, Marionette, $, _) 
         model: Models.Measurement,
 
         url: function(){
-            var monitoringId = this.models[0].get('monitoringId');
-            var measurementType = this.models[0].get('measurementType');
+            var monitoringId = this.monitoringId;
+            var measurementType = this.measurementType;
 
             return '/api/app/monitorings/'+ monitoringId + '/sensors/' + measurementType;
         }

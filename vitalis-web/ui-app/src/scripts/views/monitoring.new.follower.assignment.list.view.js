@@ -75,6 +75,10 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
                 var region = that.addRegion(key, value);
                 that[key] = region;
             });
+
+            if(collection){
+                this.collection.fetch();
+            }
         },
 
         onDestroy: function() {
