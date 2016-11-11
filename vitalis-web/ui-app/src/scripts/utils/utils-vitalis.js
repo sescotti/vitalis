@@ -62,6 +62,7 @@ App.module('Vitalis.Utils', function (Utils, App, Backbone, Marionette, $, _){
     });
 
     var basePath = $('input[type="hidden"]#x_assets_basepath').val();
+    App.BASE_PATH = basePath
     Handlebars.registerHelper('img_url', function(path){
         return basePath + '/images/'+path;
     });
