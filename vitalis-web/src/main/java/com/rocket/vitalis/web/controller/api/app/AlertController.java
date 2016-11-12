@@ -32,7 +32,7 @@ public class AlertController  extends AbstractApiController {
     @RequestMapping("/")
     @ResponseBody
     public ResponseEntity<?> getMyAlerts(@ModelAttribute("user") User user){
-        Collection<Alert> alerts = alertService.getMyAlerts(user);
+        Collection<Alert> alerts = alertService.getAlertsFollowing(user);
         return new ResponseEntity<>(alerts, OK);
     }
 

@@ -9,7 +9,7 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         Vitalis     = App.module('Vitalis');
 
     Views.AlertListEmptyItem = Marionette.ItemView.extend({
-        template: App.Vitalis.templates.module_list_empty_item,
+        template: App.Vitalis.templates.alert_list_empty_item,
         ui: {
             'emptyCard': 'li.collection-item > div > a'
         },

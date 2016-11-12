@@ -20,6 +20,7 @@ div#contentin > div {
     height: 100%;
     width: 100%;
     min-width: 100%;
+    background-color: #455a64;
 }
 
 .app-container {
@@ -78,6 +79,10 @@ div#contentin > div {
 
 .pad-top{
     padding-top: 20px;
+}
+
+.margin-top {
+    margin-top: 20px;
 }
 
 /* Common styles */
@@ -157,4 +162,29 @@ a {
 .modal-action {
     cursor: pointer;
     cursor: hand;
+}
+
+.input-field.col label {
+    left: 0;
+}
+
+.goto-bottom {
+    bottom: 0;
+    position: absolute;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+option,
+i.material-icons
+{
+    color: #e0e0e0;
+}
+
+
+.subtitle {
+    color: #757575;
+    font-weight: 300;
+    font-size: small;
 }

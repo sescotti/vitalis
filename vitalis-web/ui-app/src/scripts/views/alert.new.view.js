@@ -6,25 +6,26 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
 
     var Urls        = App.module('Urls'),
         Header      = App.module('Header'),
-        Vitalis     = App.module('Vitalis');
+        Vitalis     = App.module('Vitalis'),
+        Utils       = App.module('Vitalis.Utils');
+
 
     Views.NewAlertPage = Marionette.LayoutView.extend({
 
         template: App.Vitalis.templates.new_alert_page,
 
         ui: {
-            addAlertButton: 'a[data-role="new-alert"]'
+            registerButton: 'a[data-role="register-alert"]'
         },
 
         events: {
-            'click @ui.addAlertButton': 'addAlert'
+            'click @ui.registerButton': 'registerAlert'
         },
 
         regions: {
             patients: 'div#patients',
             sensors: 'div#sensors',
             ranges: 'div#ranges'
-
         },
 
         initialize: function(){
@@ -105,10 +106,21 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
                     decimals: 0
                 })
             });
+
+            slider.noUiSlider.on('change', function(){
+                var values = slider.noUiSlider.get();
+                self.model.set("from", values[0]);
+                self.model.set("to", values[1]);
+            });
         },
 
-        addAlert: function(event){
-            Urls.go('vitalis:new_alert');
+        registerAlert: function(event){
+            this.model.save({}, {
+                success: function(model, response, options){
+                    Utils.toast('Alerta registrada');
+                    Urls.go('vitalis:alerts');
+                }
+            })
         }
 
     });
