@@ -10,7 +10,7 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         Utils       = App.module('Vitalis.Utils');
 
     Views.AlertListItemView = Marionette.ItemView.extend({
-        template: App.Vitalis.templates.module_list_item,
+        template: App.Vitalis.templates.alert_list_item,
         ui: {
             monitoringCard: 'li.collection-item',
             assignMonitoringButton: "li[data-role='assign-monitoring']",

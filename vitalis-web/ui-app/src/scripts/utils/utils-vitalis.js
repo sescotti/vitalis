@@ -45,7 +45,7 @@ App.module('Vitalis.Utils', function (Utils, App, Backbone, Marionette, $, _){
 
     Handlebars.registerHelper('measure', function(value, measurementType){
         var unit = measures[measurementType];
-        return value + unit;
+        return value + " " + unit;
     });
 
     Handlebars.registerHelper('concat', function(args){
@@ -62,7 +62,8 @@ App.module('Vitalis.Utils', function (Utils, App, Backbone, Marionette, $, _){
     });
 
     var basePath = $('input[type="hidden"]#x_assets_basepath').val();
-    App.BASE_PATH = basePath
+    App.BASE_PATH = basePath;
+
     Handlebars.registerHelper('img_url', function(path){
         return basePath + '/images/'+path;
     });
