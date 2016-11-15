@@ -21856,7 +21856,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
     // Subscribe to "start" application event
     App.on('start', function () {
-        Backbone.history.start({'pushState': true});
+        Backbone.history.start();
     });
 
     // Start the App

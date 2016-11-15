@@ -156,7 +156,7 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
 
     controller.mydata = function() {
         var mydataView = new App.Vitalis.Views.MyData({model: new Vitalis.Models.User()});
-        var innerHeaderView = new App.Vitalis.Views.InnerHeader();
+        var innerHeaderView = new App.Vitalis.Views.InnerHeader({title: "Mis datos"});
         App.header.show(innerHeaderView);
         App.main.show(mydataView);
     };

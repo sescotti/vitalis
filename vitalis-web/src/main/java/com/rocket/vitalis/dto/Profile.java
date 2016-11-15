@@ -1,5 +1,8 @@
 package com.rocket.vitalis.dto;
 
+import com.rocket.vitalis.model.BloodFactor;
+import com.rocket.vitalis.model.BloodType;
+import com.rocket.vitalis.model.DocumentType;
 import com.rocket.vitalis.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,10 +14,14 @@ import lombok.Data;
 @AllArgsConstructor
 public class Profile {
 
-    private Long    id;
-    private String  name;
-    private String  pictureUrl;
-    private String  email;
+    private Long            id;
+    private String          name;
+    private String          pictureUrl;
+    private String          email;
+    private DocumentType    documentType;
+    private String          docNumber;
+    private BloodFactor     bloodFactor;
+    private BloodType       bloodType;
 
     public Profile(User user) {
         this.id = user.getId();
