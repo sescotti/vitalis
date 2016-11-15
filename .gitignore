@@ -3,7 +3,7 @@
 
 ### Gulp ###
 ui-build/ 
-
+ui-dist/
 
 ### Maven ###
 target/

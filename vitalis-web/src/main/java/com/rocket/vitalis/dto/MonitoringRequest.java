@@ -18,19 +18,33 @@ public class MonitoringRequest {
 
     @Data
     public static class PatientDto {
-        private Long Id;
+        private Long id;
     }
 
     @Data
     public static class FollowerDto {
-        private Long Id;
-        private boolean isAdmin;
+        private Long id;
+        private Boolean isAdmin;
+
+        public FollowerDto(Long id, Boolean isAdmin){
+            this.id = id;
+            this.isAdmin = isAdmin;
+        }
+
+        public FollowerDto(){}
     }
 
     @Data
     public static class SensorDto {
         private MeasurementType type;
         private SensorStatus status;
+
+        public SensorDto(MeasurementType type, SensorStatus status){
+            this.type= type;
+            this.status=status;
+        }
+
+        public SensorDto(){}
     }
 
 }

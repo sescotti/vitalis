@@ -4,14 +4,8 @@ import com.rocket.vitalis.dto.SignupRequest;
 import com.rocket.vitalis.exceptions.EmailAlreadyRegisteredException;
 import com.rocket.vitalis.exceptions.InvalidLoginException;
 import com.rocket.vitalis.exceptions.InvalidTokenException;
-import com.rocket.vitalis.model.AccessToken;
-import com.rocket.vitalis.model.Follower;
-import com.rocket.vitalis.model.SimpleMonitoring;
-import com.rocket.vitalis.model.User;
-import com.rocket.vitalis.repositories.AccessTokenRepository;
-import com.rocket.vitalis.repositories.FollowerRepository;
-import com.rocket.vitalis.repositories.MonitoringRepository;
-import com.rocket.vitalis.repositories.UserRepository;
+import com.rocket.vitalis.model.*;
+import com.rocket.vitalis.repositories.*;
 import com.rocket.vitalis.utils.PBKDF2Service;
 import org.hibernate.exception.ConstraintViolationException;
 import org.joda.time.DateTime;
@@ -50,6 +44,9 @@ public class UserService {
 
     @Autowired
     private FollowerRepository followerRepository;
+
+    @Autowired
+    private DeviceTokenRepository deviceTokenRepository;
 
     private static final int TOKEN_TTL_IN_HS = 24;
 
@@ -165,7 +162,6 @@ public class UserService {
         }
     }
 
-
     public User getUser(Long userId){
         return userRepository.findOne(userId);
     }
@@ -192,6 +188,18 @@ public class UserService {
         return collectionUsers;
     }
 
+    public DeviceToken registerDeviceToken(String token, User user){
+        DeviceToken deviceToken = new DeviceToken(user, token);
+        return deviceTokenRepository.save(deviceToken);
+    }
+
+    public Collection<DeviceToken> getUserTokens(User user){
+        return deviceTokenRepository.findByUserId(user.getId());
+    }
+
+    public Collection<DeviceToken> getUsersTokens(Collection<Long> userIds){
+        return deviceTokenRepository.findByUserIdIn(userIds);
+    }
 
     public User setDoctor(Long userId){
         User user = userRepository.findOne(userId);

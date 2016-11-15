@@ -62,16 +62,4 @@ public class HibernateConfig {
                 .build();
     }
 
-    @PostConstruct
-    @Profile("dev")
-    public void startDBManager() {
-        EmbeddedH2Console.start();
-        context.addApplicationListener(new ApplicationListener<ContextClosedEvent>() {
-            @Override
-            public void onApplicationEvent(ContextClosedEvent event) {
-                EmbeddedH2Console.stop();
-            }
-        });
-    }
-
 }

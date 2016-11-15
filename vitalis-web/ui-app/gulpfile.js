@@ -11,13 +11,13 @@ var paths = require('./config/paths');
  * Tasks dependencies
  */
 var build = require('./tasks/build.spa');
-//var dist = require('./tasks/tasks/dist.spa');
+var dist = require('./tasks/dist.spa');
 
 /**
  * Tasks execution
  */
 build(gulp, paths, bundles, {'name': 'Vitalis', 'namespace': 'App.Vitalis.templates'});
-//dist(gulp, paths, bundles);
+dist(gulp, paths, bundles, {'name': 'Vitalis', 'namespace': 'App.Vitalis.templates'});
 
 gulp.task('icons-replacement', function () {
     gulp.src(paths.build.styles + '/*.css')

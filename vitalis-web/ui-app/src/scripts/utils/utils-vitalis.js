@@ -45,7 +45,7 @@ App.module('Vitalis.Utils', function (Utils, App, Backbone, Marionette, $, _){
 
     Handlebars.registerHelper('measure', function(value, measurementType){
         var unit = measures[measurementType];
-        return value + unit;
+        return value + " " + unit;
     });
 
     Handlebars.registerHelper('concat', function(args){
@@ -61,9 +61,11 @@ App.module('Vitalis.Utils', function (Utils, App, Backbone, Marionette, $, _){
         return joint;
     });
 
-    var assetsHost = $('input[type="hidden"]#x_assets_host').val();
+    var basePath = $('input[type="hidden"]#x_assets_basepath').val();
+    App.BASE_PATH = basePath;
+
     Handlebars.registerHelper('img_url', function(path){
-        return assetsHost + '/ui-build/images/'+path;
+        return basePath + '/images/'+path;
     });
 
     HandlebarsIntl.registerWith(Handlebars);

@@ -51,10 +51,34 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
                         action: function(event, container){
                             var monitoring = new Vitalis.Models.Monitoring({id: monitoringId});
 
-                            monitoring.destroy().then(function(){
-                                Utils.toast("Monitoreo finalizado");
-                                Urls.go('vitalis:home');
+                            monitoring.destroy({
+                                        success: function(){
+                                                    Utils.toast("Monitoreo finalizado");
+                                                    Urls.go('vitalis:home');
+                                        },
+                                        error: function(){
+                                            Utils.toast("Ups! No pudimos finalizar el monitoreo");
+                                        }
                             });
+                        }
+                    },
+                    {
+                        id: 'stop-following',
+                        label: 'Dejar de seguir',
+                        action: function(event, container){
+                            var follower = new Vitalis.Models.MonitoringFollower({monitoring_id: monitoringId});
+
+                            follower.destroy({
+                                url: '/api/app/monitorings/' + monitoringId + "/follower",
+                                success: function(){
+                                    Utils.toast("Listo! Ya dejaste de seguir este monitoreo");
+                                    Urls.go('vitalis:home');
+                                },
+                                error: function(){
+                                    Utils.toast("Ups! No pudimos ejecutar esta acción");
+                                }
+                            });
+
                         }
                     }
                 ]
@@ -136,6 +160,27 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
         App.header.show(innerHeaderView);
         App.main.show(mydataView);
     };
+    controller.alerts = function(){
+        var alertsPage = new App.Vitalis.Views.AlertsPage();
+        var innerHeaderView = new App.Vitalis.Views.InnerHeader({title: "Mis alertas"});
+
+        App.header.show(innerHeaderView);
+        App.main.show(alertsPage);
+
+    };
+
+    controller.new_alert = function(){
+
+        var alert = new Vitalis.Models.Alert();
+
+        var newAlertPage = new App.Vitalis.Views.NewAlertPage({model: alert});
+        var innerHeaderView = new App.Vitalis.Views.InnerHeader({title: "Nueva alerta"});
+
+        App.header.show(innerHeaderView);
+        App.main.show(newAlertPage);
+
+    };
+
 
     /**
      * Vitalis.Controller
@@ -163,6 +208,8 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
     addRoute('modules');
     addRoute('new_monitoring');
     addRoute('new_module');
+    addRoute('alerts');
+    addRoute('new_alert');
 
     App.Vitalis.Router = Marionette.AppRouter.extend({
         'appRoutes': routes,

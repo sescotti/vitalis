@@ -152,4 +152,9 @@ public class MonitoringService {
     public Monitoring findActiveMonitoringByUser(User user) {
         return monitoringRepository.findByPatientIdAndFinishDateIsNull(user.getId());
     }
+
+    public void deleteFollower(Long monitoringId, Long userId) {
+        Follower follower = followerRepository.findByMonitoringIdAndUserId(monitoringId, userId);
+        followerRepository.delete(follower);
+    }
 }

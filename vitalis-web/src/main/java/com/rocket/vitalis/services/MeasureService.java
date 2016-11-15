@@ -1,13 +1,12 @@
 package com.rocket.vitalis.services;
 
-import com.rocket.vitalis.model.Measurement;
-import com.rocket.vitalis.model.MeasurementType;
-import com.rocket.vitalis.model.Module;
-import com.rocket.vitalis.model.Monitoring;
+import com.rocket.vitalis.model.*;
 import com.rocket.vitalis.repositories.MeasurementRepository;
 import com.rocket.vitalis.repositories.ModuleRepository;
 import com.rocket.vitalis.repositories.MonitoringRepository;
+import com.rocket.vitalis.repositories.SensorRepository;
 import lombok.extern.log4j.Log4j;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +29,8 @@ public class MeasureService {
     private MonitoringRepository monitoringRepository;
     @Autowired
     private ModuleRepository moduleRepository;
-
+    @Autowired
+    private SensorRepository sensorRepository;
 
     public Measurement setMeasurement(Long moduleId, String measureDateString, MeasurementType measurementType, Double value, Double valueSecondary){
           /* Get MODULE */
@@ -48,6 +48,21 @@ public class MeasureService {
             measureDate = new Date();
         }
 
+        Date dateLimit = new DateTime().minusDays(10).toDate();
+        if(measureDate.before(dateLimit)){
+            measureDate = new Date();
+        }
+
+        for(Sensor sensor : monitoring.getSensors()){
+            if(sensor.getMeasurementType().equals(measurementType)){
+                sensor.setLastValue(value);
+                sensor.setLastValueSecondary(valueSecondary);
+                sensor.setLastMonitoringDate(measureDate);
+                sensorRepository.save(sensor);
+                break;
+            }
+        }
+
         /* Create new MEASURE */
         Measurement measure;
         if (BLOOD_PRESSURE.equals(measurementType))
@@ -56,6 +71,8 @@ public class MeasureService {
             measure = new Measurement(monitoring,measureDate,measurementType, value);
 
         measurementRepository.save(measure);
+
+
         return  measure;
     }
 }

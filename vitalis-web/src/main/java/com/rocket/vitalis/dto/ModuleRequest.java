@@ -7,5 +7,5 @@ import lombok.Data;
  */
 @Data
 public class ModuleRequest {
-    String moduleSerial;
+    private String serialNumber;
 }

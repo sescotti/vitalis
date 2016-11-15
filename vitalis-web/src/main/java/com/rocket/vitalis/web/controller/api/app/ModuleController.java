@@ -4,6 +4,7 @@ import com.rocket.vitalis.dto.FollowingRequest;
 import com.rocket.vitalis.dto.ModuleDto;
 import com.rocket.vitalis.dto.ModuleRequest;
 import com.rocket.vitalis.dto.MonitoringRequest;
+import com.rocket.vitalis.exceptions.ModuleAlreadyRegisteredException;
 import com.rocket.vitalis.model.*;
 import com.rocket.vitalis.services.ModuleService;
 import com.rocket.vitalis.web.controller.api.AbstractApiController;
@@ -17,9 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -37,12 +36,7 @@ public class ModuleController extends AbstractApiController {
     @RequestMapping("/")
     @ResponseBody
     public ResponseEntity<?> getModules(@ModelAttribute("user") User user){
-        Collection<Module> modules = moduleService.findModules(user);
-
-        List<ModuleDto> moduleDtos = modules.stream()
-                                            .map(ModuleDto::new)
-                                            .collect(toList());
-
+        Collection<ModuleDto> moduleDtos = moduleService.getModules(user);
         return new ResponseEntity<>(moduleDtos, OK);
     }
 
@@ -50,13 +44,16 @@ public class ModuleController extends AbstractApiController {
     public ResponseEntity<?> addModule(@ModelAttribute("user") User user,
                               @RequestBody ModuleRequest request){
         try {
-            Module module = moduleService.addModule(user, request.getModuleSerial());
+            Module module = moduleService.addModule(user, request.getSerialNumber());
             return new ResponseEntity<>(module, OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>("{\"error\": \"" + e.getMessage() + "\"}", BAD_REQUEST);
+        } catch(ModuleAlreadyRegisteredException e){
+            return new ResponseEntity<>("{\"error\": \"" + e.getMessage() + "\"}", CONFLICT);
         } catch (Exception e) {
             return new ResponseEntity<>("{\"error\": \"internal_server_error\"}", INTERNAL_SERVER_ERROR);
         }
+
     }
 
     @RequestMapping(method = DELETE, value = "/{moduleId}",  produces = "application/json")
@@ -97,7 +94,7 @@ public class ModuleController extends AbstractApiController {
                                             @RequestBody MonitoringRequest request){
         try {
             MonitoringRequest.PatientDto patient = request.getPatient().iterator().next();
-            Monitoring monitoring= moduleService.initMonitoring(moduleId, patient, request.getFollowers(), request.getSensors());
+            Monitoring monitoring= moduleService.initMonitoring(moduleId, patient, request.getFollowers(), request.getSensors(), user);
             return new ResponseEntity<>(monitoring, OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>("{\"error\": \"" + e.getMessage() + "\"}", BAD_REQUEST);

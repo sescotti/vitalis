@@ -61,4 +61,9 @@ public class AlertService {
         return alert;
     }
 
+    public Collection<Alert> getAlertsFor(Monitoring monitoring, MeasurementType measurementType){
+        return alertRepository.findByMonitoringAndMeasurementType(monitoring, measurementType);
+    }
+
+
 }

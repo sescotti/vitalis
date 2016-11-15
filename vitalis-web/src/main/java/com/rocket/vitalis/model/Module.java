@@ -22,10 +22,6 @@ public class Module extends AbstractModel {
     @Getter @Setter
     private User owner;
 
-    @OneToOne(mappedBy = "module")
-    @Getter @Setter
-    private Monitoring monitoring;
-
     public Module(String serialNumber, User owner){
         this.serialNumber= serialNumber;
         this.owner =  owner;

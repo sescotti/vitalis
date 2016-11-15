@@ -6,7 +6,8 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
 
     var Urls        = App.module('Urls'),
         Header      = App.module('Header'),
-        Vitalis     = App.module('Vitalis');
+        Vitalis     = App.module('Vitalis'),
+        Utils       = App.module('Vitalis.Utils');
 
     Views.ModuleListItemView = Marionette.ItemView.extend({
         template: App.Vitalis.templates.module_list_item,
@@ -46,10 +47,10 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         confirmDelete: function(){
             var serialNumber = this.model.get("serial_number");
             $('.modal').closeModal();
-            this.model.destroy().then(function(){
+            this.model.destroy({success: function(){
                 var message = "Eliminaste el módulo " + serialNumber;
-                Materialize.toast(message, 3500, '', function(){});
-            });
+                Utils.toast(message);
+            }});
         },
 
         gotoMonitoring: function(){

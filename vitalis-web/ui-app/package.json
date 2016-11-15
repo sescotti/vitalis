@@ -13,6 +13,7 @@
     "browser-sync": "2.12.5",
     "chai": "^3.5.0",
     "chai-spies": "^0.7.1",
+    "cssnano": "3.5.2",
     "deepmerge": "^0.2.10",
     "del": "2.2.0",
     "gulp": "3.9.1",
@@ -50,6 +51,7 @@
     "gulp-wrap": "0.11.0",    "jquery-mockjax": "2.2.0",
     "merge-stream": "1.0.0",
     "mkdirp": "0.5.1",
+    "object-assign": "4.1.0",
     "mocha": "^2.5.3",
     "phantomjs": "^2.1.7"
   },

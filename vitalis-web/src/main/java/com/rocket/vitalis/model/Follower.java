@@ -12,6 +12,7 @@ import javax.persistence.*;
  */
 
 @Entity
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"monitoring_id", "user_id"})})
 public class Follower extends AbstractModel {
 
     @Column(nullable = false)
@@ -37,7 +38,7 @@ public class Follower extends AbstractModel {
         this.monitoring= monitoring;
     }
 
-    public Follower(User user, Monitoring monitoring, boolean isAdmin){
+    public Follower(User user, Monitoring monitoring, Boolean isAdmin){
         this.followerType = FollowerType.RELATIVE;
         this.isAdmin=isAdmin;
         this.user=user;

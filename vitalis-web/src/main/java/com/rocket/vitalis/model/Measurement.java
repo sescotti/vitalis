@@ -9,6 +9,8 @@ import lombok.experimental.Delegate;
 import javax.persistence.*;
 import java.util.Date;
 
+import static javax.persistence.EnumType.STRING;
+
 /**
  * Created by Ailin on 21/08/2016.
  */
@@ -33,6 +35,7 @@ public class Measurement extends AbstractModel {
 
     @Column
     @Getter @Setter @NonNull
+    @Enumerated(STRING)
     private MeasurementType type;
 
     @ManyToOne

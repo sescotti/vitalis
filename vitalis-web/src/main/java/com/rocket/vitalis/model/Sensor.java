@@ -1,11 +1,14 @@
 package com.rocket.vitalis.model;
 
+import com.rocket.vitalis.dto.MonitoringRequest;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
+
+import static javax.persistence.EnumType.STRING;
 
 /**
  * Created by Sebastian on 25/9/2016.
@@ -16,6 +19,7 @@ public class Sensor extends AbstractModel {
 
     @Column(nullable = false)
     @Getter @Setter @NonNull
+    @Enumerated(STRING)
     private MeasurementType measurementType;
 
     @Column
@@ -37,6 +41,11 @@ public class Sensor extends AbstractModel {
 
     // Required by Hibernate
     protected Sensor(){}
+
+    public Sensor(MonitoringRequest.SensorDto sensor){
+        this.measurementType = sensor.getType();
+        this.status = sensor.getStatus();
+    }
 
     public Sensor(MeasurementType measurementType,SensorStatus status){
         this.measurementType= measurementType;
