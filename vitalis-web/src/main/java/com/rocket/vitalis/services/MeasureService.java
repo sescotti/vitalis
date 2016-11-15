@@ -59,6 +59,7 @@ public class MeasureService {
                 sensor.setLastValueSecondary(valueSecondary);
                 sensor.setLastMonitoringDate(measureDate);
                 sensorRepository.save(sensor);
+                break;
             }
         }
 
