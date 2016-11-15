@@ -1,5 +1,6 @@
 package com.rocket.vitalis.model;
 import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
@@ -12,12 +13,12 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public enum MeasurementType {
 
-    TEMPERATURE("temperature"),
-    HEART_RATE("heart_rate"),
-    RESPIRATORY_RATE("respiratory_rate"),
-    BLOOD_OXYGEN("blood_oxygen"),
-    ECG("ecg"),
-    BLOOD_PRESSURE("blood_pressure");
+    TEMPERATURE("temperature", "temperatura"),
+    HEART_RATE("heart_rate", "ritmo cardíaco"),
+    RESPIRATORY_RATE("respiratory_rate", "frecuencia respiratoria"),
+    BLOOD_OXYGEN("blood_oxygen", "oxígeno en sangre"),
+    ECG("ecg", "ECG"),
+    BLOOD_PRESSURE("blood_pressure", "presión arterial");
 
 
     public static MeasurementType fromString(String code){
@@ -37,6 +38,10 @@ public enum MeasurementType {
 
     @NonNull
     String code;
+
+    @NonNull
+    @Getter
+    String name;
 
 
 }
