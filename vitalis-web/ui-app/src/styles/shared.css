@@ -159,6 +159,7 @@ a {
    color: rgba(0, 0, 0, 0.87);
 }
 
+a,
 .modal-action {
     cursor: pointer;
     cursor: hand;

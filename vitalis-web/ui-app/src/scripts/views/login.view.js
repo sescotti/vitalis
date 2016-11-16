@@ -6,7 +6,10 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
 
     var Urls        = App.module('Urls'),
         Header      = App.module('Header'),
-        Vitalis     = App.module('Vitalis');
+        Vitalis     = App.module('Vitalis'),
+        Utils       = App.module('Vitalis.Utils');
+
+    var Models      = App.module('Vitalis.Models');
 
     var ENTER_KEY = 13;
 
@@ -85,7 +88,7 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
             $('#preloader-header').removeClass('hidden');
             // FIXME: Validaciones y timeout
             $.ajax({
-                url: '/api/access/login',
+                url: Models.API_ROOT_URL + '/api/access/login',
                 method: 'POST',
                 data: JSON.stringify({
                     email: this.model.get('email'),
@@ -93,11 +96,19 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
                 }),
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accepts': 'application/json'
+                    'Accepts': 'application/json',
+                    'X-Device-Token': localStorage.getItem('devicetoken')
                 },
                 success: function(data){
                     localStorage.setItem('accesstoken', data.token);
                     $('#preloader-header').addClass('hidden');
+
+                    if(App.Device == "cordova") {
+
+
+                        document.addEventListener("deviceready", onDeviceReady, false);
+                    }
+
                     Urls.go("vitalis:home");
                 },
                 error: function(error){

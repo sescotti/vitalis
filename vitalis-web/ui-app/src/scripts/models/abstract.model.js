@@ -2,6 +2,13 @@ App.module('Vitalis.Models', function (Models, App, Backbone, Marionette, $, _) 
 
     var Urls    = App.module('Urls');
 
+    (function(){
+        var content = $('meta[name="config:device"]').attr('content');
+
+        Models.API_ROOT_URL = content == "cordova" ? "http://7b8fdf3f.ngrok.io" : "";
+
+    })();
+
     function fetch(args, options){
 
         $('#preloader-header').removeClass('hidden');
@@ -12,6 +19,7 @@ App.module('Vitalis.Models', function (Models, App, Backbone, Marionette, $, _) 
         var onSuccess = args.success || function(model, response, options){};
 
         args.beforeSend = function(xhr){
+            this.url = Models.API_ROOT_URL + this.url;
             xhr.setRequestHeader('X-Auth-Token', localStorage.getItem('accesstoken'));
         };
 
@@ -19,7 +27,7 @@ App.module('Vitalis.Models', function (Models, App, Backbone, Marionette, $, _) 
             $('#preloader-header').addClass('hidden');
             if(response.status === 401){
                 $('.modal').closeModal();
-                Urls.go('vitalis:login')
+                Urls.go('vitalis:login');
             } else {
                 onError(model, response, options);
             }
@@ -43,6 +51,7 @@ App.module('Vitalis.Models', function (Models, App, Backbone, Marionette, $, _) 
         var onSuccess = args.success || function(model, response, options){};
 
         args.beforeSend = function(xhr){
+            this.url = Models.API_ROOT_URL + this.url;
             xhr.setRequestHeader('X-Auth-Token', localStorage.getItem('accesstoken'));
         };
 
@@ -74,6 +83,7 @@ App.module('Vitalis.Models', function (Models, App, Backbone, Marionette, $, _) 
         var onSuccess = options.success || function(model, response, options){};
 
         options.beforeSend = function(xhr){
+            this.url = Models.API_ROOT_URL + this.url;
             xhr.setRequestHeader('X-Auth-Token', localStorage.getItem('accesstoken'));
         };
 
@@ -108,5 +118,14 @@ App.module('Vitalis.Models', function (Models, App, Backbone, Marionette, $, _) 
         save: save,
         destroy: destroy
     });
+
+    //var sync = Backbone.sync;
+    //Backbone.sync = function(method, model, options){
+    //    options.beforeSend = function(){
+    //        this.url = API_ROOT_URL + this.url;
+    //    };
+    //    return sync.call(this, method, model, options);
+    //};
+
 
 });

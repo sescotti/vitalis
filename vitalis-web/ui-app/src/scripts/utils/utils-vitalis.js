@@ -72,6 +72,10 @@ App.module('Vitalis.Utils', function (Utils, App, Backbone, Marionette, $, _){
 
     Utils.toast = function(message, callback){
         Materialize.toast(message, 3500, '', callback);
-    }
+    };
+
+    (function(){
+        App.Device = $('meta[name="config:device"]').attr('content');
+    })();
 
 });

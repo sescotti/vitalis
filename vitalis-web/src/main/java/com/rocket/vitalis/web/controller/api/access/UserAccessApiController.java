@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -29,9 +30,10 @@ public class UserAccessApiController {
     private UserService userService;
 
     @RequestMapping(method = POST, value = "/login", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request){
+    public ResponseEntity<?> login(@RequestBody LoginRequest request, @RequestHeader("X-Device-Token") String deviceToken){
         try {
 
+            log.info("TOKEN : " + deviceToken);
             AccessToken accessToken = userService.login(request.getEmail(), request.getPassword());
             PublicKey publicKey = new PublicKey(accessToken.getToken());
             return new ResponseEntity<>(publicKey, OK);
