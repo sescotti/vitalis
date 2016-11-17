@@ -10,7 +10,7 @@ import java.util.Collection;
  */
 public interface DeviceTokenRepository extends CrudRepository<DeviceToken, Long>{
 
-    Collection<DeviceToken> findByUserId(Long userId);
+    Collection<DeviceToken> findBySessionUserId(Long userId);
 
-    Collection<DeviceToken> findByUserIdIn(Collection<Long> userIds);
+    Collection<DeviceToken> findBySessionUserIdIn(Collection<Long> userIds);
 }

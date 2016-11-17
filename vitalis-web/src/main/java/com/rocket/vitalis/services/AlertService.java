@@ -1,5 +1,6 @@
 package com.rocket.vitalis.services;
 
+import com.rocket.vitalis.dto.AlertRule;
 import com.rocket.vitalis.model.Alert;
 import com.rocket.vitalis.model.MeasurementType;
 import com.rocket.vitalis.model.Monitoring;
@@ -19,11 +20,11 @@ import java.util.Collection;
 @Log4j
 public class AlertService {
 
-    @Autowired
-    private AlertRepository alertRepository;
+    @Autowired  private AlertRepository alertRepository;
 
-    @Autowired
-    private MonitoringRepository monitoringRepository;
+    @Autowired  private MonitoringRepository monitoringRepository;
+
+    @Autowired  private RulesService        rulesService;
 
     public Collection<Alert> getMyAlerts(User user){
         Collection<Alert> alerts = alertRepository.findByMonitoringPatient(user);
@@ -66,4 +67,7 @@ public class AlertService {
     }
 
 
+    public Collection<AlertRule> getDefaultRules(MeasurementType measurementType) {
+        return rulesService.getDefaultRules(measurementType);
+    }
 }

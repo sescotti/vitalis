@@ -33,10 +33,10 @@ public class DeviceTokenController {
                                        @RequestBody DeviceTokenRequest request){
         try {
 
-            DeviceToken deviceToken = new DeviceToken(user, request.getToken());
-            deviceToken = deviceTokenRepository.save(deviceToken);
-            return new ResponseEntity<>(deviceToken, OK);
-
+//            DeviceToken deviceToken = new DeviceToken(user, request.getToken());
+//            deviceToken = deviceTokenRepository.save(deviceToken);
+//            return new ResponseEntity<>(deviceToken, OK);
+            return new ResponseEntity<>(null, OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>("{\"error\": \"" + e.getMessage() + "\"}", BAD_REQUEST);
         } catch (Exception e) {

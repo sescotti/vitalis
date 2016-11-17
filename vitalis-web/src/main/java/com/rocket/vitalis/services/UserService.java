@@ -188,17 +188,12 @@ public class UserService {
         return collectionUsers;
     }
 
-    public DeviceToken registerDeviceToken(String token, User user){
-        DeviceToken deviceToken = new DeviceToken(user, token);
-        return deviceTokenRepository.save(deviceToken);
-    }
-
     public Collection<DeviceToken> getUserTokens(User user){
-        return deviceTokenRepository.findByUserId(user.getId());
+        return deviceTokenRepository.findBySessionUserId(user.getId());
     }
 
     public Collection<DeviceToken> getUsersTokens(Collection<Long> userIds){
-        return deviceTokenRepository.findByUserIdIn(userIds);
+        return deviceTokenRepository.findBySessionUserIdIn(userIds);
     }
 
     public User setDoctor(Long userId){
@@ -212,4 +207,15 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    /**
+     * Method that associates a device token with an access token.
+     * Pairs a login session with a device id
+     *
+     * @param accessToken
+     * @param deviceToken
+     */
+    public void registerDeviceToken(AccessToken accessToken, String deviceToken) {
+        DeviceToken deviceInformation = new DeviceToken(accessToken, deviceToken);
+        deviceTokenRepository.save(deviceInformation);
+    }
 }
