@@ -1,0 +1,54 @@
+{{#intl locales="es-AR"}}
+<li class="collection-item row">
+    <div class="col s10 m6 l8">
+        <span class="title">{{ monitoring.patient.name }}</span>
+        <p class="subtitle no-margin">
+
+            {{ tr measurement_type }}
+            {{#if (eq measurement_type 'blood_pressure')}}
+                {{value}}/{{value_secondary}}
+            {{else}}
+                {{measure value measurement_type}}
+            {{/if}}
+            {{ formatRelative creation_date }}
+        </p>
+        <p class="subtitle no-margin
+            {{#if (eq status 'open')}}
+                materialize-red-text text-darken-2
+            {{else}}
+                {{#if (eq status 'acked')}}
+                    blue-text text-darken-4
+                {{/if}}
+            {{/if}}
+        ">
+            {{tr status}}
+        </p>
+    </div>
+    <div class="col s2 m6 l4 right-align no-padding" >
+        <a data-link="#options-modal-{{id}}" class="secondary-content modal-trigger"><i class="material-icons">more_vert</i></a>
+    </div>
+
+    <div id="options-modal-{{id}}" class="modal bottom-sheet">
+        <h5 class="subheader">Opciones</h5>
+        <div>
+            <ul class="collection">
+                {{#if (eq status 'open')}}
+                    <li class="collection-item modal-action modal-close" data-role='ack-notification'>
+                        <a ><i class="valign-bottom material-icons">done</i><span>Marcar como vista</span></a>
+                    </li>
+                {{/if}}
+                {{#if (neq status 'closed')}}
+                    <li class="collection-item modal-action" data-role='close-notification'>
+                        <a ><i class="valign-bottom material-icons">close</i><span>Cerrar</span></a>
+                    </li>
+                {{/if}}
+                {{#if (eq status 'closed')}}
+                <li class="collection-item modal-action" data-role='goto-monitoring'>
+                    <a ><i class="valign-bottom material-icons">tv</i><span>Ir a monitoreo</span></a>
+                </li>
+                {{/if}}
+            </ul>
+        </div>
+    </div>
+</li>
+{{/intl}}

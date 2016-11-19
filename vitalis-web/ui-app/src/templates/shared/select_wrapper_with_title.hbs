@@ -1,9 +1,13 @@
 <!--<h5 class="subheader">{{collection_title}}</h5>-->
 <div class="input-field col s12">
     <select id="{{select_id}}" class="collection-select">
-        <option value="" disabled selected>{{default_option}}</option>
+        <option value="" disabled {{#unless has_selected_item}}selected{{/unless}}>{{default_option}}</option>
         {{#each items}}
-            <option value="{{id}}" data-icon="{{picture_url}}" class="circle left">
+            <option value="{{id}}" data-icon="{{picture_url}}" class="circle left"
+                    {{#if ../has_selected_item}}
+                        {{#if (eq id ../selected_item.id)}}selected{{/if}}
+                    {{/if}}
+                    >
                 {{tr name}}
             </option>
         {{/each}}

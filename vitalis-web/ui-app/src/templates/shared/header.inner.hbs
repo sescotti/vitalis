@@ -7,7 +7,7 @@
     <nav>
         <div class="nav-wrapper">
 
-            <a id="back-btn" href="#" data-role='back-btn' data-activates="nav-mobile" class="button-collapse pad-left"><i class="material-icons">keyboard_arrow_left</i></a>
+            <a id="back-btn"  data-role='back-btn' data-activates="nav-mobile" class="button-collapse pad-left"><i class="material-icons">keyboard_arrow_left</i></a>
 
             {{#if useBrandAsTitle}}
                 <a class="brand-logo">{{title}}</a>
@@ -20,19 +20,19 @@
             {{/if}}
                 {{#if secondary_action}}
                 <li>
-                    <a href="#" data-role="secondary-action">
+                    <a  data-role="secondary-action">
                         <i class="material-icons">{{secondary_action.icon}}</i>
                     </a>
                 </li>
                 {{else if menu}}
                 <li>
-                    <a href="#" data-activates='menu-dropdown' class="dropdown-button" data-constrainwidth="false" data-beloworigin="true">
+                    <a  data-activates='menu-dropdown' class="dropdown-button" data-constrainwidth="false" data-beloworigin="true">
                         <i class="material-icons">more_vert</i>
                     </a>
 
                     <ul id='menu-dropdown' class='dropdown-content'>
                         {{#each menu.options}}
-                            <li data-role="menu-{{id}}"><a href="#!" id="{{id}}">{{label}}</a></li>
+                            <li data-role="menu-{{id}}"><a  id="{{id}}">{{label}}</a></li>
                         {{/each}}
                     </ul>
 

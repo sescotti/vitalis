@@ -4,6 +4,7 @@ import com.rocket.vitalis.dto.AlertRule;
 import com.rocket.vitalis.dto.google.PushNotificationDto;
 import com.rocket.vitalis.dto.google.PushNotificationResponse;
 import com.rocket.vitalis.model.*;
+import com.rocket.vitalis.utils.MeasureFormatter;
 import com.rocket.vitalis.utils.RestClient;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,12 +12,14 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import javax.transaction.Transactional;
+import java.util.*;
+import java.util.stream.Collectors;
 
+import static com.rocket.vitalis.model.NotificationStatus.OPEN;
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 /**
  * Created by sscotti on 11/12/16.
@@ -25,66 +28,107 @@ import static java.util.stream.Collectors.toList;
 @Log4j
 public class NotificationService {
 
-    @Autowired
-    private AlertService        alertService;
+    @Autowired  private AlertService        alertService;
 
-    @Autowired
-    private RulesService        rulesService;
+    @Autowired  private MonitoringService   followerService;
 
-    @Autowired
-    private MonitoringService   followerService;
+    @Autowired  private UserService         userService;
 
-    @Autowired
-    private UserService         userService;
+    @Autowired  private RestClient          restClient;
 
-    @Autowired
-    private RestClient restClient;
+    @Autowired  private MeasureFormatter    measureFormatter;
 
     public void checkMeasures(Measurement measurement){
 
-        MeasurementType measurementType = measurement.getType();
-        Collection<AlertRule> alertRules = loadRules(measurement);
+        // Mando las notificaciones y evalúo si no hay ninguna alerta ya abierta para esta medición
+            doCheckMeasures(measurement);
 
-        Collection<AlertRule> defaultRules = rulesService.getDefaultRules(measurementType);
-
-        defaultRules.stream().forEach(alertRule -> {
-            boolean matches = alertRule.matches(measurement);
-
-            if(matches){
-                sendNotification(measurement);
-            }
-        });
     }
 
-    private void sendNotification(Measurement measurement) {
+    private void doCheckMeasures(Measurement measurement) {
+        MeasurementType measurementType = measurement.getType();
+        Collection<AlertRule> alertRules = loadRules(measurement);
+        Collection<User> followers = new HashSet<>();
+        Collection<DeviceToken> deviceTokensRecipients = new HashSet<>();
 
+        // Levanto las alertas abiertas del monitoreo actual
+        Collection<AlertNotification> openAlerts = alertService.getOpenAlerts(measurement.getMonitoring(),
+                measurement.getType());
+
+        // Obtengo los dueños de las alertas abiertas para filtrarlos después
+        Set<User> openAlertsOwners = openAlerts.stream()
+                .map(AlertNotification::getOwner)
+                .collect(toSet());
+
+        // Levanto reglas por defecto
+        Collection<AlertRule> defaultRules = alertService.getDefaultRules(measurementType);
+
+
+        // Levanto los followers del monitoreo en la primera regla que cumpla
+        Optional<Collection<User>> defaultFollowers =    defaultRules.stream()
+                                                                .findFirst()
+                                                                .filter(rule -> rule.matches(measurement))
+                                                                .map(alertRule -> getFollowersIds(measurement));
+
+        // Si alguna regla se cumplió, levanto los followers excluyendo los que tengan una alerta abierta
+        if(defaultFollowers.isPresent()){
+            followers.addAll(   defaultFollowers.get()
+                                                .stream()
+                                                .filter(follower -> !openAlertsOwners.contains(follower))
+                                                .collect(toSet()));
+        }
+
+        // Levanto los usuarios de alertas custom que matcheen con el valor actual
+        Collection<User> customAlertsUsers =    alertRules.stream()
+                .filter(rule -> rule.matches(measurement))
+                .filter(rule -> !openAlertsOwners.contains(rule.getSource().getCreatedBy()))
+                .map(rule -> rule.getSource().getCreatedBy())
+                .collect(toSet());
+
+        // Agrego los usuarios de alertas custom a la lista de destinatarios
+        followers.addAll(customAlertsUsers);
+
+        deviceTokensRecipients.addAll(userService.getUsersTokens(followers));
+
+        followers.forEach(follower -> {
+            AlertNotification notification = new AlertNotification(measurement, follower, OPEN);
+
+            alertService.createNotification(notification);
+        });
+
+        deviceTokensRecipients.stream().forEach(deviceToken ->
+                        sendNotification(deviceToken, measurement)
+        );
+    }
+
+    private Collection<User> getFollowersIds(Measurement measurement) {
         Long monitoringId = measurement.getMonitoring().getId();
 
         Collection<Follower> followers = followerService.getFollowers(monitoringId);
 
-        List<Long> userIds = followers.stream().map(follower -> follower.getUser().getId()).collect(toList());
+        return followers.stream()
+                .map(Follower::getUser)
+                .collect(toList());
+    }
 
-        Collection<DeviceToken> usersTokens = userService.getUsersTokens(userIds);
+    @Transactional
+    private void sendNotification(DeviceToken deviceToken, Measurement measurement) {
 
-        usersTokens.stream().forEach(deviceToken -> {
+        PushNotificationDto pushNotification = createPushNotification(deviceToken, measurement);
 
-            PushNotificationDto pushNotification = createPushNotification(deviceToken, measurement);
+        ResponseEntity<PushNotificationResponse> response = restClient.create("https://gcm-http.googleapis.com/gcm/send")
+                .addHeader("Authorization", "key=AIzaSyCsp9CPiln_EvQ4ZLz6sx70J-ATTNIeMbk")
+                .contentType(MediaType.APPLICATION_JSON)
+                .payload(pushNotification)
+                .post(PushNotificationResponse.class);
 
-            ResponseEntity<PushNotificationResponse> response = restClient.create("https://gcm-http.googleapis.com/gcm/send")
-                    .addHeader("Authorization", "key=AIzaSyCsp9CPiln_EvQ4ZLz6sx70J-ATTNIeMbk")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .payload(pushNotification)
-                    .post(PushNotificationResponse.class);
+        PushNotificationResponse payload = response.getBody();
 
-
-            PushNotificationResponse payload = response.getBody();
-
-            if(payload.getSuccess() == 1){
-                log.info(format("Success %s", payload));
-            }
-
-        });
-
+        if(payload.getSuccess() == 1){
+            log.info(format("Success %s", payload));
+        } else if(payload.getFailure() == 1){
+            log.error(format("Error %s", payload));
+        }
     }
 
     private PushNotificationDto createPushNotification(DeviceToken deviceToken, Measurement measurement) {
@@ -92,14 +136,19 @@ public class NotificationService {
         String patientName = measurement.getMonitoring().getPatient().getName();
         String measurementType = measurement.getType().getName();
 
+        String formattedValue = measureFormatter.getFormattedValue(measurement);
+
+        String pushMessage = format("%s de %s para %s", formattedValue, measurementType, patientName);
+        String pushSummaryText = format("Se ha lanzado una alerta (%s)", formattedValue);
+
         PushNotificationDto.PushNotificationData data = new PushNotificationDto.PushNotificationData();
         data.setTitle("Nueva alerta");
-        data.setMessage(format("Alerta de %s para %s", measurementType, patientName));
-        data.setMessage("www/img/vitalis_logo.png");
+        data.setMessage(pushMessage);
+        data.setImage("www/img/logo-64x64-color.png");
         data.setVibrate(1);
         data.setSound(1);
         data.setStyle("inbox");
-        data.setSummaryText("Sumarizame esta");
+        data.setSummaryText(pushSummaryText);
 
         return new PushNotificationDto(deviceToken.getToken(), data);
 
@@ -108,14 +157,11 @@ public class NotificationService {
     private Collection<AlertRule> loadRules(Measurement measurement) {
         Monitoring monitoring = measurement.getMonitoring();
         MeasurementType measurementType = measurement.getType();
+
         Collection<Alert> userAlerts = alertService.getAlertsFor(monitoring, measurementType);
 
-        Collection<AlertRule> defaultRules = rulesService.getDefaultRules(measurementType);
-        List<AlertRule> collect = userAlerts.stream().map(AlertRule::new).collect(toList());
+        return userAlerts.stream().map(AlertRule::new).collect(toList());
 
-        Collection<AlertRule> rules = new ArrayList<>(defaultRules);
-        rules.addAll(collect);
-
-        return rules;
     }
+
 }

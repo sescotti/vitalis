@@ -109,8 +109,13 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
 
             slider.noUiSlider.on('change', function(){
                 var values = slider.noUiSlider.get();
+
                 self.model.set("from", values[0]);
                 self.model.set("to", values[1]);
+
+                $("#range-from").html(values[0]);
+                $("#range-to").html(values[1]);
+
             });
         },
 

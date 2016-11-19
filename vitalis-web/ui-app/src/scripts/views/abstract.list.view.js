@@ -28,12 +28,14 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         },
 
         templateHelpers: function() {
-
+            var hasSelectedItem = !!this.getOption('selected_item');
             return {
                 collection_title: this.getOption('title'),
                 select_id: this.getOption('select_id'),
                 default_option: this.getOption('default_option'),
-                items: this.getOption('items')
+                items: this.getOption('items'),
+                selected_item: this.getOption('selected_item'),
+                has_selected_item: hasSelectedItem
             }
         },
 

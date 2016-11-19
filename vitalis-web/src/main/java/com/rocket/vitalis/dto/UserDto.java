@@ -42,7 +42,7 @@ public class UserDto extends AbstractDto {
     public UserDto(User user){
         super(user);
         this.email          = user.getEmail();
-        this.password = user.getPassword();
+        this.password       = user.getPassword();
         this.userType       = user.getUserType();
         this.isDoctor       = user.getIsDoctor();
         this.clinic         = user.getClinic();

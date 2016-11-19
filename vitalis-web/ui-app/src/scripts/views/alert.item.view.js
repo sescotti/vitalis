@@ -12,20 +12,22 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
     Views.AlertListItemView = Marionette.ItemView.extend({
         template: App.Vitalis.templates.alert_list_item,
         ui: {
-            monitoringCard: 'li.collection-item',
-            assignMonitoringButton: "li[data-role='assign-monitoring']",
-            gotoMonitoringButton: "li[data-role='goto-monitoring']",
-            deleteModuleButton: "li[data-role='delete-module']",
-            moreInfoButton: "li[data-role='more-info']",
-            confirmDeleteButton: "a[data-role='confirm-delete']"
+            moreInfoButton:     "li[data-role='more-info']",
+            editAlertButton:    "li[data-role='edit-alert']",
+            deleteButton:       "li[data-role='delete-alert']"
         },
 
         events:{
-            'click @ui.assignMonitoringButton': 'assignMonitoring',
-            'click @ui.deleteModuleButton': 'deleteModule',
-            'click @ui.moreInfoButton': 'goToModule',
-            'click @ui.confirmDeleteButton': 'confirmDelete',
-            'click @ui.gotoMonitoringButton': 'gotoMonitoring'
+            'click @ui.editAlertButton': 'editAlert'
+        },
+
+        triggers: {
+            'click @ui.deleteButton': 'remove:alert'
+        },
+
+        editAlert: function(){
+            var monitoringId = this.model.id;
+            Urls.go('vitalis:edit_alert', [monitoringId]);
         },
 
         onShow: function(){
@@ -33,34 +35,6 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
                 // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
                 $('.modal-trigger').leanModal();
             });
-        },
-
-        assignMonitoring: function(){
-            var moduleId = this.model.get('id');
-            Urls.go('vitalis:new_monitoring', [moduleId]);
-        },
-
-        deleteModule: function(){
-            $('#delete-module-modal').openModal();
-        },
-
-        confirmDelete: function(){
-            var serialNumber = this.model.get("serial_number");
-            $('.modal').closeModal();
-            this.model.destroy({success: function(){
-                var message = "Eliminaste el módulo " + serialNumber;
-                Utils.toast(message);
-            }});
-        },
-
-        gotoMonitoring: function(){
-            var monitoringId = this.model.get('monitoring').id;
-            Urls.go('vitalis:monitoring', [monitoringId]);
-        },
-
-        goToModule: function(){
-
         }
-
     });
 });

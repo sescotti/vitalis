@@ -17,11 +17,17 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
             alerts: '#alerts'
         },
 
+        templateHelpers: function() {
+            var self = this;
+            return {
+                measurement_type: self.model.models[0].get('measurementType')
+            }
+        },
+
         initialize: function(){
             var self = this;
             var measurementType = self.model.models[0].get('measurementType');
             this.model.fetch({success:function(){
-                self.render();
                 self.model.measurementType = measurementType;
 
                 var chartView = new App.Vitalis.Views.MonitoringSensorMeasurementChart({collection: self.model, measurementType: measurementType});

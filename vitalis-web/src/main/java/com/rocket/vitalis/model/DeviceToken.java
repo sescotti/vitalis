@@ -17,7 +17,7 @@ import javax.persistence.ManyToOne;
 public class DeviceToken extends AbstractModel {
 
     @ManyToOne
-    private User user;
+    private AccessToken session;
 
     @Column(nullable = false)
     private String token;

@@ -7,15 +7,23 @@
         <div id="sensors" class="pad-bottom">
         </div>
 
-        <div id="ranges" class="pad-bottom">
-            <label>Rango de alerta</label>
-            <div id="range-slider" class="margin-top">
+        <div id="ranges" class="pad-bottom row position-relative">
+            <div class="col s9">
+                <label>Rango de alerta</label>
+                <div id="range-slider" class="margin-top">
+                </div>
+            </div>
+            <div id="range-values" class="col s3 position-absolute right">
+                <span id="range-from">20</span>
+                <span>-</span>
+                <span id="range-to">80</span>
+
             </div>
         </div>
 
     </div>
-    <a class="btn btn-large waves-effect waves-light full-width goto-bottom" data-role="register-alert" href="#">
-        Registrar alerta
+    <a class="btn btn-large waves-effect waves-light full-width goto-bottom" data-role="register-alert" >
+        Guardar alerta
     </a>
 
 </div>

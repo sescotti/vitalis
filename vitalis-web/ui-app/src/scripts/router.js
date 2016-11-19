@@ -154,6 +154,12 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
         App.main.show(newModulePage);
     };
 
+    controller.mydata = function() {
+        var mydataView = new App.Vitalis.Views.MyData({model: new Vitalis.Models.User()});
+        var innerHeaderView = new App.Vitalis.Views.InnerHeader({title: "Mis datos"});
+        App.header.show(innerHeaderView);
+        App.main.show(mydataView);
+    };
     controller.alerts = function(){
         var alertsPage = new App.Vitalis.Views.AlertsPage();
         var innerHeaderView = new App.Vitalis.Views.InnerHeader({title: "Mis alertas"});
@@ -172,6 +178,30 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
 
         App.header.show(innerHeaderView);
         App.main.show(newAlertPage);
+
+    };
+
+    controller.edit_alert = function(alertId){
+
+        var alert = new Vitalis.Models.Alert({id: alertId});
+
+        var editAlertPage = new App.Vitalis.Views.EditAlertPage({model: alert});
+        var innerHeaderView = new App.Vitalis.Views.InnerHeader({title: "Editar alerta"});
+
+        App.header.show(innerHeaderView);
+        App.main.show(editAlertPage);
+
+    };
+
+    controller.notifications = function(alertId){
+
+        var notifications = new Vitalis.Models.NotificationsList();
+
+        var editAlertPage = new App.Vitalis.Views.NotificationsPage({collection: notifications});
+        var innerHeaderView = new App.Vitalis.Views.InnerHeader({title: "Notificaciones"});
+
+        App.header.show(innerHeaderView);
+        App.main.show(editAlertPage);
 
     };
 
@@ -195,6 +225,7 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
     addRoute('home');
     addRoute('patients');
     addRoute('measurements');
+    addRoute('mydata');
     addRoute('monitoring');
     addRoute('requests');
     addRoute('new_request');
@@ -203,6 +234,8 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
     addRoute('new_module');
     addRoute('alerts');
     addRoute('new_alert');
+    addRoute('edit_alert');
+    addRoute('notifications');
 
     App.Vitalis.Router = Marionette.AppRouter.extend({
         'appRoutes': routes,

@@ -1,6 +1,7 @@
 package com.rocket.vitalis.web.controller.api.app;
 
 import com.rocket.vitalis.dto.Profile;
+import com.rocket.vitalis.dto.UserData;
 import com.rocket.vitalis.model.User;
 import com.rocket.vitalis.services.UserService;
 import com.rocket.vitalis.web.controller.api.AbstractApiController;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 
 import static org.springframework.http.HttpStatus.OK;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 /**
  * Created by sscotti on 10/9/16.
@@ -50,5 +51,18 @@ public class UserController extends AbstractApiController{
         return new ResponseEntity<>(users, OK);
     }
 
+    @RequestMapping(value = "/profile", method = { PUT, POST })
+    @ResponseBody
+    public ResponseEntity<?> save(@ModelAttribute("user") User user,
+                                  @RequestBody UserData formUserData) {
+        user.setName(formUserData.getName());
+        user.setDocNumber(formUserData.getDocNumber());
+        user.setDocumentType(formUserData.getDocumentType());
+        user.setBloodFactor(formUserData.getBloodFactor());
+        user.setBloodType(formUserData.getBloodType());
+        user = userService.save(user);
+
+        return new ResponseEntity<Object>(user, OK);
+    }
 
 }

@@ -36,10 +36,13 @@ public class VitalisAuthenticationFilter implements Filter{
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
+        HttpServletResponse resp = (HttpServletResponse) servletResponse;
+        resp.setHeader("Access-Control-Allow-Origin", "*");
         if(requestUrlsPatternMatcher.matcher(req.getRequestURI()).find()){
+
             String authToken = req.getHeader("X-Auth-Token");
             if(isBlank(authToken)){
-                ((HttpServletResponse)servletResponse).sendError(SC_UNAUTHORIZED);
+                resp.sendError(SC_UNAUTHORIZED);
             } else {
                 try {
                     User user = userService.getUser(authToken);
@@ -47,7 +50,7 @@ public class VitalisAuthenticationFilter implements Filter{
                     filterChain.doFilter(servletRequest, servletResponse);
                 } catch (InvalidTokenException e) {
                     log.error("Invalid token detected: ", e);
-                    ((HttpServletResponse)servletResponse).sendError(SC_UNAUTHORIZED);
+                    resp.sendError(SC_UNAUTHORIZED);
                 }
             }
         } else {

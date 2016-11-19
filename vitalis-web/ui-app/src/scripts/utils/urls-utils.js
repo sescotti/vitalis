@@ -14,11 +14,15 @@ App.module('Urls', function (Urls, App, Backbone, Marionette, $, _){
     Urls.go = function (key, replacements, options) {
 
         var _options = _.extend(
-            {'trigger': true},
+            {
+                'trigger': true,
+                //silent:false
+            },
             options
         );
 
         Backbone.history.navigate(Urls.get(key, replacements), _options);
+        //Backbone.history.loadUrl( Backbone.history.fragment);
 
     };
 

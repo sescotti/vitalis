@@ -1,5 +1,8 @@
 package com.rocket.vitalis.web.controller.api.access;
 
+import com.rocket.vitalis.dto.AccessTokenValidationRequest;
+import com.rocket.vitalis.exceptions.InvalidTokenException;
+import com.rocket.vitalis.model.User;
 import com.rocket.vitalis.services.UserService;
 import com.rocket.vitalis.dto.LoginRequest;
 import com.rocket.vitalis.dto.PublicKey;
@@ -12,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -29,16 +33,39 @@ public class UserAccessApiController {
     private UserService userService;
 
     @RequestMapping(method = POST, value = "/login", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request){
+    public ResponseEntity<?> login(@RequestBody LoginRequest request, @RequestHeader(value = "X-Device-Token", required = false) String deviceToken){
         try {
 
+            log.info("TOKEN : " + deviceToken);
             AccessToken accessToken = userService.login(request.getEmail(), request.getPassword());
+
+            if(deviceToken != null && !"null".equals(deviceToken)){
+                userService.registerDeviceToken(accessToken, deviceToken);
+            }
+
             PublicKey publicKey = new PublicKey(accessToken.getToken());
             return new ResponseEntity<>(publicKey, OK);
 
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>("{\"error\": \"" + e.getMessage() + "\"}", BAD_REQUEST);
         } catch (InvalidLoginException e) {
+            return new ResponseEntity<>("{\"error\": \"" + e.getMessage() + "\"}", UNAUTHORIZED);
+        } catch (Exception e) {
+            return new ResponseEntity<>("{\"error\": \"internal_server_error\"}", INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @RequestMapping(method = POST, value = "/validate", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<?> validate(@RequestBody AccessTokenValidationRequest request, @RequestHeader(value = "X-Device-Token", required = false) String deviceToken){
+        try {
+
+            userService.getUser(request.getAccessToken());
+
+            return new ResponseEntity<>(OK);
+
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>("{\"error\": \"" + e.getMessage() + "\"}", BAD_REQUEST);
+        } catch (InvalidTokenException e) {
             return new ResponseEntity<>("{\"error\": \"" + e.getMessage() + "\"}", UNAUTHORIZED);
         } catch (Exception e) {
             return new ResponseEntity<>("{\"error\": \"internal_server_error\"}", INTERNAL_SERVER_ERROR);

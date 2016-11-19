@@ -14,7 +14,10 @@ App.module('Vitalis.Utils', function (Utils, App, Backbone, Marionette, $, _){
         blood_oxygen: "Oxígeno en sangre",
         ecg: "ECG",
         diastolic_pressure: "Presión diastólica",
-        systolic_pressure: "Presión sistólica"
+        systolic_pressure: "Presión sistólica",
+        open: "Abierta",
+        acked: "Vista",
+        closed: "Cerrada"
     };
 
     var measures = {
@@ -33,6 +36,10 @@ App.module('Vitalis.Utils', function (Utils, App, Backbone, Marionette, $, _){
 
     Handlebars.registerHelper('tr', function(arg){
         return translations[arg] ? translations[arg] : arg;
+    });
+
+    Handlebars.registerHelper('neq', function(arg1, arg2){
+        return arg1 !== arg2;
     });
 
     Handlebars.registerHelper('eq', function(arg1, arg2){
@@ -72,6 +79,10 @@ App.module('Vitalis.Utils', function (Utils, App, Backbone, Marionette, $, _){
 
     Utils.toast = function(message, callback){
         Materialize.toast(message, 3500, '', callback);
-    }
+    };
+
+    (function(){
+        App.Device = $('meta[name="config:device"]').attr('content');
+    })();
 
 });
