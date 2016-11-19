@@ -14,7 +14,7 @@
         {{ tr status }}
     </p>
 
-    <a href="#!" class="last-measure secondary-content">
+    <a  class="last-measure secondary-content">
     {{#if last_value}}
         {{#if ( eq measurement_type 'blood_pressure' ) }}
             {{ last_value }}/{{ last_value_secondary }}</a>
@@ -27,7 +27,7 @@
     </a>
 
     {{#if last_value}}
-        <a href="#!" class="secondary-content"><i class="material-icons">keyboard_arrow_right</i></a>
+        <a  class="secondary-content"><i class="material-icons">keyboard_arrow_right</i></a>
     {{/if}}
 
 </li>

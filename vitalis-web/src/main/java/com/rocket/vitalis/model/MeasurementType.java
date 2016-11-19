@@ -17,7 +17,7 @@ public enum MeasurementType {
     HEART_RATE("heart_rate", "ritmo cardíaco"),
     RESPIRATORY_RATE("respiratory_rate", "frecuencia respiratoria"),
     BLOOD_OXYGEN("blood_oxygen", "oxígeno en sangre"),
-    ECG("ecg", "ECG"),
+//    ECG("ecg", "ECG"),
     BLOOD_PRESSURE("blood_pressure", "presión arterial");
 
 

@@ -1,7 +1,25 @@
-<li class="collection-item">
-    <span class="title">{{ monitoring.patient.name }}</span>
-    <p class="subtitle no-margin">
-        {{ tr measurement_type }} ({{from}} a {{measure to measurement_type}})
-    </p>
+<li class="collection-item row">
+    <div class="col s10 m6 l8">
+        <span class="title">{{ monitoring.patient.name }}</span>
+        <p class="subtitle no-margin">
+            {{ tr measurement_type }} ({{from}} a {{measure to measurement_type}})
+        </p>
+    </div>
+    <div class="col s2 m6 l4 right-align no-padding" >
+        <a href="#options-modal-{{id}}" class="secondary-content modal-trigger"><i class="material-icons">more_vert</i></a>
+    </div>
 
+    <div id="options-modal-{{id}}" class="modal bottom-sheet">
+        <h5 class="subheader">Opciones</h5>
+        <div>
+            <ul class="collection">
+                <li class="collection-item modal-action modal-close" data-role='edit-alert'>
+                    <a ><i class="valign-bottom material-icons">edit</i><span>Editar alerta</span></a>
+                </li>
+                <li class="collection-item modal-action" data-role='delete-alert'>
+                    <a ><i class="valign-bottom material-icons">delete</i><span>Eliminar</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
 </li>

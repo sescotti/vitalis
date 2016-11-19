@@ -181,6 +181,30 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
 
     };
 
+    controller.edit_alert = function(alertId){
+
+        var alert = new Vitalis.Models.Alert({id: alertId});
+
+        var editAlertPage = new App.Vitalis.Views.EditAlertPage({model: alert});
+        var innerHeaderView = new App.Vitalis.Views.InnerHeader({title: "Editar alerta"});
+
+        App.header.show(innerHeaderView);
+        App.main.show(editAlertPage);
+
+    };
+
+    controller.notifications = function(alertId){
+
+        var notifications = new Vitalis.Models.NotificationsList();
+
+        var editAlertPage = new App.Vitalis.Views.NotificationsPage({collection: notifications});
+        var innerHeaderView = new App.Vitalis.Views.InnerHeader({title: "Notificaciones"});
+
+        App.header.show(innerHeaderView);
+        App.main.show(editAlertPage);
+
+    };
+
 
     /**
      * Vitalis.Controller
@@ -210,6 +234,8 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
     addRoute('new_module');
     addRoute('alerts');
     addRoute('new_alert');
+    addRoute('edit_alert');
+    addRoute('notifications');
 
     App.Vitalis.Router = Marionette.AppRouter.extend({
         'appRoutes': routes,

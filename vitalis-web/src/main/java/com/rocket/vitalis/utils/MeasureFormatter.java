@@ -22,7 +22,7 @@ public class MeasureFormatter {
         formatters.put(HEART_RATE,          new HeartRateFormatDecorator());
         formatters.put(RESPIRATORY_RATE,    new RespiratoryRateFormatDecorator());
         formatters.put(BLOOD_OXYGEN,        new BloodOxygenFormatDecorator());
-        formatters.put(ECG,                 new ECGFormatDecorator());
+//        formatters.put(ECG,                 new ECGFormatDecorator());
         formatters.put(BLOOD_PRESSURE,      new BloodPressureFormatDecorator());
     }
 
@@ -58,11 +58,11 @@ public class MeasureFormatter {
         }
     }
 
-    private static class ECGFormatDecorator implements FormatDecorator {
-        public String format(Measurement measurement) {
-            return measurement.getValue() + "";
-        }
-    }
+//    private static class ECGFormatDecorator implements FormatDecorator {
+//        public String format(Measurement measurement) {
+//            return measurement.getValue() + "";
+//        }
+//    }
 
     private static class BloodPressureFormatDecorator implements FormatDecorator {
         public String format(Measurement measurement) {

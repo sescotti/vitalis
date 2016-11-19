@@ -20,11 +20,14 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         },
 
         ui: {
-             'navbarLinks': 'a[data-role="navbar-link"]'
+            navbarLinks: 'a[data-role="navbar-link"]',
+            notificationsLink: 'a[data-role="notifications-link"]'
+
         },
 
         events:{
-            'click @ui.navbarLinks': 'goToLink'
+            'click @ui.navbarLinks': 'goToLink',
+            'click @ui.notificationsLink': 'goToNotifications'
         },
 
         onShow: function(){
@@ -35,6 +38,11 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
 
         goToLink: function(a){
             Urls.go(a.target.attributes["data-link"].value);
+        },
+
+        goToNotifications: function(a){
+            Urls.go(a.target.parentElement.attributes["data-link"].value);
         }
+
     });
 });

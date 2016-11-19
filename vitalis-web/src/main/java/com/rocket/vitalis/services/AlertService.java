@@ -1,10 +1,9 @@
 package com.rocket.vitalis.services;
 
+import com.rocket.vitalis.dto.AlertNotificationDto;
 import com.rocket.vitalis.dto.AlertRule;
-import com.rocket.vitalis.model.Alert;
-import com.rocket.vitalis.model.MeasurementType;
-import com.rocket.vitalis.model.Monitoring;
-import com.rocket.vitalis.model.User;
+import com.rocket.vitalis.model.*;
+import com.rocket.vitalis.repositories.AlertNotificationRepository;
 import com.rocket.vitalis.repositories.AlertRepository;
 import com.rocket.vitalis.repositories.MonitoringRepository;
 import lombok.extern.log4j.Log4j;
@@ -13,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
+import static com.rocket.vitalis.model.NotificationStatus.OPEN;
+
 /**
  * Created by Sony on 21/10/2016.
  */
@@ -20,20 +21,20 @@ import java.util.Collection;
 @Log4j
 public class AlertService {
 
-    @Autowired  private AlertRepository alertRepository;
+    @Autowired  private AlertRepository                 alertRepository;
 
-    @Autowired  private MonitoringRepository monitoringRepository;
+    @Autowired  private MonitoringRepository            monitoringRepository;
 
-    @Autowired  private RulesService        rulesService;
+    @Autowired  private RulesService                    rulesService;
+
+    @Autowired  private AlertNotificationRepository     alertNotificationRepository;
 
     public Collection<Alert> getMyAlerts(User user){
-        Collection<Alert> alerts = alertRepository.findByMonitoringPatient(user);
-        return alerts;
+        return alertRepository.findByMonitoringPatient(user);
     }
 
     public Collection<Alert> getAlertsFollowing(User user){
-        Collection<Alert> alerts = alertRepository.findByCreatedBy(user);
-        return alerts;
+        return alertRepository.findByCreatedBy(user);
     }
 
     public Alert addAlert(Long monitoringId, String measurementTypeName, Double from, Double to, User user){
@@ -44,7 +45,7 @@ public class AlertService {
         return alert;
     }
 
-    public Alert modifyAlert(Long alertId, Long monitoringId, String measurementTypeName, Double from, Double to, User user){
+    public Alert modifyAlert(Long alertId, Long monitoringId, String measurementTypeName, Double from, Double to){
         Alert alert = alertRepository.findOne(alertId);
         Monitoring monitoring = monitoringRepository.findOne(monitoringId);
         alert.setMonitoring(monitoring);
@@ -69,5 +70,28 @@ public class AlertService {
 
     public Collection<AlertRule> getDefaultRules(MeasurementType measurementType) {
         return rulesService.getDefaultRules(measurementType);
+    }
+
+    public AlertNotification createNotification(AlertNotification notification){
+        return alertNotificationRepository.save(notification);
+    }
+
+    public Collection<AlertNotification> getOpenAlerts(Monitoring monitoring, MeasurementType measurementType){
+        return alertNotificationRepository.findByMonitoringAndMeasurementTypeAndStatus(monitoring, measurementType, OPEN);
+    }
+
+    public Alert getAlert(Long alertId) {
+        return alertRepository.findOne(alertId);
+    }
+
+    public Collection<AlertNotification> getNotifications(User user) {
+        return alertNotificationRepository.findByOwnerOrderByCreationDateDesc(user);
+
+    }
+
+    public AlertNotification updateNotification(AlertNotificationDto notification) {
+        AlertNotification alertNotification = alertNotificationRepository.findOne(notification.getId());
+        alertNotification.setStatus(notification.getStatus());
+        return alertNotificationRepository.save(alertNotification);
     }
 }

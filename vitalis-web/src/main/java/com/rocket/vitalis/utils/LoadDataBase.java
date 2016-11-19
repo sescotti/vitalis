@@ -69,7 +69,7 @@ public class LoadDataBase {
         Collection<MonitoringRequest.SensorDto> sensors = new ArrayList<MonitoringRequest.SensorDto>();
         sensors.add(new MonitoringRequest.SensorDto(MeasurementType.BLOOD_OXYGEN, SensorStatus.ENABLED));
         sensors.add(new MonitoringRequest.SensorDto(MeasurementType.BLOOD_PRESSURE, SensorStatus.ENABLED));
-        sensors.add(new MonitoringRequest.SensorDto(MeasurementType.ECG, SensorStatus.ENABLED));
+//        sensors.add(new MonitoringRequest.SensorDto(MeasurementType.ECG, SensorStatus.ENABLED));
         sensors.add(new MonitoringRequest.SensorDto(MeasurementType.HEART_RATE, SensorStatus.ENABLED));
         sensors.add(new MonitoringRequest.SensorDto(MeasurementType.RESPIRATORY_RATE, SensorStatus.ENABLED));
         sensors.add(new MonitoringRequest.SensorDto(MeasurementType.TEMPERATURE, SensorStatus.ENABLED));
@@ -90,7 +90,7 @@ public class LoadDataBase {
         Collection<MonitoringRequest.SensorDto> sensors2 = new ArrayList<MonitoringRequest.SensorDto>();
         sensors2.add(new MonitoringRequest.SensorDto(MeasurementType.BLOOD_OXYGEN, SensorStatus.ENABLED));
         sensors2.add(new MonitoringRequest.SensorDto(MeasurementType.BLOOD_PRESSURE, SensorStatus.ENABLED));
-        sensors2.add(new MonitoringRequest.SensorDto(MeasurementType.ECG, SensorStatus.ENABLED));
+//        sensors2.add(new MonitoringRequest.SensorDto(MeasurementType.ECG, SensorStatus.ENABLED));
         sensors2.add(new MonitoringRequest.SensorDto(MeasurementType.HEART_RATE, SensorStatus.ENABLED));
         sensors2.add(new MonitoringRequest.SensorDto(MeasurementType.RESPIRATORY_RATE, SensorStatus.ENABLED));
         sensors2.add(new MonitoringRequest.SensorDto(MeasurementType.TEMPERATURE, SensorStatus.ENABLED));

@@ -95,14 +95,18 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
                 },
                 error: function(error){
                     var message = null;
-                    switch(error.responseJSON.error){
-                        case 'internal_server_error': message = '¡Ups! Tenemos un problema. Intenta más tarde'; break;
-                        case 'invalid_credentials': message = 'Usuario o contraseña incorrecto'; break;
-                        case 'incomplete_credentials': message = 'Completa usuario y contraseña'; break;
-                        default: message = '¡Ups! Tenemos un problema. Intenta más tarde'; break;
+                    if(!error.responseJSON){
+                        message = 'Ups! Ocurrió un error en la conexión. Intenta nuevamente.';
+                    }else{
+                        switch(error.responseJSON.error){
+                            case 'internal_server_error': message = '¡Ups! Tenemos un problema. Intenta más tarde'; break;
+                            case 'invalid_credentials': message = 'Usuario o contraseña incorrecto'; break;
+                            case 'incomplete_credentials': message = 'Completa usuario y contraseña'; break;
+                            default: message = '¡Ups! Tenemos un problema. Intenta más tarde'; break;
+                        }
                     }
                     $('#preloader-header').addClass('hidden');
-                    Materialize.toast(message, 3500, '', function(){})
+                    Utils.toast(message);
                 }
             });
         },

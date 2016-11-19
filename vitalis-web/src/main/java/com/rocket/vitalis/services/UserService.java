@@ -192,8 +192,12 @@ public class UserService {
         return deviceTokenRepository.findBySessionUserId(user.getId());
     }
 
-    public Collection<DeviceToken> getUsersTokens(Collection<Long> userIds){
+    public Collection<DeviceToken> getUserIdsTokens(Collection<Long> userIds){
         return deviceTokenRepository.findBySessionUserIdIn(userIds);
+    }
+
+    public Collection<DeviceToken> getUsersTokens(Collection<User> users){
+        return deviceTokenRepository.findBySessionUserIn(users);
     }
 
     public User setDoctor(Long userId){

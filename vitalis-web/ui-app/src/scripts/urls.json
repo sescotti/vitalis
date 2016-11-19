@@ -14,6 +14,8 @@
     "vitalis:measurements": "app/monitoring/:monitoringId/sensors/:measurementType",
     "vitalis:new_module": "app/modules/new",
     "vitalis:alerts": "app/alerts",
-    "vitalis:new_alert": "app/alerts/new"
+    "vitalis:new_alert": "app/alerts/new",
+    "vitalis:edit_alert": "app/alerts/edit/:alertId",
+    "vitalis:notifications": "app/notifications"
   }
 }
