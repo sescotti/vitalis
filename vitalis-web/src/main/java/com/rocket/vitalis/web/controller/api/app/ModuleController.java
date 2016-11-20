@@ -61,7 +61,7 @@ public class ModuleController extends AbstractApiController {
                                           @PathVariable("moduleId") Long moduleId){
         try {
             Module module = moduleService.deleteModule(moduleId);
-            return new ResponseEntity<>(module, OK);
+            return new ResponseEntity<>(NO_CONTENT);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>("{\"error\": \"" + e.getMessage() + "\"}", BAD_REQUEST);
         } catch (Exception e) {

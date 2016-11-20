@@ -1,0 +1,9 @@
+<li class="collection-item avatar">
+    <img src="{{ picture_url }}" alt="" class="circle">
+    <span class="title">{{ name }}</span>
+    {{#if is_doctor }}
+        <button data-role="revoke-validation" class="btn btn-floating btn-minimal btn-flat secondary-content"><i class="material-icons">close</i></button>
+    {{else}}
+        <button data-role="validate" class="btn btn-floating secondary-content"><i class="material-icons">done</i></button>
+    {{/if}}
+</li>

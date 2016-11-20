@@ -60,6 +60,26 @@ public class UserController extends AbstractApiController{
         user.setDocumentType(formUserData.getDocumentType());
         user.setBloodFactor(formUserData.getBloodFactor());
         user.setBloodType(formUserData.getBloodType());
+        user.setIsDoctor(formUserData.isDoctor());
+        user = userService.save(user);
+
+        return new ResponseEntity<Object>(user, OK);
+    }
+
+    @RequestMapping(value = "/{userId}", method = { PUT, POST })
+    @ResponseBody
+    public ResponseEntity<?> save(@ModelAttribute("user") User thisUser,
+                                  @PathVariable("userId") Long userId,
+                                  @RequestBody UserData formUserData) {
+
+        User user = userService.getUser(userId);
+
+        user.setName(formUserData.getName());
+        user.setDocNumber(formUserData.getDocNumber());
+        user.setDocumentType(formUserData.getDocumentType());
+        user.setBloodFactor(formUserData.getBloodFactor());
+        user.setBloodType(formUserData.getBloodType());
+        user.setIsDoctor(formUserData.isDoctor());
         user = userService.save(user);
 
         return new ResponseEntity<Object>(user, OK);

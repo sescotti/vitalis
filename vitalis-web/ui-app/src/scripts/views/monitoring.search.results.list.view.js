@@ -11,7 +11,6 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
     Views.SearchMonitoringsResultsListView = Marionette.CompositeView.extend({
         template: App.Vitalis.templates.collection_wrapper_with_title,
         childViewContainer: "ul.collection",
-        childView: App.Vitalis.Views.MonitoringPatientAssignmentItemView,
 
         templateHelpers: function() {
             return {

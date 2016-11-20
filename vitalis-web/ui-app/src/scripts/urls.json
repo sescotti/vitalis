@@ -2,6 +2,7 @@
   "es": {
     "vitalis:index": "",
     "vitalis:login": "login",
+    "vitalis:logout": "logout",
     "vitalis:signup": "signup",
     "vitalis:home": "app",
     "vitalis:patients": "app/patients",
@@ -16,6 +17,7 @@
     "vitalis:alerts": "app/alerts",
     "vitalis:new_alert": "app/alerts/new",
     "vitalis:edit_alert": "app/alerts/edit/:alertId",
-    "vitalis:notifications": "app/notifications"
+    "vitalis:notifications": "app/notifications",
+    "vitalis:medics": "app/medics"
   }
 }

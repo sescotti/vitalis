@@ -1,6 +1,7 @@
 package com.rocket.vitalis.repositories;
 
 import com.rocket.vitalis.model.Module;
+import com.rocket.vitalis.model.ModuleStatus;
 import com.rocket.vitalis.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +14,5 @@ import java.util.Collection;
  */
 public interface ModuleRepository extends CrudRepository<Module, Long> {
 
-    Collection<Module> findByOwner(User owner);
-
-
+    Collection<Module> findByOwnerAndStatus(User user, ModuleStatus status);
 }

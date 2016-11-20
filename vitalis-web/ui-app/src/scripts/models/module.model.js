@@ -1,7 +1,7 @@
 App.module('Vitalis.Models', function (Models, App, Backbone, Marionette, $, _) {
 
     Models.Module = Models.AbstractModel.extend({
-        url: '/api/app/modules/'
+        urlRoot: '/api/app/modules/'
     });
 
     Models.ModulesList = Models.AbstractCollection.extend({
