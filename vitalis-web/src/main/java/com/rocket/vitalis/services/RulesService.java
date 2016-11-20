@@ -53,7 +53,7 @@ public class RulesService {
     private Collection<AlertRule> getRespiratoryRateRules() {
         Collection<AlertRule> alertRules = new ArrayList<>();
 
-        alertRules.add(new AlertRule(0d, 14d, DEFAULT, null));
+        alertRules.add(new AlertRule(0d, 9d, DEFAULT, null));
         alertRules.add(new AlertRule(31d, 999d, DEFAULT, null));
 
         return alertRules;

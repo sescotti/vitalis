@@ -20,8 +20,8 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         childEvents: {
             // This callback will be called whenever a child is rendered or emits a `render` event
             destroy: function(child) {
-                this.collection.remove(child.model);
-                //this.render();
+                //this.collection.remove(child.model);
+                //child._parent.render();
             }
         }
 

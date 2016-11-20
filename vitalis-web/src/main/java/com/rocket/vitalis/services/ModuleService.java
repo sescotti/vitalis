@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.rocket.vitalis.model.ModuleStatus.DISABLED;
+import static com.rocket.vitalis.model.ModuleStatus.ENABLED;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
@@ -42,7 +44,7 @@ public class ModuleService {
     private SensorRepository sensorRepository;
 
     public Collection<Module> findModules(User user){
-        return moduleRepository.findByOwner(user);
+        return moduleRepository.findByOwnerAndStatus(user, ENABLED);
     }
     public Collection<Monitoring> findMonitorings(Collection<Module> modules){
         return monitoringRepository.findByModuleInAndFinishDateIsNull(modules);
@@ -84,10 +86,9 @@ public class ModuleService {
 
     public Module deleteModule(Long moduleId){
         Module module = moduleRepository.findOne(moduleId);
-        moduleRepository.delete(module);
-        return module;
+        module.setStatus(DISABLED);
+        return moduleRepository.save(module);
     }
-
 
     @Transactional
     public Monitoring initMonitoring(Long moduleId, MonitoringRequest.PatientDto patientId,  Collection<MonitoringRequest.FollowerDto> followers,

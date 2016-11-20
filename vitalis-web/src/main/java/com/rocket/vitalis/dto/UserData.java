@@ -19,4 +19,5 @@ public class UserData {
     private String          docNumber;
     private BloodFactor     bloodFactor;
     private BloodType       bloodType;
+    private boolean         isDoctor;
 }

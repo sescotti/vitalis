@@ -22,6 +22,15 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
         App.main.show(loginView);
     };
 
+    controller.logout = function(){
+        var loginView = new App.Vitalis.Views.Login({model: new Vitalis.Models.Login()});
+        var headerView = new App.Vitalis.Views.LoginHeader();
+
+        App.header.show(headerView);
+        App.main.show(loginView);
+    };
+
+
     controller.signup = function(){
         var signupView = new App.Vitalis.Views.Signup({model: new Vitalis.Models.Signup()});
         var headerView = new App.Vitalis.Views.LoginHeader();
@@ -193,7 +202,7 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
 
     };
 
-    controller.notifications = function(alertId){
+    controller.notifications = function(){
 
         var notifications = new Vitalis.Models.NotificationsList();
 
@@ -202,6 +211,16 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
 
         App.header.show(innerHeaderView);
         App.main.show(editAlertPage);
+
+    };
+
+    controller.medics = function(){
+
+        var medicsPage = new App.Vitalis.Views.MedicsPage();
+        var innerHeaderView = new App.Vitalis.Views.InnerHeader({title: "Médicos"});
+
+        App.header.show(innerHeaderView);
+        App.main.show(medicsPage);
 
     };
 
@@ -236,6 +255,7 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
     addRoute('new_alert');
     addRoute('edit_alert');
     addRoute('notifications');
+    addRoute('medics');
 
     App.Vitalis.Router = Marionette.AppRouter.extend({
         'appRoutes': routes,

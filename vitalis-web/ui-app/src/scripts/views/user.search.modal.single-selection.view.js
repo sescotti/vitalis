@@ -30,8 +30,10 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
 
         onShow: function(){
             var monitoringsList = new Vitalis.Models.UserSearchList();
-            var searchResultsView = new App.Vitalis.Views.SearchMonitoringsResultsListView({collection: monitoringsList,
-                                                                                            title: "Resultados de búsqueda"});
+            var searchResultsView = new Views.SearchMonitoringsResultsListView({collection: monitoringsList,
+                                                                                title: "Resultados de búsqueda",
+                                                                                childView: Views.MonitoringPatientAssignmentItemView
+            });
             var self = this;
             searchResultsView.on('add:user', function(args){
                 console.log('add:user@modal_search_view');
