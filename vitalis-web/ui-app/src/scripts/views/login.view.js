@@ -19,7 +19,7 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
 
         ui: {
             'inputs': 'input[type=email], input[type=password]',
-            'login_button': 'input#login',
+            'login_button': 'a#login',
             'signup': 'a#signup-now-btn'
 
         },

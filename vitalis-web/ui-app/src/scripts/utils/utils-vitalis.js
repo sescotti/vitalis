@@ -72,7 +72,7 @@ App.module('Vitalis.Utils', function (Utils, App, Backbone, Marionette, $, _){
     App.BASE_PATH = basePath;
 
     Handlebars.registerHelper('img_url', function(path){
-        return basePath + '/images/'+path;
+        return 'img/'+path;
     });
 
     HandlebarsIntl.registerWith(Handlebars);
