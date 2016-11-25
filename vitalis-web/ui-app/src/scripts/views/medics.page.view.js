@@ -10,7 +10,7 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         Utils       = App.module('Vitalis.Utils');
 
     Views.MedicsPage = Marionette.LayoutView.extend({
-        template: App.Vitalis.templates.new_follow_request_page,
+        template: App.Vitalis.templates.medics_page,
 
         ui: {
             searchField: 'input#search',
