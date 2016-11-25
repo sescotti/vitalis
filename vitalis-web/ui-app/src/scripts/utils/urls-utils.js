@@ -23,7 +23,6 @@ App.module('Urls', function (Urls, App, Backbone, Marionette, $, _){
 
         Backbone.history.navigate(Urls.get(key, replacements), _options);
         //Backbone.history.loadUrl( Backbone.history.fragment);
-
     };
 
     /**

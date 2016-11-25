@@ -52,11 +52,11 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         },
 
         goBack: function(a){
-            if(window.history.state == null){
-                Urls.go('vitalis:home');
-            } else {
+            //if(window.history.state == null){
+            //    Urls.go('vitalis:home');
+            //} else {
                 window.history.back();
-            }
+            //}
         },
 
         executeSecondaryAction: function(event){

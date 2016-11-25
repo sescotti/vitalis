@@ -10,7 +10,7 @@
 	</div>
 
     <div class="col s2 m6 l4 right-align no-padding" >
-    	<a href="#options-modal-{{id}}" class="secondary-content modal-trigger"><i class="material-icons">more_vert</i></a>
+    	<a href="#options-modal-{{id}}" class="secondary-content modal-trigger"><i class="material-icons dark">more_vert</i></a>
     </div>
 
 	<div id="options-modal-{{id}}" class="modal bottom-sheet">
@@ -18,28 +18,28 @@
 	<div>
 	  <ul class="collection">
 	  	<li class="collection-item modal-action" data-role='delete-module'>
-	  		<a ><i class="valign-bottom material-icons">delete</i><span>Eliminar</span></a>
+	  		<a ><i class="valign-bottom material-icons dark">delete</i><span>Eliminar</span></a>
 	  	</li>
 
 		{{#if monitoring }}
             <li class="collection-item modal-action modal-close" data-role='goto-monitoring'>
-                <a ><i class="valign-bottom material-icons">tv</i><span>Ver monitoreo</span></a>
+                <a ><i class="valign-bottom material-icons dark">tv</i><span>Ver monitoreo</span></a>
             </li>
         {{else}}
             <li class="collection-item modal-action modal-close" data-role='assign-monitoring'>
-                <a ><i class="valign-bottom material-icons">add_to_queue</i><span>Comenzar nuevo monitoreo</span></a>
+                <a ><i class="valign-bottom material-icons dark">add_to_queue</i><span>Comenzar nuevo monitoreo</span></a>
             </li>
 		{{/if}}
 
 	  	<li class="collection-item modal-action modal-close" data-role='more-info'>
-	  		<a ><i class="valign-bottom material-icons">info</i><span>Más informaci&oacute;n</span></a>
+	  		<a ><i class="valign-bottom material-icons dark">info</i><span>Más informaci&oacute;n</span></a>
 	  	</li>
 	  </ul>
 	</div>
 	</div>
 
 	  	<!-- Modal Structure -->
-	<div id="delete-module-modal" class="modal">
+	<div id="delete-module-modal-{{id}}" class="modal">
 	    <div class="modal-content">
 	      <h4>Eliminar m&oacute;dulo</h4>
 	      <p>¿Est&aacute; seguro que quiere eliminar este m&oacute;dulo? Este paso no se puede deshacer.</p>

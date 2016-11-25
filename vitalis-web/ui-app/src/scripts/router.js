@@ -41,7 +41,7 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
 
     controller.home = function(){
         var homeView = new App.Vitalis.Views.Home({model: new Vitalis.Models.Home()});
-        var headerView = new App.Vitalis.Views.Header({model: new Vitalis.Models.User()});
+        var headerView = new App.Vitalis.Views.Header({model: new Vitalis.Models.Profile()});
 
         App.header.show(headerView);
         App.main.show(homeView);
@@ -164,7 +164,7 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
     };
 
     controller.mydata = function() {
-        var mydataView = new App.Vitalis.Views.MyData({model: new Vitalis.Models.User()});
+        var mydataView = new App.Vitalis.Views.MyData({model: new Vitalis.Models.Profile()});
         var innerHeaderView = new App.Vitalis.Views.InnerHeader({title: "Mis datos"});
         App.header.show(innerHeaderView);
         App.main.show(mydataView);

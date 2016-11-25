@@ -5,6 +5,7 @@ html, body {
     min-height: 100%;
     height: 100%;
     width: 100%;
+    background-color: #455a64;
 }
 
 div#app {
@@ -12,6 +13,7 @@ div#app {
     height: 100%;
     width: 100%;
     min-width: 100%;
+    background-color: #455a64;
 }
 
 div#contentin,
@@ -165,6 +167,7 @@ i.material-icons+span {
     padding-left: 10px;
 }
 
+li.collection-item > span.title,
 a {
    color: rgba(0, 0, 0, 0.87);
 }
@@ -189,7 +192,8 @@ a,
 }
 
 span {
-    color: #9e9e9e;
+    /*color: #9e9e9e;*/
+    color: rgba(0, 0, 0, 0.87);
 }
 
 
@@ -197,11 +201,17 @@ input[type="text"],
 input[type="email"],
 input[type="password"],
 option,
-i.material-icons
 {
     color: #9e9e9e;
 }
 
+i.material-icons {
+    color: #fff;
+}
+
+i.material-icons.dark {
+    color: rgba(0, 0, 0, 0.87);
+}
 
 .subtitle {
     color: #757575;

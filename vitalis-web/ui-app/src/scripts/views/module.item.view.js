@@ -41,7 +41,7 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
         },
 
         deleteModule: function(){
-            $('#delete-module-modal').openModal();
+            $('#delete-module-modal-'+this.model.id).openModal();
         },
 
         confirmDelete: function(){

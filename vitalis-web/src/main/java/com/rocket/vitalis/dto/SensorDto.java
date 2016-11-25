@@ -26,6 +26,8 @@ public class SensorDto {
 
     private Object lastValue;
 
+    private Object lastValueSecondary;
+
     public SensorDto(){}
 
     public SensorDto(Sensor sensor){
@@ -33,6 +35,7 @@ public class SensorDto {
         this.status = sensor.getStatus();
         this.lastMonitoringDate = sensor.getLastMonitoringDate();
         this.lastValue = sensor.getLastValue();
+        this.lastValueSecondary = sensor.getLastValueSecondary();
     }
 
     public static SensorDto fromPressureSensor(Sensor sensor){
@@ -42,6 +45,7 @@ public class SensorDto {
         sensorDto.status = sensor.getStatus();
         sensorDto.lastMonitoringDate = sensor.getLastMonitoringDate();
         sensorDto.lastValue = sensor.getLastValue().intValue();
+        sensorDto.lastValueSecondary = sensor.getLastValueSecondary().intValue();
 
         return sensorDto;
     }

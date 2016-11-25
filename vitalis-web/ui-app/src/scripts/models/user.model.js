@@ -1,5 +1,10 @@
 App.module('Vitalis.Models', function (Models, App, Backbone, Marionette, $, _) {
 
+    Models.Profile = Models.AbstractModel.extend({
+        url: '/api/app/users/profile'
+    });
+
+
     Models.User = Models.AbstractModel.extend({
         defaults: {
             'email': 'invalid@email.com',
