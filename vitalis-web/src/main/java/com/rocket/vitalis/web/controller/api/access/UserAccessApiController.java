@@ -10,14 +10,12 @@ import com.rocket.vitalis.dto.SignupRequest;
 import com.rocket.vitalis.exceptions.EmailAlreadyRegisteredException;
 import com.rocket.vitalis.exceptions.InvalidLoginException;
 import com.rocket.vitalis.model.AccessToken;
+import com.rocket.vitalis.web.controller.api.AbstractApiController;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -27,7 +25,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 @Log4j
 @Controller
 @RequestMapping("/api/access")
-public class UserAccessApiController {
+public class UserAccessApiController extends AbstractApiController {
 
     @Autowired
     private UserService userService;
@@ -50,6 +48,20 @@ public class UserAccessApiController {
             return new ResponseEntity<>("{\"error\": \"" + e.getMessage() + "\"}", BAD_REQUEST);
         } catch (InvalidLoginException e) {
             return new ResponseEntity<>("{\"error\": \"" + e.getMessage() + "\"}", UNAUTHORIZED);
+        } catch (Exception e) {
+            return new ResponseEntity<>("{\"error\": \"internal_server_error\"}", INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @RequestMapping(method = POST, value = "/logout", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<?> logout(@RequestHeader("X-Auth-Token") String accessToken){
+        try {
+
+            userService.logout(accessToken);
+            return new ResponseEntity<>(OK);
+
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>("{\"error\": \"" + e.getMessage() + "\"}", BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity<>("{\"error\": \"internal_server_error\"}", INTERNAL_SERVER_ERROR);
         }

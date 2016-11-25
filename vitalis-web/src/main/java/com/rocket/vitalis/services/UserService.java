@@ -16,10 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.StreamSupport;
 
 import static com.rocket.vitalis.utils.PBKDF2Service.createHash;
@@ -221,5 +218,17 @@ public class UserService {
     public void registerDeviceToken(AccessToken accessToken, String deviceToken) {
         DeviceToken deviceInformation = new DeviceToken(accessToken, deviceToken);
         deviceTokenRepository.save(deviceInformation);
+    }
+
+    @Transactional
+    public void logout(String token) {
+        AccessToken accessToken = accessTokenRepository.findByToken(token);
+        Optional<DeviceToken> session = deviceTokenRepository.findBySession(accessToken);
+
+        if(session.isPresent()){
+            deviceTokenRepository.delete(session.get());
+        }
+
+        accessTokenRepository.delete(accessToken);
     }
 }

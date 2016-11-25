@@ -23,7 +23,7 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
     };
 
     controller.logout = function(){
-        var loginView = new App.Vitalis.Views.Login({model: new Vitalis.Models.Login()});
+        var loginView = new App.Vitalis.Views.Logout({model: new Vitalis.Models.Login()});
         var headerView = new App.Vitalis.Views.LoginHeader();
 
         App.header.show(headerView);
@@ -240,6 +240,7 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
     }
     addRoute('index');
     addRoute('login');
+    addRoute('logout');
     addRoute('signup');
     addRoute('home');
     addRoute('patients');
