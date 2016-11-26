@@ -1,6 +1,7 @@
 package com.rocket.vitalis.services;
 
 import com.rocket.vitalis.dto.AlertNotificationDto;
+import com.rocket.vitalis.dto.AlertRequest;
 import com.rocket.vitalis.dto.AlertRule;
 import com.rocket.vitalis.model.*;
 import com.rocket.vitalis.repositories.AlertNotificationRepository;
@@ -37,10 +38,11 @@ public class AlertService {
         return alertRepository.findByCreatedBy(user);
     }
 
-    public Alert addAlert(Long monitoringId, String measurementTypeName, Double from, Double to, User user){
-        Monitoring monitoring = monitoringRepository.findOne(monitoringId);
-        MeasurementType measurementType = MeasurementType.fromString(measurementTypeName);
-        Alert alert = new Alert(measurementType, monitoring, user, from, to);
+    public Alert addAlert(AlertRequest alertRequest, User user){
+        Monitoring monitoring = monitoringRepository.findOne(alertRequest.getMonitoringId());
+        MeasurementType measurementType = MeasurementType.fromString(alertRequest.getMeasurementType());
+        Alert alert = new Alert(measurementType, monitoring, user, alertRequest.getFrom(), alertRequest.getTo(),
+                alertRequest.getFromSecondary(), alertRequest.getToSecondary());
         alertRepository.save(alert);
         return alert;
     }

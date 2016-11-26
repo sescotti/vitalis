@@ -43,9 +43,9 @@ public class RulesService {
     private Collection<AlertRule> getTemperatureRules() {
         Collection<AlertRule> alertRules = new ArrayList<>();
 
-        alertRules.add(new AlertRule(0d, 35d, DEFAULT, null));
-        alertRules.add(new AlertRule(37.5d, 38.3d, DEFAULT, null));
-        alertRules.add(new AlertRule(40.0d, 43d, DEFAULT, null));
+        alertRules.add(new AlertRule(0d, 35d, DEFAULT));
+        alertRules.add(new AlertRule(37.5d, 38.3d, DEFAULT));
+        alertRules.add(new AlertRule(40.0d, 43d, DEFAULT));
 
         return alertRules;
     }
@@ -53,8 +53,8 @@ public class RulesService {
     private Collection<AlertRule> getRespiratoryRateRules() {
         Collection<AlertRule> alertRules = new ArrayList<>();
 
-        alertRules.add(new AlertRule(0d, 9d, DEFAULT, null));
-        alertRules.add(new AlertRule(31d, 999d, DEFAULT, null));
+        alertRules.add(new AlertRule(0d, 9d, DEFAULT));
+        alertRules.add(new AlertRule(31d, 999d, DEFAULT));
 
         return alertRules;
     }
@@ -62,8 +62,8 @@ public class RulesService {
     private Collection<AlertRule> getHeartRateRules() {
         Collection<AlertRule> alertRules = new ArrayList<>();
 
-        alertRules.add(new AlertRule(0d, 14d, DEFAULT, null));
-        alertRules.add(new AlertRule(31d, 999d, DEFAULT, null));
+        alertRules.add(new AlertRule(0d, 14d, DEFAULT));
+        alertRules.add(new AlertRule(31d, 999d, DEFAULT));
 
         return alertRules;
 
@@ -72,8 +72,8 @@ public class RulesService {
     private Collection<AlertRule> getBloodOxygenRules() {
         Collection<AlertRule> alertRules = new ArrayList<>();
 
-        alertRules.add(new AlertRule(88d, 94d, DEFAULT, null));
-        alertRules.add(new AlertRule(100d, 100d, DEFAULT, null));
+        alertRules.add(new AlertRule(88d, 94d, DEFAULT));
+        alertRules.add(new AlertRule(100d, 100d, DEFAULT));
 
         return alertRules;
 
@@ -82,8 +82,8 @@ public class RulesService {
     private Collection<AlertRule> getBloodPressureRules() {
         Collection<AlertRule> alertRules = new ArrayList<>();
 
-//        alertRules.add(new AlertRule(0d, 14d, DEFAULT, null));
-//        alertRules.add(new AlertRule(31d, 999d, DEFAULT, null));
+        alertRules.add(new AlertRule(0d, 60d, 0d, 60d, DEFAULT));
+        alertRules.add(new AlertRule(120d, 999d, 80d, 999d, DEFAULT));
 
         return alertRules;
 

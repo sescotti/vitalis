@@ -5,7 +5,7 @@ App.module('Vitalis.Models', function (Models, App, Backbone, Marionette, $, _) 
     (function(){
         var content = $('meta[name="config:device"]').attr('content');
 
-        Models.API_ROOT_URL = content == "cordova" ? "http://83f066d2.ngrok.io" : "";
+        Models.API_ROOT_URL = content == "cordova" ? "http://f758efa9.ngrok.io" : "";
 
     })();
 

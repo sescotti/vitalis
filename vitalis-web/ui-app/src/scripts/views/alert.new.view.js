@@ -40,6 +40,8 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
             var self        = this;
             var following   = new Vitalis.Models.Following();
             var sensors     = new Vitalis.Models.AvailableSensors();
+            var slider      = $('#range-slider')[0];
+            var sliderSecondary = $('#range-secondary-slider')[0];
 
             following.fetch({
                 data: $.param({'include_myself': true}),
@@ -87,41 +89,79 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
                     });
 
                     followingSelectView.on('option:changed', function(measurementType){
+
+                        slider.removeAttribute('disabled');
+
                         self.model.set('measurement_type', measurementType);
 
                         if(measurementType === 'blood_pressure'){
+                            $('div#ranges-secondary').removeClass('visibility-hidden');
 
+                        } else {
+                            $('div#ranges-secondary').addClass('visibility-hidden');
                         }
                     });
                     self.getRegion('sensors').show(followingSelectView);
                 }
             });
 
-            var slider = $('#range-slider')[0];
+
             noUiSlider.create(slider, {
-                start: [20, 80],
+                start: [50, 150],
                 connect: true,
                 step: 1,
                 behaviour: 'drag',
                 range: {
                     'min': 0,
-                    'max': 100
+                    'max': 200
                 },
                 format: wNumb({
                     decimals: 0
                 })
             });
 
+            slider.setAttribute('disabled', true);
+
             slider.noUiSlider.on('change', function(){
                 var values = slider.noUiSlider.get();
-
-                self.model.set("from", values[0]);
-                self.model.set("to", values[1]);
 
                 $("#range-from").html(values[0]);
                 $("#range-to").html(values[1]);
 
+                self.model.set("from", values[0]);
+                self.model.set("to", values[1]);
+
             });
+
+            noUiSlider.create(sliderSecondary,{
+                start: [50, 150],
+                connect: true,
+                step: 1,
+                behaviour: 'drag',
+                range: {
+                    'min': 0,
+                    'max': 200
+                },
+                format: wNumb({
+                    decimals: 0
+                })
+            });
+
+            sliderSecondary.noUiSlider.on('change', function(){
+                var values = sliderSecondary.noUiSlider.get();
+
+                self.model.set("from_secondary", values[0]);
+                self.model.set("to_secondary", values[1]);
+
+                $("#range-secondary-from").html(values[0]);
+                $("#range-secondary-to").html(values[1]);
+
+            });
+
+            if(this.model.get('measurement_type') === 'blood_pressure'){
+                $('div#ranges-secondary').removeClass('visibility-hidden');
+            }
+
         },
 
         registerAlert: function(event){

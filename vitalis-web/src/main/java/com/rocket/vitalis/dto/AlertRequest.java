@@ -11,4 +11,7 @@ public class AlertRequest {
     private String measurementType;
     private Double from;
     private Double to;
+    private Double fromSecondary;
+    private Double toSecondary;
+
 }

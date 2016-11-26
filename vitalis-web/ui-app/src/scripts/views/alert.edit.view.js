@@ -40,6 +40,8 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
             var self        = this;
             var following   = new Vitalis.Models.Following();
             var sensors     = new Vitalis.Models.AvailableSensors();
+            var slider = $('#range-slider')[0];
+            var sliderSecondary = $('#range-secondary-slider')[0];
 
             self.model.fetch({
                 success: function(model, response, options){
@@ -80,7 +82,16 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
                             });
 
                             followingSelectView.on('option:changed', function(monitoringId){
-                                self.model.set('monitoring_id', monitoringId);
+                                slider.removeAttribute('disabled');
+
+                                self.model.set('measurement_type', measurementType);
+
+                                if(measurementType === 'blood_pressure'){
+                                    $('div#ranges-secondary').removeClass('visibility-hidden');
+
+                                } else {
+                                    $('div#ranges-secondary').addClass('visibility-hidden');
+                                }
                             });
 
                             self.getRegion('patients').show(followingSelectView);
@@ -120,7 +131,6 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
                         }
                     });
 
-                    var slider = $('#range-slider')[0];
                     noUiSlider.create(slider, {
                         start: [self.model.get('from'), self.model.get('to')],
                         connect: true,
@@ -128,7 +138,7 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
                         behaviour: 'drag',
                         range: {
                             'min': 0,
-                            'max': 100
+                            'max': 200
                         },
                         format: wNumb({
                             decimals: 0
@@ -137,6 +147,9 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
 
                     $("#range-from").html(self.model.get('from'));
                     $("#range-to").html(self.model.get('to'));
+
+                    $("#range-secondary-from").html(self.model.get('from_secondary'));
+                    $("#range-secondary-to").html(self.model.get('to_secondary'));
 
 
                     slider.noUiSlider.on('change', function(){
@@ -148,6 +161,36 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
                         $("#range-from").html(values[0]);
                         $("#range-to").html(values[1]);
                     });
+
+                    noUiSlider.create(sliderSecondary,{
+                        start: [self.model.get('from_secondary'), self.model.get('to_secondary')],
+                        connect: true,
+                        step: 1,
+                        behaviour: 'drag',
+                        range: {
+                            'min': 0,
+                            'max': 200
+                        },
+                        format: wNumb({
+                            decimals: 0
+                        })
+                    });
+
+                    sliderSecondary.noUiSlider.on('change', function(){
+                        var values = sliderSecondary.noUiSlider.get();
+
+                        self.model.set("from_secondary", values[0]);
+                        self.model.set("to_secondary", values[1]);
+
+                        $("#range-secondary-from").html(values[0]);
+                        $("#range-secondary-to").html(values[1]);
+
+                    });
+
+                    if(self.model.get('measurement_type') === 'blood_pressure'){
+                        $('div#ranges-secondary').removeClass('visibility-hidden');
+                    }
+
                 },
                 error: function(){
 

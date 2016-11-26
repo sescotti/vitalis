@@ -22,7 +22,7 @@ App.module('Vitalis.Utils', function (Utils, App, Backbone, Marionette, $, _){
 
     var measures = {
         temperature: "º",
-        blood_pressure: "'",
+        blood_pressure: "mmHg",
         heart_rate: "bpm",
         respiratory_rate: "rpm",
         blood_oxygen: "%",
@@ -31,6 +31,44 @@ App.module('Vitalis.Utils', function (Utils, App, Backbone, Marionette, $, _){
         systolic_pressure: "",
         height: "cm",
         weight: "kg"
+    };
+
+
+    var thresholds = {
+        temperature: {
+            value:{
+                min: 30,
+                max: 50
+            }
+        },
+        blood_pressure: {
+            value: {
+                min: 70,
+                max: 220
+            },
+            value_secondary: {
+                min: 40,
+                max: 150
+            }
+        },
+        heart_rate: {
+            value:{
+                min: 10,
+                max: 200
+            }
+        },
+        respiratory_rate: {
+            value:{
+                min: 0,
+                max: 100
+            }
+        },
+        blood_oxygen: {
+            value:{
+                min: 0,
+                max: 100
+            }
+        }
     };
 
 
@@ -80,6 +118,10 @@ App.module('Vitalis.Utils', function (Utils, App, Backbone, Marionette, $, _){
     Utils.toast = function(message, callback){
         Materialize.toast(message, 3500, '', callback);
     };
+
+    Utils.threshold = function(measurementType){
+        return thresholds[measurementType] || {};
+    },
 
     (function(){
         App.Device = $('meta[name="config:device"]').attr('content');

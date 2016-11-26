@@ -47,7 +47,7 @@ public class AlertController  extends AbstractApiController {
     public ResponseEntity<?> addAlert(@ModelAttribute("user") User user,
                                        @RequestBody AlertRequest request){
         try {
-            Alert alert = alertService.addAlert(request.getMonitoringId(), request.getMeasurementType(), request.getFrom(), request.getTo(), user);
+            Alert alert = alertService.addAlert(request, user);
             return new ResponseEntity<>(alert, OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>("{\"error\": \"" + e.getMessage() + "\"}", BAD_REQUEST);

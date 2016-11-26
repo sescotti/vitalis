@@ -34,17 +34,17 @@
             <ul class="collection">
                 {{#if (eq status 'open')}}
                     <li class="collection-item modal-action modal-close" data-role='ack-notification'>
-                        <a ><i class="valign-bottom material-icons">done</i><span>Marcar como vista</span></a>
+                        <a ><i class="valign-bottom material-icons dark">done</i><span>Marcar como vista</span></a>
                     </li>
                 {{/if}}
                 {{#if (neq status 'closed')}}
                     <li class="collection-item modal-action" data-role='close-notification'>
-                        <a ><i class="valign-bottom material-icons">close</i><span>Cerrar</span></a>
+                        <a ><i class="valign-bottom material-icons dark">close</i><span>Cerrar</span></a>
                     </li>
                 {{/if}}
-                {{#if (eq status 'closed')}}
+                {{#if (neq status 'closed2')}}
                 <li class="collection-item modal-action" data-role='goto-monitoring'>
-                    <a ><i class="valign-bottom material-icons">tv</i><span>Ir a monitoreo</span></a>
+                    <a ><i class="valign-bottom material-icons dark">tv</i><span>Ir a monitoreo</span></a>
                 </li>
                 {{/if}}
             </ul>

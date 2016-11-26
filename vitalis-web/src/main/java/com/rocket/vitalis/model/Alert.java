@@ -35,6 +35,14 @@ public class Alert extends AbstractModel {
     @Getter @Setter
     private double to;
 
+    @Column
+    @Getter @Setter
+    private double fromSecondary;
+
+    @Column
+    @Getter @Setter
+    private double toSecondary;
+
     @ManyToOne
     @Getter @Setter
     private Monitoring monitoring;
@@ -45,13 +53,16 @@ public class Alert extends AbstractModel {
 
     public Alert(){}
 
-    public Alert(MeasurementType measurementType, Monitoring monitoring,User user, Double from, Double to ){
+    public Alert(MeasurementType measurementType, Monitoring monitoring, User user,
+                 Double from, Double to, Double fromSecondary, Double toSecondary){
         this.measurementType = measurementType;
         this.monitoring = monitoring;
         this.creationDay = new Date();
         this.createdBy = user;
         this.from = from;
         this.to = to;
+        this.fromSecondary = fromSecondary;
+        this.toSecondary = toSecondary;
     }
 
 }
