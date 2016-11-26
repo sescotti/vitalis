@@ -88,6 +88,10 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
 
                     followingSelectView.on('option:changed', function(measurementType){
                         self.model.set('measurement_type', measurementType);
+
+                        if(measurementType === 'blood_pressure'){
+
+                        }
                     });
                     self.getRegion('sensors').show(followingSelectView);
                 }

@@ -75,9 +75,9 @@ public class HomeController extends AbstractApiController {
                                                                 .map(SimpleFollower::getMonitoring)
                                                                 .collect(toList());
 
-            if(includeMyself){
+            Optional<SimpleMonitoring> first = monitorings.stream().filter(simpleMonitoring -> user.getId().equals(simpleMonitoring.getPatient().getId())).findFirst();
 
-                Optional<SimpleMonitoring> first = monitorings.stream().filter(simpleMonitoring -> user.getId().equals(simpleMonitoring.getPatient().getId())).findFirst();
+            if(includeMyself){
 
                 if(!first.isPresent()){
 
@@ -107,6 +107,10 @@ public class HomeController extends AbstractApiController {
                         monitorings.add(simpleMonitoring);
 
                     }
+                }
+            } else {
+                if(first.isPresent()){
+                    monitorings.remove(first.get());
                 }
             }
 
