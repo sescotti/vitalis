@@ -65,8 +65,8 @@ public class NotificationService {
 
         // Levanto los followers del monitoreo en la primera regla que cumpla
         Optional<Collection<User>> defaultFollowers =    defaultRules.stream()
-                                                                .findFirst()
                                                                 .filter(rule -> rule.matches(measurement))
+                                                                .findFirst()
                                                                 .map(alertRule -> getFollowersIds(measurement));
 
         // Si alguna regla se cumplió, levanto los followers excluyendo los que tengan una alerta abierta
