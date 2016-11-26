@@ -10,8 +10,11 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
         controller = {};
 
     controller.index = function () {
-        var mainLayoutView = new App.Vitalis.Views.Main();
-        App.main.show(mainLayoutView);
+        var loginView = new App.Vitalis.Views.Login({model: new Vitalis.Models.Login()});
+        var headerView = new App.Vitalis.Views.LoginHeader();
+
+        App.header.show(headerView);
+        App.main.show(loginView);
     };
 
     controller.login = function(){
