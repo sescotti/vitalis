@@ -1,10 +1,7 @@
 package com.rocket.vitalis.web.controller.api.app;
 
 import com.rocket.vitalis.dto.Profile;
-import com.rocket.vitalis.model.Monitoring;
-import com.rocket.vitalis.model.SimpleFollower;
-import com.rocket.vitalis.model.SimpleMonitoring;
-import com.rocket.vitalis.model.User;
+import com.rocket.vitalis.model.*;
 import com.rocket.vitalis.repositories.FollowerRepository;
 import com.rocket.vitalis.repositories.MonitoringRepository;
 import com.rocket.vitalis.services.MonitoringService;
@@ -14,15 +11,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 import static org.springframework.http.HttpStatus.*;
 
 /**
@@ -66,7 +62,9 @@ public class HomeController extends AbstractApiController {
 
     @RequestMapping("/following")
     @ResponseBody
-    public ResponseEntity<?> getFollowing(@ModelAttribute("user") User user){
+    public ResponseEntity<?> getFollowing(@ModelAttribute("user") User user,
+                                          @RequestParam(value = "include_myself", required = false) boolean includeMyself
+                                          ){
 
         try {
 
@@ -74,9 +72,43 @@ public class HomeController extends AbstractApiController {
 
             List<SimpleMonitoring> monitorings = activeMonitoringsFollowedByUser
                                                                 .stream()
-                    .map(SimpleFollower::getMonitoring)
+                                                                .map(SimpleFollower::getMonitoring)
                                                                 .collect(toList());
 
+            if(includeMyself){
+
+                Optional<SimpleMonitoring> first = monitorings.stream().filter(simpleMonitoring -> user.getId().equals(simpleMonitoring.getPatient().getId())).findFirst();
+
+                if(!first.isPresent()){
+
+                    Monitoring activeMonitoringByUser = monitoringService.findActiveMonitoringByUser(user);
+
+                    if(activeMonitoringByUser != null){
+
+                        SimpleUser simpleUser = new SimpleUser() {
+                            public Long getId() { return user.getId(); }
+                            public UserType getUserType() { return user.getUserType(); }
+                            public String getName() { return user.getName(); }
+                            public String getPictureUrl() { return user.getPictureUrl(); }
+                        };
+
+                        SimpleMonitoring simpleMonitoring = new SimpleMonitoring() {
+                            @Override
+                            public Long getId() {
+                                return activeMonitoringByUser.getId();
+                            }
+
+                            @Override
+                            public SimpleUser getPatient() {
+                                return simpleUser;
+                            }
+                        };
+
+                        monitorings.add(simpleMonitoring);
+
+                    }
+                }
+            }
 
             return new ResponseEntity<>(monitorings, OK);
 

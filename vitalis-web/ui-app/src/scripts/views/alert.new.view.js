@@ -42,6 +42,7 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
             var sensors     = new Vitalis.Models.AvailableSensors();
 
             following.fetch({
+                data: $.param({'include_myself': true}),
                 success: function(collection, response, options) {
 
                     var flattenedMonitorings = collection.models.map(function(model) {
