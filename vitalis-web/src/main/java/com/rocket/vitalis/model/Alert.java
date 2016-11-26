@@ -37,11 +37,11 @@ public class Alert extends AbstractModel {
 
     @Column
     @Getter @Setter
-    private double fromSecondary;
+    private Double fromSecondary;
 
     @Column
     @Getter @Setter
-    private double toSecondary;
+    private Double toSecondary;
 
     @ManyToOne
     @Getter @Setter
