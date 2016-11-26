@@ -14609,7 +14609,7 @@ App.module('Vitalis.Utils', function (Utils, App, Backbone, Marionette, $, _){
 
     var measures = {
         temperature: "º",
-        blood_pressure: "'",
+        blood_pressure: "mmHg",
         heart_rate: "bpm",
         respiratory_rate: "rpm",
         blood_oxygen: "%",
@@ -14618,6 +14618,44 @@ App.module('Vitalis.Utils', function (Utils, App, Backbone, Marionette, $, _){
         systolic_pressure: "",
         height: "cm",
         weight: "kg"
+    };
+
+
+    var thresholds = {
+        temperature: {
+            value:{
+                min: 30,
+                max: 50
+            }
+        },
+        blood_pressure: {
+            value: {
+                min: 70,
+                max: 220
+            },
+            value_secondary: {
+                min: 40,
+                max: 150
+            }
+        },
+        heart_rate: {
+            value:{
+                min: 10,
+                max: 200
+            }
+        },
+        respiratory_rate: {
+            value:{
+                min: 0,
+                max: 100
+            }
+        },
+        blood_oxygen: {
+            value:{
+                min: 0,
+                max: 100
+            }
+        }
     };
 
 
@@ -14659,7 +14697,7 @@ App.module('Vitalis.Utils', function (Utils, App, Backbone, Marionette, $, _){
     App.BASE_PATH = basePath;
 
     Handlebars.registerHelper('img_url', function(path){
-        return basePath + '/images/'+path;
+        return 'img/'+path;
     });
 
     HandlebarsIntl.registerWith(Handlebars);
@@ -14667,6 +14705,10 @@ App.module('Vitalis.Utils', function (Utils, App, Backbone, Marionette, $, _){
     Utils.toast = function(message, callback){
         Materialize.toast(message, 3500, '', callback);
     };
+
+    Utils.threshold = function(measurementType){
+        return thresholds[measurementType] || {};
+    },
 
     (function(){
         App.Device = $('meta[name="config:device"]').attr('content');
@@ -14691,32 +14733,6 @@ this["App"]["Vitalis"]["templates"]["main"] = Handlebars.template({"compiler":[7
 this["App"]["Vitalis"]["templates"]["home"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div id=\"home-container\" class=\"app-container\">\n\n    <div id=\"mystatus\"></div>\n\n    <div id=\"following\"></div>\n\n\n  <div class=\"fixed-action-btn\" style=\"bottom: 45px; right: 24px;\">\n    <a class=\"btn-floating btn-large waves-effect waves-light\">\n      <i class=\"large material-icons color-light\">add</i>\n    </a>\n    <ul>\n      <li>\n      <a class=\"btn-floating tooltipped blue\" data-role=\"execute-action\" data-target=\"vitalis:new_request\" data-position=\"left\" data-delay=\"50\" data-tooltip=\"Nueva solicitud\"><i class=\"material-icons\">person_add</i></a>\n      </li>\n      <li>\n      <a class=\"btn-floating tooltipped yellow darken-4\" data-role=\"execute-action\" data-target=\"vitalis:new_module\" data-position=\"left\" data-delay=\"50\" data-tooltip=\"Registrar nuevo m&oacute;dulo\"><i class=\"material-icons\">memory</i></a>\n      </li>\n      <li>\n      <a class=\"btn-floating tooltipped green\" data-position=\"left\" data-role=\"execute-action\" data-target=\"vitalis:new_alert\" data-delay=\"50\" data-tooltip=\"Nueva alerta\"><i class=\"material-icons\">notifications_active</i></a>\n      </li>\n    </ul>\n  </div>\n\n</div>";
 },"useData":true});
-this["App"]["Vitalis"]["templates"]["alert_list_empty_item"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<li class=\"collection-item\">\n    <div class=\"center-align\">\n        <p class=\"no-margin\"><i class=\"medium material-icons dark\">notifications_active</i></p>\n        <p>Todav&iacute;a no registraste ninguna alerta</p>\n        <a id=\"assign\" class=\"btn waves-effect waves-light\">Registrar</a>\n    </div>\n</li>";
-},"useData":true});
-this["App"]["Vitalis"]["templates"]["alert_list_item"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    var stack1, helper, alias1=container.escapeExpression, alias2=depth0 != null ? depth0 : {}, alias3=helpers.helperMissing, alias4="function";
-
-  return "<li class=\"collection-item row\">\n    <div class=\"col s10 m6 l8\">\n        <span class=\"title\">"
-    + alias1(container.lambda(((stack1 = ((stack1 = (depth0 != null ? depth0.monitoring : depth0)) != null ? stack1.patient : stack1)) != null ? stack1.name : stack1), depth0))
-    + "</span>\n        <p class=\"subtitle no-margin\">\n            "
-    + alias1((helpers.tr || (depth0 && depth0.tr) || alias3).call(alias2,(depth0 != null ? depth0.measurement_type : depth0),{"name":"tr","hash":{},"data":data}))
-    + " ("
-    + alias1(((helper = (helper = helpers.from || (depth0 != null ? depth0.from : depth0)) != null ? helper : alias3),(typeof helper === alias4 ? helper.call(alias2,{"name":"from","hash":{},"data":data}) : helper)))
-    + " a "
-    + alias1((helpers.measure || (depth0 && depth0.measure) || alias3).call(alias2,(depth0 != null ? depth0.to : depth0),(depth0 != null ? depth0.measurement_type : depth0),{"name":"measure","hash":{},"data":data}))
-    + ")\n        </p>\n    </div>\n    <div class=\"col s2 m6 l4 right-align no-padding\" >\n        <a href=\"#options-modal-"
-    + alias1(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias3),(typeof helper === alias4 ? helper.call(alias2,{"name":"id","hash":{},"data":data}) : helper)))
-    + "\" class=\"secondary-content modal-trigger\"><i class=\"material-icons dark\">more_vert</i></a>\n    </div>\n\n    <div id=\"options-modal-"
-    + alias1(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias3),(typeof helper === alias4 ? helper.call(alias2,{"name":"id","hash":{},"data":data}) : helper)))
-    + "\" class=\"modal bottom-sheet\">\n        <h5 class=\"subheader\">Opciones</h5>\n        <div>\n            <ul class=\"collection\">\n                <li class=\"collection-item modal-action modal-close\" data-role='edit-alert'>\n                    <a ><i class=\"valign-bottom material-icons dark\">edit</i><span>Editar alerta</span></a>\n                </li>\n                <li class=\"collection-item modal-action\" data-role='delete-alert'>\n                    <a ><i class=\"valign-bottom material-icons dark\">delete</i><span>Eliminar</span></a>\n                </li>\n            </ul>\n        </div>\n    </div>\n</li>";
-},"useData":true});
-this["App"]["Vitalis"]["templates"]["alerts_page"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div class=\"app-container\">\n    <div id=\"myalerts\">\n    </div>\n\n    <div class=\"fixed-action-btn\" style=\"bottom: 45px; right: 24px;\">\n        <a class=\"btn-floating btn-large waves-effect waves-light\" data-role=\"new-alert\">\n            <i class=\"large material-icons\">add</i>\n        </a>\n    </div>\n\n</div>";
-},"useData":true});
-this["App"]["Vitalis"]["templates"]["new_alert_page"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div class=\"app-container\">\n\n    <div class=\"container\">\n        <div id=\"patients\" class=\"pad-bottom pad-top\">\n        </div>\n\n        <div id=\"sensors\" class=\"pad-bottom\">\n        </div>\n\n        <div id=\"ranges\" class=\"pad-bottom row position-relative\">\n            <div class=\"col s9\">\n                <label>Rango de alerta</label>\n                <div id=\"range-slider\" class=\"margin-top\">\n                </div>\n            </div>\n            <div id=\"range-values\" class=\"col s3 position-absolute right\">\n                <span id=\"range-from\">20</span>\n                <span>-</span>\n                <span id=\"range-to\">80</span>\n\n            </div>\n        </div>\n\n    </div>\n    <a class=\"btn btn-large waves-effect waves-light full-width goto-bottom\" data-role=\"register-alert\" >\n        Guardar alerta\n    </a>\n\n</div>";
-},"useData":true});
 this["App"]["Vitalis"]["templates"]["empty_my_follow_requests"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<li class=\"collection-item\">\n    <div style=\"text-align: center;\">\n    <p class=\"no-margin\"><i class=\"medium material-icons dark\">weekend</i></p>\n    <p class=\"no-upper-margin\">No tenés más solicitudes, ¡volvé pronto para chequear nuevamente!</p>\n    </div>\n</li>";
 },"useData":true});
@@ -14732,7 +14748,7 @@ this["App"]["Vitalis"]["templates"]["follow_request_item"] = Handlebars.template
     + alias2(alias1(((stack1 = (depth0 != null ? depth0.requested_by : depth0)) != null ? stack1.name : stack1), depth0))
     + "</span>\n		<p>Solicitado para "
     + alias2(alias1(((stack1 = ((stack1 = (depth0 != null ? depth0.monitoring : depth0)) != null ? stack1.patient : stack1)) != null ? stack1.name : stack1), depth0))
-    + "</p>\n	</div>\n\n    <div class=\"col s0 m6 l4 text-align-right\" >\n        <a data-role='accept-request' class=\"btn\">Aceptar</a>\n	    <a data-role='reject-request' class=\"btn btn-flat btn-secondary\">Rechazar</a>\n    </div>\n</li>\n\n";
+    + "</p>\n	</div>\n\n    <div class=\"col s0 m6 l4 text-align-right no-padding\" >\n        <a data-role='accept-request' class=\"btn\">Aceptar</a>\n	    <a data-role='reject-request' class=\"btn btn-flat btn-secondary\">Rechazar</a>\n    </div>\n</li>\n\n";
 },"useData":true});
 this["App"]["Vitalis"]["templates"]["new_follow_request_page"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div class=\"app-container\">\n\n<h5 class=\"subheader\">Buscar pacientes</h5>\n\n<nav>\n    <div class=\"nav-wrapper\">\n      <form id=\"search-form\">\n        <div class=\"input-field\">\n          <input id=\"search\" type=\"search\" autocomplete=\"off\" class=\"inherit-font-size\" required>\n          <label for=\"search\"><i class=\"material-icons\">search</i></label>\n          <i id=\"reset-btn\" class=\"material-icons\">close</i>\n        </div>\n      </form>\n    </div>\n</nav>\n\n<div id=\"search-results\" class=\"pad-top\"></div>\n\n</div>";
@@ -14759,7 +14775,7 @@ this["App"]["Vitalis"]["templates"]["login"] = Handlebars.template({"compiler":[
     return "<div class=\"login-container app-container\">\n    <form class=\"container\">\n        <img id=\"hero-logo\" src=\"img/logo-white-full.png\" alt=\"Vitalis\" class=\"center-image login-logo\"/>\n\n        <div class=\"input-field col\">\n            <i class=\"material-icons prefix login-input\">email</i>\n            <input id=\"email\" class=\"login-input\" name=\"email\" type=\"email\" data-error=\"#error-email\">\n            <label for=\"email\" class=\"active\" data-error=\"Verifica este campo\">Correo electrónico</label>\n            <div id=\"error-email\"></div>\n        </div>\n        <div class=\"input-field col\">\n            <i class=\"material-icons prefix login-input\">lock_outline</i>\n            <input id=\"password\" class=\"login-input\" name=\"password\" type=\"password\" data-error=\"#error-password\">\n            <label for=\"password\" class=\"active\" data-error=\"\">Contraseña</label>\n            <div id=\"error-password\"></div>\n        </div>\n        <div class=\"center-align col s6 login-btn-wrapper\">\n            <a class=\"waves-effect waves-light btn center-align full-width login-btn\" id=\"login\" type=\"button\">Ingresar</a>\n            <!--<a id=\"forgot-password-btn\"  class=\"display-block login-link\">¿Olvidaste tu contraseña?</a>-->\n        </div>\n        </form>\n        <div id=\"bottom-content center-align\">\n            <span class=\"login-text\" id=\"create-account\">\n                ¿No ten&eacute;s una cuenta? <a id=\"signup-now-btn\"  class=\"login-link\">Crea una</a>\n            </span>\n        </div>\n</div>\n";
 },"useData":true});
 this["App"]["Vitalis"]["templates"]["signup"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div class=\"login-container app-container\">\n    <div class=\"container\">\n\n        <img id=\"hero-logo\" src=\"/img/logo-white-full.png\" alt=\"Vitalis\" class=\"center-image login-logo\"/>\n\n        <!--<h5 class=\"center-align\">Unite a la comunidad</h5>-->\n\n        <div class=\"input-field\">\n            <i class=\"material-icons prefix login-input\">email</i>\n            <input id=\"email\" class=\"login-input\" name=\"email\" type=\"email\" data-error=\"#error-email\">\n            <label for=\"email\" class=\"active\" data-error=\"Verifica este campo\">Correo electrónico</label>\n            <div id=\"error-email\"></div>\n        </div>\n        <div class=\"input-field\">\n            <i class=\"material-icons prefix login-input\">lock_outline</i>\n            <input id=\"password\" class=\"login-input\" name=\"password\" type=\"password\" data-error=\"#error-password\">\n            <label for=\"password\" class=\"active\" data-error=\"\">Contraseña</label>\n            <div id=\"error-password\"></div>\n        </div>\n        <div class=\"input-field\">\n            <i class=\"material-icons prefix login-input\">lock_outline</i>\n            <input id=\"password2\" class=\"login-input\" name=\"password2\" type=\"password\" data-error=\"#error-password\">\n            <label for=\"password2\" class=\"active\" data-error=\"\">Contraseña</label>\n            <div id=\"error-password\"></div>\n        </div>\n\n        <div class=\"center-align col s6\">\n            <input class=\"waves-effect waves-light btn center-align full-width signup-btn\" id=\"signup\" type=\"button\" value=\"Registrarme\">\n             <span class=\"login-text\" id=\"create-account\">\n                <a id=\"return-to-login-btn\"  class=\"display-block login-link\">Volver</a>\n            </span>\n        </div>\n    </div>\n</div>";
+    return "<div class=\"login-container app-container\">\n    <div class=\"container\">\n\n        <img id=\"hero-logo\" src=\"img/logo-white-full.png\" alt=\"Vitalis\" class=\"center-image login-logo\"/>\n\n        <!--<h5 class=\"center-align\">Unite a la comunidad</h5>-->\n\n        <div class=\"input-field\">\n            <i class=\"material-icons prefix login-input\">email</i>\n            <input id=\"email\" class=\"login-input\" name=\"email\" type=\"email\" data-error=\"#error-email\">\n            <label for=\"email\" class=\"active\" data-error=\"Verifica este campo\">Correo electrónico</label>\n            <div id=\"error-email\"></div>\n        </div>\n        <div class=\"input-field\">\n            <i class=\"material-icons prefix login-input\">lock_outline</i>\n            <input id=\"password\" class=\"login-input\" name=\"password\" type=\"password\" data-error=\"#error-password\">\n            <label for=\"password\" class=\"active\" data-error=\"\">Contraseña</label>\n            <div id=\"error-password\"></div>\n        </div>\n        <div class=\"input-field\">\n            <i class=\"material-icons prefix login-input\">lock_outline</i>\n            <input id=\"password2\" class=\"login-input\" name=\"password2\" type=\"password\" data-error=\"#error-password\">\n            <label for=\"password2\" class=\"active\" data-error=\"\">Contraseña</label>\n            <div id=\"error-password\"></div>\n        </div>\n\n        <div class=\"center-align col s6\">\n            <input class=\"waves-effect waves-light btn center-align full-width signup-btn\" id=\"signup\" type=\"button\" value=\"Registrarme\">\n             <span class=\"login-text\" id=\"create-account\">\n                <a id=\"return-to-login-btn\"  class=\"display-block login-link\">Volver</a>\n            </span>\n        </div>\n    </div>\n</div>";
 },"useData":true});
 this["App"]["Vitalis"]["templates"]["medic_search_result_item"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     return "        <button data-role=\"revoke-validation\" class=\"btn btn-floating btn-minimal btn-flat secondary-content\"><i class=\"material-icons\">close</i></button>\n";
@@ -14818,6 +14834,110 @@ this["App"]["Vitalis"]["templates"]["module_page"] = Handlebars.template({"compi
 },"useData":true});
 this["App"]["Vitalis"]["templates"]["new_module_page"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div class=\"app-container\">\n    <div class=\"container\">\n        <div class=\"input-field col\">\n            <!--<i class=\"material-icons prefix login-input\">email</i>-->\n            <input id=\"email\" class=\"login-input\" name=\"serial_number\" type=\"text\" data-error=\"#error-email\">\n            <label for=\"email\" class=\"active\" data-error=\"Verifica este campo\">Número de serie</label>\n        </div>\n    </div>\n\n    <div class=\"valign-bottom\">\n        <a class=\"waves-effect waves-light btn center-align full-width login-btn btn-large\" id=\"register\" >Registrar</a>\n    </div>\n\n</div>";
+},"useData":true});
+this["App"]["Vitalis"]["templates"]["alert_list_empty_item"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<li class=\"collection-item\">\n    <div class=\"center-align\">\n        <p class=\"no-margin\"><i class=\"medium material-icons dark\">notifications_active</i></p>\n        <p>Todav&iacute;a no registraste ninguna alerta</p>\n        <a id=\"assign\" class=\"btn waves-effect waves-light\">Registrar</a>\n    </div>\n</li>";
+},"useData":true});
+this["App"]["Vitalis"]["templates"]["alert_list_item"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
+    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
+
+  return "                "
+    + alias4(((helper = (helper = helpers.to || (depth0 != null ? depth0.to : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"to","hash":{},"data":data}) : helper)))
+    + "\n                y "
+    + alias4(((helper = (helper = helpers.from_secondary || (depth0 != null ? depth0.from_secondary : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"from_secondary","hash":{},"data":data}) : helper)))
+    + " a "
+    + alias4((helpers.measure || (depth0 && depth0.measure) || alias2).call(alias1,(depth0 != null ? depth0.to_secondary : depth0),(depth0 != null ? depth0.measurement_type : depth0),{"name":"measure","hash":{},"data":data}))
+    + "\n";
+},"3":function(container,depth0,helpers,partials,data) {
+    return "                "
+    + container.escapeExpression((helpers.measure || (depth0 && depth0.measure) || helpers.helperMissing).call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.to : depth0),(depth0 != null ? depth0.measurement_type : depth0),{"name":"measure","hash":{},"data":data}))
+    + "\n";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, helper, alias1=container.escapeExpression, alias2=depth0 != null ? depth0 : {}, alias3=helpers.helperMissing, alias4="function";
+
+  return "<li class=\"collection-item row\">\n    <div class=\"col s10 m6 l8\">\n        <span class=\"title\">"
+    + alias1(container.lambda(((stack1 = ((stack1 = (depth0 != null ? depth0.monitoring : depth0)) != null ? stack1.patient : stack1)) != null ? stack1.name : stack1), depth0))
+    + "</span>\n        <p class=\"subtitle no-margin\">\n            "
+    + alias1((helpers.tr || (depth0 && depth0.tr) || alias3).call(alias2,(depth0 != null ? depth0.measurement_type : depth0),{"name":"tr","hash":{},"data":data}))
+    + " ("
+    + alias1(((helper = (helper = helpers.from || (depth0 != null ? depth0.from : depth0)) != null ? helper : alias3),(typeof helper === alias4 ? helper.call(alias2,{"name":"from","hash":{},"data":data}) : helper)))
+    + " a\n"
+    + ((stack1 = helpers["if"].call(alias2,(depth0 != null ? depth0.from_secondary : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data})) != null ? stack1 : "")
+    + ")\n        </p>\n    </div>\n    <div class=\"col s2 m6 l4 right-align no-padding\" >\n        <a href=\"#options-modal-"
+    + alias1(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias3),(typeof helper === alias4 ? helper.call(alias2,{"name":"id","hash":{},"data":data}) : helper)))
+    + "\" class=\"secondary-content modal-trigger\"><i class=\"material-icons dark\">more_vert</i></a>\n    </div>\n\n    <div id=\"options-modal-"
+    + alias1(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias3),(typeof helper === alias4 ? helper.call(alias2,{"name":"id","hash":{},"data":data}) : helper)))
+    + "\" class=\"modal bottom-sheet\">\n        <h5 class=\"subheader\">Opciones</h5>\n        <div>\n            <ul class=\"collection\">\n                <li class=\"collection-item modal-action modal-close\" data-role='edit-alert'>\n                    <a ><i class=\"valign-bottom material-icons dark\">edit</i><span>Editar alerta</span></a>\n                </li>\n                <li class=\"collection-item modal-action\" data-role='delete-alert'>\n                    <a ><i class=\"valign-bottom material-icons dark\">delete</i><span>Eliminar</span></a>\n                </li>\n            </ul>\n        </div>\n    </div>\n</li>";
+},"useData":true});
+this["App"]["Vitalis"]["templates"]["alerts_page"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<div class=\"app-container\">\n    <div id=\"myalerts\">\n    </div>\n\n    <div class=\"fixed-action-btn\" style=\"bottom: 45px; right: 24px;\">\n        <a class=\"btn-floating btn-large waves-effect waves-light\" data-role=\"new-alert\">\n            <i class=\"large material-icons\">add</i>\n        </a>\n    </div>\n\n</div>";
+},"useData":true});
+this["App"]["Vitalis"]["templates"]["new_alert_page"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<div class=\"app-container\">\n\n    <div class=\"container\">\n        <div id=\"patients\" class=\"pad-bottom pad-top\">\n        </div>\n\n        <div id=\"sensors\" class=\"pad-bottom\">\n        </div>\n\n        <div id=\"ranges\" class=\"pad-bottom row position-relative\">\n            <div class=\"col s9\">\n                <label>Rango de alerta</label>\n                <div id=\"range-slider\" class=\"margin-top\">\n                </div>\n            </div>\n            <div id=\"range-values\" class=\"col s3 position-absolute right\">\n                <span id=\"range-from\">20</span>\n                <span>-</span>\n                <span id=\"range-to\">80</span>\n\n            </div>\n        </div>\n\n        <div id=\"ranges-secondary\" class=\"pad-bottom row position-relative visibility-hidden\">\n            <div class=\"col s9\">\n                <label>Rango de alerta (presión diast&oacute;lica)</label>\n                <div id=\"range-secondary-slider\" class=\"margin-top\">\n                </div>\n            </div>\n            <div id=\"range-secondary-values\" class=\"col s3 position-absolute right\" style=\"padding-top: 36px;\">\n                <span id=\"range-secondary-from\">20</span>\n                <span>-</span>\n                <span id=\"range-secondary-to\">80</span>\n\n            </div>\n        </div>\n\n    </div>\n    <a class=\"btn btn-large waves-effect waves-light full-width goto-bottom\" data-role=\"register-alert\" >\n        Guardar alerta\n    </a>\n\n</div>";
+},"useData":true});
+this["App"]["Vitalis"]["templates"]["mydata"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<div class=\"app-container\">\n    <form id=\"mydataForm\" class=\"container\">\n        <div class=\"input-field\">\n            <i class=\"material-icons prefix\">account_circle</i>\n            <input id=\"name\" class=\"input\" name=\"name\" type=\"text\" data-error=\"#error-name\">\n            <label for=\"name\" class=\"active\" data-error=\"Verifica este campo\">Nombre y apellido</label>\n            <div id=\"error-name\"></div>\n        </div>\n        <div class=\"row\">\n            <div class=\"input-field col s4\">\n                <select id=\"document_type\" name=\"document_type\">\n                    <option value=\"\" disabled selected>Tipo de documento</option>\n                    <option value=\"dni\">DNI</option>\n                    <option value=\"ci\">CI</option>\n                    <option value=\"le\">LE</option>\n                    <option value=\"lc\">LC</option>\n                </select>\n            </div>\n            <div class=\"input-field col s8\">\n                <input id=\"doc_number\" name=\"doc_number\" type=\"text\" data-error=\"#error-doc_number\">\n                <label for=\"doc_number\" class=\"active\" data-error=\"Verifica este campo\">Numero de documento</label>\n                <div id=\"error-doc_number\"></div>\n            </div>\n        </div>\n        <div class=\"row\">\n            <div class=\"input-field col s6\">\n                <select id=\"blood_factor\" name=\"blood_factor\">\n                    <option value=\"\" disabled selected>Factor</option>\n                    <option value=\"RH+\">RH+</option>\n                    <option value=\"RH-\">RH-</option>\n                </select>\n            </div>\n            <div class=\"input-field col s6\">\n                <select id=\"blood_type\" name=\"blood_type\">\n                    <option disabled selected>Tipo de sangre</option>\n                    <option value=\"a\">A</option>\n                    <option value=\"b\">B</option>\n                    <option value=\"ab\">AB</option>\n                    <option value=\"0\">Zero</option>\n                </select>\n            </div>\n        </div>\n        <div class=\"center-align col s6 login-btn-wrapper\">\n            <input class=\"waves-effect waves-light btn center-align full-width form-btn\" id=\"save\" type=\"submit\" value=\"Guardar\">\n        </div>\n    </form>\n</div>";
+},"useData":true});
+this["App"]["Vitalis"]["templates"]["notification_list_empty_item"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<li class=\"collection-item\">\n    <div class=\"center-align\">\n        <p class=\"no-margin\"><i class=\"medium material-icons dark\">notifications_active</i></p>\n        <p>Todav&iacute;a no recibiste ninguna notificaci&oacute;n</p>\n    </div>\n</li>";
+},"useData":true});
+this["App"]["Vitalis"]["templates"]["notifications_item"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
+    var stack1, helper, alias1=container.escapeExpression, alias2=depth0 != null ? depth0 : {}, alias3=helpers.helperMissing, alias4="function";
+
+  return "<li class=\"collection-item row\">\n    <div class=\"col s10 m6 l8\">\n        <span class=\"title\">"
+    + alias1(container.lambda(((stack1 = ((stack1 = (depth0 != null ? depth0.monitoring : depth0)) != null ? stack1.patient : stack1)) != null ? stack1.name : stack1), depth0))
+    + "</span>\n        <p class=\"subtitle no-margin\">\n\n            "
+    + alias1((helpers.tr || (depth0 && depth0.tr) || alias3).call(alias2,(depth0 != null ? depth0.measurement_type : depth0),{"name":"tr","hash":{},"data":data}))
+    + "\n"
+    + ((stack1 = helpers["if"].call(alias2,(helpers.eq || (depth0 && depth0.eq) || alias3).call(alias2,(depth0 != null ? depth0.measurement_type : depth0),"blood_pressure",{"name":"eq","hash":{},"data":data}),{"name":"if","hash":{},"fn":container.program(2, data, 0),"inverse":container.program(4, data, 0),"data":data})) != null ? stack1 : "")
+    + "            "
+    + alias1((helpers.formatRelative || (depth0 && depth0.formatRelative) || alias3).call(alias2,(depth0 != null ? depth0.creation_date : depth0),{"name":"formatRelative","hash":{},"data":data}))
+    + "\n        </p>\n        <p class=\"subtitle no-margin\n"
+    + ((stack1 = helpers["if"].call(alias2,(helpers.eq || (depth0 && depth0.eq) || alias3).call(alias2,(depth0 != null ? depth0.status : depth0),"open",{"name":"eq","hash":{},"data":data}),{"name":"if","hash":{},"fn":container.program(6, data, 0),"inverse":container.program(8, data, 0),"data":data})) != null ? stack1 : "")
+    + "        \">\n            "
+    + alias1((helpers.tr || (depth0 && depth0.tr) || alias3).call(alias2,(depth0 != null ? depth0.status : depth0),{"name":"tr","hash":{},"data":data}))
+    + "\n        </p>\n    </div>\n    <div class=\"col s2 m6 l4 right-align no-padding\" >\n        <a data-link=\"#options-modal-"
+    + alias1(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias3),(typeof helper === alias4 ? helper.call(alias2,{"name":"id","hash":{},"data":data}) : helper)))
+    + "\" class=\"secondary-content modal-trigger\"><i class=\"material-icons dark\">more_vert</i></a>\n    </div>\n\n    <div id=\"options-modal-"
+    + alias1(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias3),(typeof helper === alias4 ? helper.call(alias2,{"name":"id","hash":{},"data":data}) : helper)))
+    + "\" class=\"modal bottom-sheet\">\n        <h5 class=\"subheader\">Opciones</h5>\n        <div>\n            <ul class=\"collection\">\n"
+    + ((stack1 = helpers["if"].call(alias2,(helpers.eq || (depth0 && depth0.eq) || alias3).call(alias2,(depth0 != null ? depth0.status : depth0),"open",{"name":"eq","hash":{},"data":data}),{"name":"if","hash":{},"fn":container.program(11, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(alias2,(helpers.neq || (depth0 && depth0.neq) || alias3).call(alias2,(depth0 != null ? depth0.status : depth0),"closed",{"name":"neq","hash":{},"data":data}),{"name":"if","hash":{},"fn":container.program(13, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(alias2,(helpers.neq || (depth0 && depth0.neq) || alias3).call(alias2,(depth0 != null ? depth0.status : depth0),"closed2",{"name":"neq","hash":{},"data":data}),{"name":"if","hash":{},"fn":container.program(15, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "            </ul>\n        </div>\n    </div>\n</li>\n";
+},"2":function(container,depth0,helpers,partials,data) {
+    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
+
+  return "                "
+    + alias4(((helper = (helper = helpers.value || (depth0 != null ? depth0.value : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"value","hash":{},"data":data}) : helper)))
+    + "/"
+    + alias4(((helper = (helper = helpers.value_secondary || (depth0 != null ? depth0.value_secondary : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"value_secondary","hash":{},"data":data}) : helper)))
+    + "\n";
+},"4":function(container,depth0,helpers,partials,data) {
+    return "                "
+    + container.escapeExpression((helpers.measure || (depth0 && depth0.measure) || helpers.helperMissing).call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.value : depth0),(depth0 != null ? depth0.measurement_type : depth0),{"name":"measure","hash":{},"data":data}))
+    + "\n";
+},"6":function(container,depth0,helpers,partials,data) {
+    return "                materialize-red-text text-darken-2\n";
+},"8":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : {};
+
+  return ((stack1 = helpers["if"].call(alias1,(helpers.eq || (depth0 && depth0.eq) || helpers.helperMissing).call(alias1,(depth0 != null ? depth0.status : depth0),"acked",{"name":"eq","hash":{},"data":data}),{"name":"if","hash":{},"fn":container.program(9, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
+},"9":function(container,depth0,helpers,partials,data) {
+    return "                    blue-text text-darken-4\n";
+},"11":function(container,depth0,helpers,partials,data) {
+    return "                    <li class=\"collection-item modal-action modal-close\" data-role='ack-notification'>\n                        <a ><i class=\"valign-bottom material-icons dark\">done</i><span>Marcar como vista</span></a>\n                    </li>\n";
+},"13":function(container,depth0,helpers,partials,data) {
+    return "                    <li class=\"collection-item modal-action\" data-role='close-notification'>\n                        <a ><i class=\"valign-bottom material-icons dark\">close</i><span>Cerrar</span></a>\n                    </li>\n";
+},"15":function(container,depth0,helpers,partials,data) {
+    return "                <li class=\"collection-item modal-action\" data-role='goto-monitoring'>\n                    <a ><i class=\"valign-bottom material-icons dark\">tv</i><span>Ir a monitoreo</span></a>\n                </li>\n";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return ((stack1 = (helpers.intl || (depth0 && depth0.intl) || helpers.helperMissing).call(depth0 != null ? depth0 : {},{"name":"intl","hash":{"locales":"es-AR"},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
+},"useData":true});
+this["App"]["Vitalis"]["templates"]["notifications_page"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<div class=\"app-container\">\n    <div id=\"notifications\">\n    </div>\n</div>";
 },"useData":true});
 this["App"]["Vitalis"]["templates"]["monitoring_page"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var stack1;
@@ -14995,70 +15115,6 @@ this["App"]["Vitalis"]["templates"]["user_search_result_item_with_delete"] = Han
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.is_admin : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + ">\n            <span class=\"lever\"></span>\n        </label>\n    </div>\n    <button data-role=\"delete\" class=\"btn btn-floating btn-minimal btn-flat secondary-content\"><i class=\"material-icons\">close</i></button>\n</li>";
 },"useData":true});
-this["App"]["Vitalis"]["templates"]["mydata"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div class=\"app-container\">\n    <form id=\"mydataForm\" class=\"container\">\n        <div class=\"input-field\">\n            <i class=\"material-icons prefix\">account_circle</i>\n            <input id=\"name\" class=\"input\" name=\"name\" type=\"text\" data-error=\"#error-name\">\n            <label for=\"name\" class=\"active\" data-error=\"Verifica este campo\">Nombre y apellido</label>\n            <div id=\"error-name\"></div>\n        </div>\n        <div class=\"row\">\n            <div class=\"input-field col s4\">\n                <select id=\"document_type\" name=\"document_type\">\n                    <option value=\"\" disabled selected>Tipo de documento</option>\n                    <option value=\"dni\">DNI</option>\n                    <option value=\"ci\">CI</option>\n                    <option value=\"le\">LE</option>\n                    <option value=\"lc\">LC</option>\n                </select>\n            </div>\n            <div class=\"input-field col s8\">\n                <input id=\"doc_number\" name=\"doc_number\" type=\"text\" data-error=\"#error-doc_number\">\n                <label for=\"doc_number\" class=\"active\" data-error=\"Verifica este campo\">Numero de documento</label>\n                <div id=\"error-doc_number\"></div>\n            </div>\n        </div>\n        <div class=\"row\">\n            <div class=\"input-field col s6\">\n                <select id=\"blood_factor\" name=\"blood_factor\">\n                    <option value=\"\" disabled selected>Factor</option>\n                    <option value=\"RH+\">RH+</option>\n                    <option value=\"RH-\">RH-</option>\n                </select>\n            </div>\n            <div class=\"input-field col s6\">\n                <select id=\"blood_type\" name=\"blood_type\">\n                    <option disabled selected>Tipo de sangre</option>\n                    <option value=\"a\">A</option>\n                    <option value=\"b\">B</option>\n                    <option value=\"ab\">AB</option>\n                    <option value=\"0\">Zero</option>\n                </select>\n            </div>\n        </div>\n        <div class=\"center-align col s6 login-btn-wrapper\">\n            <input class=\"waves-effect waves-light btn center-align full-width form-btn\" id=\"save\" type=\"submit\" value=\"Guardar\">\n        </div>\n    </form>\n</div>";
-},"useData":true});
-this["App"]["Vitalis"]["templates"]["notification_list_empty_item"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<li class=\"collection-item\">\n    <div class=\"center-align\">\n        <p class=\"no-margin\"><i class=\"medium material-icons dark\">notifications_active</i></p>\n        <p>Todav&iacute;a no recibiste ninguna notificaci&oacute;n</p>\n    </div>\n</li>";
-},"useData":true});
-this["App"]["Vitalis"]["templates"]["notifications_item"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
-    var stack1, helper, alias1=container.escapeExpression, alias2=depth0 != null ? depth0 : {}, alias3=helpers.helperMissing, alias4="function";
-
-  return "<li class=\"collection-item row\">\n    <div class=\"col s10 m6 l8\">\n        <span class=\"title\">"
-    + alias1(container.lambda(((stack1 = ((stack1 = (depth0 != null ? depth0.monitoring : depth0)) != null ? stack1.patient : stack1)) != null ? stack1.name : stack1), depth0))
-    + "</span>\n        <p class=\"subtitle no-margin\">\n\n            "
-    + alias1((helpers.tr || (depth0 && depth0.tr) || alias3).call(alias2,(depth0 != null ? depth0.measurement_type : depth0),{"name":"tr","hash":{},"data":data}))
-    + "\n"
-    + ((stack1 = helpers["if"].call(alias2,(helpers.eq || (depth0 && depth0.eq) || alias3).call(alias2,(depth0 != null ? depth0.measurement_type : depth0),"blood_pressure",{"name":"eq","hash":{},"data":data}),{"name":"if","hash":{},"fn":container.program(2, data, 0),"inverse":container.program(4, data, 0),"data":data})) != null ? stack1 : "")
-    + "            "
-    + alias1((helpers.formatRelative || (depth0 && depth0.formatRelative) || alias3).call(alias2,(depth0 != null ? depth0.creation_date : depth0),{"name":"formatRelative","hash":{},"data":data}))
-    + "\n        </p>\n        <p class=\"subtitle no-margin\n"
-    + ((stack1 = helpers["if"].call(alias2,(helpers.eq || (depth0 && depth0.eq) || alias3).call(alias2,(depth0 != null ? depth0.status : depth0),"open",{"name":"eq","hash":{},"data":data}),{"name":"if","hash":{},"fn":container.program(6, data, 0),"inverse":container.program(8, data, 0),"data":data})) != null ? stack1 : "")
-    + "        \">\n            "
-    + alias1((helpers.tr || (depth0 && depth0.tr) || alias3).call(alias2,(depth0 != null ? depth0.status : depth0),{"name":"tr","hash":{},"data":data}))
-    + "\n        </p>\n    </div>\n    <div class=\"col s2 m6 l4 right-align no-padding\" >\n        <a data-link=\"#options-modal-"
-    + alias1(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias3),(typeof helper === alias4 ? helper.call(alias2,{"name":"id","hash":{},"data":data}) : helper)))
-    + "\" class=\"secondary-content modal-trigger\"><i class=\"material-icons dark\">more_vert</i></a>\n    </div>\n\n    <div id=\"options-modal-"
-    + alias1(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias3),(typeof helper === alias4 ? helper.call(alias2,{"name":"id","hash":{},"data":data}) : helper)))
-    + "\" class=\"modal bottom-sheet\">\n        <h5 class=\"subheader\">Opciones</h5>\n        <div>\n            <ul class=\"collection\">\n"
-    + ((stack1 = helpers["if"].call(alias2,(helpers.eq || (depth0 && depth0.eq) || alias3).call(alias2,(depth0 != null ? depth0.status : depth0),"open",{"name":"eq","hash":{},"data":data}),{"name":"if","hash":{},"fn":container.program(11, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + ((stack1 = helpers["if"].call(alias2,(helpers.neq || (depth0 && depth0.neq) || alias3).call(alias2,(depth0 != null ? depth0.status : depth0),"closed",{"name":"neq","hash":{},"data":data}),{"name":"if","hash":{},"fn":container.program(13, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + ((stack1 = helpers["if"].call(alias2,(helpers.eq || (depth0 && depth0.eq) || alias3).call(alias2,(depth0 != null ? depth0.status : depth0),"closed",{"name":"eq","hash":{},"data":data}),{"name":"if","hash":{},"fn":container.program(15, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "            </ul>\n        </div>\n    </div>\n</li>\n";
-},"2":function(container,depth0,helpers,partials,data) {
-    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
-
-  return "                "
-    + alias4(((helper = (helper = helpers.value || (depth0 != null ? depth0.value : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"value","hash":{},"data":data}) : helper)))
-    + "/"
-    + alias4(((helper = (helper = helpers.value_secondary || (depth0 != null ? depth0.value_secondary : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"value_secondary","hash":{},"data":data}) : helper)))
-    + "\n";
-},"4":function(container,depth0,helpers,partials,data) {
-    return "                "
-    + container.escapeExpression((helpers.measure || (depth0 && depth0.measure) || helpers.helperMissing).call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.value : depth0),(depth0 != null ? depth0.measurement_type : depth0),{"name":"measure","hash":{},"data":data}))
-    + "\n";
-},"6":function(container,depth0,helpers,partials,data) {
-    return "                materialize-red-text text-darken-2\n";
-},"8":function(container,depth0,helpers,partials,data) {
-    var stack1, alias1=depth0 != null ? depth0 : {};
-
-  return ((stack1 = helpers["if"].call(alias1,(helpers.eq || (depth0 && depth0.eq) || helpers.helperMissing).call(alias1,(depth0 != null ? depth0.status : depth0),"acked",{"name":"eq","hash":{},"data":data}),{"name":"if","hash":{},"fn":container.program(9, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
-},"9":function(container,depth0,helpers,partials,data) {
-    return "                    blue-text text-darken-4\n";
-},"11":function(container,depth0,helpers,partials,data) {
-    return "                    <li class=\"collection-item modal-action modal-close\" data-role='ack-notification'>\n                        <a ><i class=\"valign-bottom material-icons\">done</i><span>Marcar como vista</span></a>\n                    </li>\n";
-},"13":function(container,depth0,helpers,partials,data) {
-    return "                    <li class=\"collection-item modal-action\" data-role='close-notification'>\n                        <a ><i class=\"valign-bottom material-icons\">close</i><span>Cerrar</span></a>\n                    </li>\n";
-},"15":function(container,depth0,helpers,partials,data) {
-    return "                <li class=\"collection-item modal-action\" data-role='goto-monitoring'>\n                    <a ><i class=\"valign-bottom material-icons\">tv</i><span>Ir a monitoreo</span></a>\n                </li>\n";
-},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    var stack1;
-
-  return ((stack1 = (helpers.intl || (depth0 && depth0.intl) || helpers.helperMissing).call(depth0 != null ? depth0 : {},{"name":"intl","hash":{"locales":"es-AR"},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
-},"useData":true});
-this["App"]["Vitalis"]["templates"]["notifications_page"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div class=\"app-container\">\n    <div id=\"notifications\">\n    </div>\n</div>";
-},"useData":true});
 this["App"]["Vitalis"]["templates"]["collection_wrapper"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<ul class=\"collection\">\n\n</ul>";
 },"useData":true});
@@ -15227,6 +15283,7 @@ App.Urls.set(({
     "vitalis:home": "app",
     "vitalis:patients": "app/patients",
     "vitalis:monitoring": "app/monitoring/:id",
+    "vitalis:edit_monitoring": "app/monitoring/:id/edit",
     "vitalis:requests": "app/requests",
     "vitalis:new_request": "app/requests/new",
     "vitalis:mydata": "app/mydata",
@@ -15248,7 +15305,7 @@ App.module('Vitalis.Models', function (Models, App, Backbone, Marionette, $, _) 
     (function(){
         var content = $('meta[name="config:device"]').attr('content');
 
-        Models.API_ROOT_URL = content == "cordova" ? "http://83f066d2.ngrok.io" : "";
+        Models.API_ROOT_URL = content == "cordova" ? "http://f758efa9.ngrok.io" : "";
 
     })();
 
@@ -15691,6 +15748,8 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
             var self        = this;
             var following   = new Vitalis.Models.Following();
             var sensors     = new Vitalis.Models.AvailableSensors();
+            var slider = $('#range-slider')[0];
+            var sliderSecondary = $('#range-secondary-slider')[0];
 
             self.model.fetch({
                 success: function(model, response, options){
@@ -15731,7 +15790,16 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
                             });
 
                             followingSelectView.on('option:changed', function(monitoringId){
-                                self.model.set('monitoring_id', monitoringId);
+                                slider.removeAttribute('disabled');
+
+                                self.model.set('measurement_type', measurementType);
+
+                                if(measurementType === 'blood_pressure'){
+                                    $('div#ranges-secondary').removeClass('visibility-hidden');
+
+                                } else {
+                                    $('div#ranges-secondary').addClass('visibility-hidden');
+                                }
                             });
 
                             self.getRegion('patients').show(followingSelectView);
@@ -15771,7 +15839,6 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
                         }
                     });
 
-                    var slider = $('#range-slider')[0];
                     noUiSlider.create(slider, {
                         start: [self.model.get('from'), self.model.get('to')],
                         connect: true,
@@ -15779,7 +15846,7 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
                         behaviour: 'drag',
                         range: {
                             'min': 0,
-                            'max': 100
+                            'max': 200
                         },
                         format: wNumb({
                             decimals: 0
@@ -15788,6 +15855,9 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
 
                     $("#range-from").html(self.model.get('from'));
                     $("#range-to").html(self.model.get('to'));
+
+                    $("#range-secondary-from").html(self.model.get('from_secondary'));
+                    $("#range-secondary-to").html(self.model.get('to_secondary'));
 
 
                     slider.noUiSlider.on('change', function(){
@@ -15799,6 +15869,36 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
                         $("#range-from").html(values[0]);
                         $("#range-to").html(values[1]);
                     });
+
+                    noUiSlider.create(sliderSecondary,{
+                        start: [self.model.get('from_secondary'), self.model.get('to_secondary')],
+                        connect: true,
+                        step: 1,
+                        behaviour: 'drag',
+                        range: {
+                            'min': 0,
+                            'max': 200
+                        },
+                        format: wNumb({
+                            decimals: 0
+                        })
+                    });
+
+                    sliderSecondary.noUiSlider.on('change', function(){
+                        var values = sliderSecondary.noUiSlider.get();
+
+                        self.model.set("from_secondary", values[0]);
+                        self.model.set("to_secondary", values[1]);
+
+                        $("#range-secondary-from").html(values[0]);
+                        $("#range-secondary-to").html(values[1]);
+
+                    });
+
+                    if(self.model.get('measurement_type') === 'blood_pressure'){
+                        $('div#ranges-secondary').removeClass('visibility-hidden');
+                    }
+
                 },
                 error: function(){
 
@@ -15970,8 +16070,11 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
             var self        = this;
             var following   = new Vitalis.Models.Following();
             var sensors     = new Vitalis.Models.AvailableSensors();
+            var slider      = $('#range-slider')[0];
+            var sliderSecondary = $('#range-secondary-slider')[0];
 
             following.fetch({
+                data: $.param({'include_myself': true}),
                 success: function(collection, response, options) {
 
                     var flattenedMonitorings = collection.models.map(function(model) {
@@ -16016,37 +16119,79 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
                     });
 
                     followingSelectView.on('option:changed', function(measurementType){
+
+                        slider.removeAttribute('disabled');
+
                         self.model.set('measurement_type', measurementType);
+
+                        if(measurementType === 'blood_pressure'){
+                            $('div#ranges-secondary').removeClass('visibility-hidden');
+
+                        } else {
+                            $('div#ranges-secondary').addClass('visibility-hidden');
+                        }
                     });
                     self.getRegion('sensors').show(followingSelectView);
                 }
             });
 
-            var slider = $('#range-slider')[0];
+
             noUiSlider.create(slider, {
-                start: [20, 80],
+                start: [50, 150],
                 connect: true,
                 step: 1,
                 behaviour: 'drag',
                 range: {
                     'min': 0,
-                    'max': 100
+                    'max': 200
                 },
                 format: wNumb({
                     decimals: 0
                 })
             });
 
+            slider.setAttribute('disabled', true);
+
             slider.noUiSlider.on('change', function(){
                 var values = slider.noUiSlider.get();
-
-                self.model.set("from", values[0]);
-                self.model.set("to", values[1]);
 
                 $("#range-from").html(values[0]);
                 $("#range-to").html(values[1]);
 
+                self.model.set("from", values[0]);
+                self.model.set("to", values[1]);
+
             });
+
+            noUiSlider.create(sliderSecondary,{
+                start: [50, 150],
+                connect: true,
+                step: 1,
+                behaviour: 'drag',
+                range: {
+                    'min': 0,
+                    'max': 200
+                },
+                format: wNumb({
+                    decimals: 0
+                })
+            });
+
+            sliderSecondary.noUiSlider.on('change', function(){
+                var values = sliderSecondary.noUiSlider.get();
+
+                self.model.set("from_secondary", values[0]);
+                self.model.set("to_secondary", values[1]);
+
+                $("#range-secondary-from").html(values[0]);
+                $("#range-secondary-to").html(values[1]);
+
+            });
+
+            if(this.model.get('measurement_type') === 'blood_pressure'){
+                $('div#ranges-secondary').removeClass('visibility-hidden');
+            }
+
         },
 
         registerAlert: function(event){
@@ -17066,6 +17211,93 @@ App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
             Urls.go('vitalis:new_module');
         }
 
+    });
+});
+// main.layout.view.js
+
+'use strict';
+
+App.module('Vitalis.Views', function (Views, App, Backbone, Marionette, $, _) {
+
+    var Urls        = App.module('Urls'),
+        Header      = App.module('Header'),
+        Vitalis     = App.module('Vitalis'),
+        Utils       = App.module('Vitalis.Utils');
+
+    Views.EditMonitoringPage = Marionette.LayoutView.extend({
+        template: App.Vitalis.templates.new_monitoring_page,
+
+        ui: {
+            initMonitoringButton: 'a[data-role="init-monitoring"]'
+        },
+
+        events: {
+            'click @ui.initMonitoringButton': 'initMonitoring'
+        },
+
+        regions: {
+            patient: 'div#patient',
+            followers: 'div#followers',
+            sensors: 'div#sensors'
+        },
+
+        onShow: function(){
+            var self = this;
+            this.model.fetch({success: function(){
+
+                var emptyPatientItemView = Vitalis.Views.MonitoringPatientAssignmentEmptyItem;
+                var emptyFollowerItemView = Vitalis.Views.MonitoringFollowerAssignmentEmptyItem;
+
+                var GenericList = Backbone.Collection.extend({});
+
+
+                var patientId = self.model.get('patient').id;
+                var patientWrapper = [{ patientId: self.model.get('patient')}];
+
+                var patientsList = new GenericList(patientWrapper);
+                var followersList = new GenericList();
+                var sensorsList = new Vitalis.Models.AvailableSensors();
+
+                var patientView = new Vitalis.Views.MonitoringPatientAssignmentListView({
+                    emptyView: emptyPatientItemView,
+                    title: "Asignar paciente",
+                    collection: self.model.get('patient')
+                });
+
+                var followersView = new Vitalis.Views.MonitoringFollowerAssignmentListView({
+                    emptyView: emptyFollowerItemView,
+                    title: "Asignar seguidores",
+                    collection: self.model.get('followers'),
+                    action: {
+                        icon: 'add',
+                        role: 'addFollower'
+                    }
+                });
+
+                var sensorsView = new Vitalis.Views.MonitoringSensorSelectionListView({
+                    title: "Asignar sensores",
+                    collection: self.model.get('sensors')
+                });
+
+                //this.model.set('patient', patientsList);
+                //this.model.set('followers', followersList);
+                //this.model.set('sensors', sensorsList);
+
+                this.getRegion('patient').show(patientView);
+                this.getRegion('followers').show(followersView);
+                this.getRegion('sensors').show(sensorsView);
+
+            }});
+
+
+        },
+
+        initMonitoring: function(event){
+            this.model.save({}, { success: function(){
+                Urls.go('vitalis:modules');
+                Utils.toast("Monitoreo actualizado");
+            }});
+        }
     });
 });
 // main.layout.view.js
@@ -18495,7 +18727,6 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
         App.main.show(loginView);
     };
 
-
     controller.signup = function(){
         var signupView = new App.Vitalis.Views.Signup({model: new Vitalis.Models.Signup()});
         var headerView = new App.Vitalis.Views.LoginHeader();
@@ -18519,6 +18750,13 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
             title: "Ver monitoreo",
             menu: {
                 options: [
+                    {
+                        id: 'edit_monitoring',
+                        label: "Editar monitoreo",
+                        action: function(event, container){
+                            Urls.go('vitalis:edit_monitoring', [monitoringId]);
+                        }
+                    },
                     {
                         id: 'finish_monitoring',
                         label: "Finalizar monitoreo",
@@ -18620,6 +18858,16 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
         App.main.show(newMonitoringPage);
     };
 
+    controller.edit_monitoring = function(monitoringId){
+        var monitoring = new Vitalis.Models.Monitoring({id: monitoringId});
+
+        var newMonitoringPage = new App.Vitalis.Views.EditMonitoringPage({model: monitoring});
+        var innerHeaderView = new App.Vitalis.Views.InnerHeader({title: "Editar monitoreo"});
+
+        App.header.show(innerHeaderView);
+        App.main.show(newMonitoringPage);
+    };
+
     controller.new_module = function(){
         var newModulePage = new App.Vitalis.Views.NewModulePage();
         var innerHeaderView = new App.Vitalis.Views.InnerHeader({title: "Nuevo módulo"});
@@ -18716,6 +18964,7 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
     addRoute('new_request');
     addRoute('modules');
     addRoute('new_monitoring');
+    addRoute('edit_monitoring');
     addRoute('new_module');
     addRoute('alerts');
     addRoute('new_alert');

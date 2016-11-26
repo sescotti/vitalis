@@ -11,15 +11,14 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.rocket.vitalis.model.ModuleStatus.DISABLED;
 import static com.rocket.vitalis.model.ModuleStatus.ENABLED;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Collectors.toSet;
 
 /**
  * Created by Ailin on 20/10/2016.
@@ -42,6 +41,10 @@ public class ModuleService {
 
     @Autowired
     private SensorRepository sensorRepository;
+
+    @Autowired
+    private NotificationService notificationsService;
+
 
     public Collection<Module> findModules(User user){
         return moduleRepository.findByOwnerAndStatus(user, ENABLED);
@@ -104,6 +107,7 @@ public class ModuleService {
 
         monitoringRepository.save(monitoring);
 
+        Collection<MonitoringRequest.FollowerDto> followerDtos = new HashSet<>(followers);
         Map<Long, MonitoringRequest.FollowerDto> followersMap = followers.stream().collect(toMap(MonitoringRequest.FollowerDto::getId, followerDto -> followerDto));
 
         MonitoringRequest.FollowerDto followerDto = followersMap.get(userOwner.getId());
@@ -121,6 +125,13 @@ public class ModuleService {
         }).collect(toList());
 
         followerRepository.save(collect);
+
+        Collection<Long> peopleToNotify =   followerDtos.stream()
+                                                        .filter(followerDto1 -> !userOwner.getId().equals(followerDto1.getId()))
+        .map(followerDto1 -> followerDto1.getId())
+                .collect(toSet());
+
+        notificationsService.sendNewMonitoringNotification(peopleToNotify, monitoring);
 
         return monitoring;
     }

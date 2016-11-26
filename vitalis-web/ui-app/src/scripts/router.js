@@ -30,7 +30,6 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
         App.main.show(loginView);
     };
 
-
     controller.signup = function(){
         var signupView = new App.Vitalis.Views.Signup({model: new Vitalis.Models.Signup()});
         var headerView = new App.Vitalis.Views.LoginHeader();
@@ -54,6 +53,13 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
             title: "Ver monitoreo",
             menu: {
                 options: [
+                    {
+                        id: 'edit_monitoring',
+                        label: "Editar monitoreo",
+                        action: function(event, container){
+                            Urls.go('vitalis:edit_monitoring', [monitoringId]);
+                        }
+                    },
                     {
                         id: 'finish_monitoring',
                         label: "Finalizar monitoreo",
@@ -155,6 +161,16 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
         App.main.show(newMonitoringPage);
     };
 
+    controller.edit_monitoring = function(monitoringId){
+        var monitoring = new Vitalis.Models.Monitoring({id: monitoringId});
+
+        var newMonitoringPage = new App.Vitalis.Views.EditMonitoringPage({model: monitoring});
+        var innerHeaderView = new App.Vitalis.Views.InnerHeader({title: "Editar monitoreo"});
+
+        App.header.show(innerHeaderView);
+        App.main.show(newMonitoringPage);
+    };
+
     controller.new_module = function(){
         var newModulePage = new App.Vitalis.Views.NewModulePage();
         var innerHeaderView = new App.Vitalis.Views.InnerHeader({title: "Nuevo módulo"});
@@ -251,6 +267,7 @@ App.module('Vitalis.Router', function (Router, App, Backbone, Marionette, $, _) 
     addRoute('new_request');
     addRoute('modules');
     addRoute('new_monitoring');
+    addRoute('edit_monitoring');
     addRoute('new_module');
     addRoute('alerts');
     addRoute('new_alert');

@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.rocket.vitalis.model.NotificationStatus.OPEN;
 import static java.lang.String.format;
@@ -97,7 +96,7 @@ public class NotificationService {
         });
 
         deviceTokensRecipients.stream().forEach(deviceToken ->
-                        sendNotification(deviceToken, measurement)
+                        sendNewMonitoringNotification(deviceToken, measurement)
         );
     }
 
@@ -112,10 +111,26 @@ public class NotificationService {
     }
 
     @Transactional
-    private void sendNotification(DeviceToken deviceToken, Measurement measurement) {
+    private void sendNewMonitoringNotification(DeviceToken deviceToken, Measurement measurement) {
 
         PushNotificationDto pushNotification = createPushNotification(deviceToken, measurement);
 
+        ResponseEntity<PushNotificationResponse> response = restClient.create("https://gcm-http.googleapis.com/gcm/send")
+                .addHeader("Authorization", "key=AIzaSyCsp9CPiln_EvQ4ZLz6sx70J-ATTNIeMbk")
+                .contentType(MediaType.APPLICATION_JSON)
+                .payload(pushNotification)
+                .post(PushNotificationResponse.class);
+
+        PushNotificationResponse payload = response.getBody();
+
+        if(payload.getSuccess() == 1){
+            log.info(format("Success %s", payload));
+        } else if(payload.getFailure() == 1){
+            log.error(format("Error %s", payload));
+        }
+    }
+
+    private void sendNotification(PushNotificationDto pushNotification) {
         ResponseEntity<PushNotificationResponse> response = restClient.create("https://gcm-http.googleapis.com/gcm/send")
                 .addHeader("Authorization", "key=AIzaSyCsp9CPiln_EvQ4ZLz6sx70J-ATTNIeMbk")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -154,6 +169,53 @@ public class NotificationService {
 
     }
 
+    private PushNotificationDto createRequestNotification(DeviceToken deviceToken, Request request) {
+
+        String requesterName = request.getRequestedBy().getName();
+        User patient = request.getMonitoring().getPatient();
+        String pushMessage;
+        if(patient.getId().equals(deviceToken.getSession().getUser().getId())){
+            pushMessage = format("%s solicitó seguirte", requesterName);
+        } else {
+            pushMessage = format("%s solicitó seguir a %s", requesterName, patient.getName());
+        }
+
+        String pushSummaryText = format("Toca para ver más");
+
+        PushNotificationDto.PushNotificationData data = new PushNotificationDto.PushNotificationData();
+        data.setTitle("Nueva solicitud");
+        data.setMessage(pushMessage);
+        data.setImage("www/img/logo-64x64-color.png");
+        data.setVibrate(1);
+        data.setSound(1);
+        data.setStyle("inbox");
+        data.setSummaryText(pushSummaryText);
+
+        return new PushNotificationDto(deviceToken.getToken(), data);
+
+    }
+
+    private PushNotificationDto createMonitoringNotification(DeviceToken deviceToken, Monitoring monitoring) {
+
+        String patientName = monitoring.getPatient().getName();
+
+        String pushMessage = format("Comenzaste a seguir a %s", patientName);
+        String pushSummaryText = format("Toca para ver más");
+
+        PushNotificationDto.PushNotificationData data = new PushNotificationDto.PushNotificationData();
+        data.setTitle("Nueva solicitud");
+        data.setMessage(pushMessage);
+        data.setImage("www/img/logo-64x64-color.png");
+        data.setVibrate(1);
+        data.setSound(1);
+        data.setStyle("inbox");
+        data.setSummaryText(pushSummaryText);
+
+        return new PushNotificationDto(deviceToken.getToken(), data);
+
+    }
+
+
     private Collection<AlertRule> loadRules(Measurement measurement) {
         Monitoring monitoring = measurement.getMonitoring();
         MeasurementType measurementType = measurement.getType();
@@ -164,4 +226,21 @@ public class NotificationService {
 
     }
 
+    public void sendNewMonitoringNotification(Collection<Long> peopleToNotify, Monitoring monitoring) {
+        Collection<DeviceToken> userIdsTokens = userService.getUserIdsTokens(peopleToNotify);
+
+        userIdsTokens.stream().forEach(deviceToken -> {
+            PushNotificationDto notification = createMonitoringNotification(deviceToken, monitoring);
+            sendNotification(notification);
+        });
+    }
+
+    public void sendRequestNotification(Collection<Long> peopleToNotify, Request request) {
+        Collection<DeviceToken> userIdsTokens = userService.getUserIdsTokens(peopleToNotify);
+
+        userIdsTokens.stream().forEach(deviceToken -> {
+            PushNotificationDto notification = createRequestNotification(deviceToken, request);
+            sendNotification(notification);
+        });
+    }
 }

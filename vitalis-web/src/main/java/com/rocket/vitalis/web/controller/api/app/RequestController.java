@@ -5,6 +5,7 @@ import com.rocket.vitalis.dto.FollowingRequest;
 import com.rocket.vitalis.model.*;
 import com.rocket.vitalis.repositories.FollowerRepository;
 import com.rocket.vitalis.repositories.RequestRepository;
+import com.rocket.vitalis.services.NotificationService;
 import com.rocket.vitalis.services.RequestService;
 import com.rocket.vitalis.web.controller.api.AbstractApiController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-import static com.rocket.vitalis.model.RequestStatus.REJECTED;
 import static com.rocket.vitalis.model.RequestStatus.ACCEPTED;
+import static java.util.stream.Collectors.toSet;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
@@ -35,6 +38,9 @@ public class RequestController extends AbstractApiController {
     @Autowired
     private FollowerRepository followerRepository;
 
+    @Autowired
+    private NotificationService notificationService;
+
     @RequestMapping("/sentRequest")
     @ResponseBody
     public ResponseEntity<?> getSentRequest(@ModelAttribute("user") User user){
@@ -52,6 +58,15 @@ public class RequestController extends AbstractApiController {
             Request requestFollowing = new Request(user, monitoring);
             requestRepository.save(requestFollowing);
 
+            Collection<Follower> followers = followerRepository.findByMonitoringId(monitoring.getId());
+
+            Set<Long> peopleToNotify =     followers.stream()
+                                                .filter(Follower::getIsAdmin)
+                                                .map(follower -> follower.getUser().getId())
+                                                .collect(toSet());
+            peopleToNotify.add(monitoring.getPatient().getId());
+
+            notificationService.sendRequestNotification(peopleToNotify, requestFollowing);
             return new ResponseEntity<Object>(requestFollowing, OK);
 
         } catch (IllegalArgumentException e) {
