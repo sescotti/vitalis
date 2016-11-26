@@ -22,8 +22,8 @@ public class AlertRule {
     @NonNull
     private double      to;
 
-    private double      fromSecondary;
-    private double      toSecondary;
+    private Double      fromSecondary;
+    private Double      toSecondary;
 
     @NonNull
     private RuleSource  type    = DEFAULT;
